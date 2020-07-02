@@ -3,6 +3,7 @@ Debug/
 Release/
 SFML-2.5.1/
 x64/
+SFML Game/Source.cpp
 *.dll
 *.vcxproj
 *.filters

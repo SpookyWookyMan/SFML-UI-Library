@@ -68,12 +68,12 @@ namespace GUI
 
 		bool mouseHeld = false;
 
-		std::function<void(void)> MouseEnterFunc = {};
-		std::function<void(void)> MouseExitFunc = {};
-		std::function<void(void)> ClickFunc = {};
-		std::function<void(void)> ReleaseFunc = {};
+		std::function<void(void)> MouseEnterFunc = []{};
+		std::function<void(void)> MouseExitFunc = []{};
+		std::function<void(void)> ClickFunc = []{};
+		std::function<void(void)> ReleaseFunc = []{};
 
-		std::function<void(void)> UpdateFunc = {};
+		std::function<void(void)> UpdateFunc = []{};
 
 		virtual void SetManager(UIManager* m = NULL);
 		virtual void SetPosition(const sf::Vector2f& pos) = 0;
@@ -138,13 +138,14 @@ namespace GUI
 		void SetOrigin(const Pivot& pivot) override;
 		void SetOrigin(const Pivot& pivot, sf::Vector2f* offset) override;
 		void SetTexture(const sf::Texture& texture);
-		void SetTextFont(const sf::Font& font);
+
+		void SetText(const char* str);
+		void SetTextSize(const unsigned int&& size);
 		void SetTextFont(const char* path);
-		void SetTextSize(const unsigned int& size);
-		void SetTextColor(const sf::Color& clr);
+		void SetTextFont(const sf::Font& font);
 		void SetTextOrigin(const Pivot& pivot);
 		void SetTextOrigin(const Pivot& pivot, sf::Vector2f* offset);
-		void SetText(const char* str);
+		void SetTextColor(const sf::Color& clr);
 
 		sf::Vector2f* GetSize(void) override;
 		const sf::Vector2f& GetOrigin(void) const override;
@@ -173,16 +174,20 @@ namespace GUI
 		sf::Text text;
 		sf::Font font;
 
+		TextBox(const char* path, const char* str);
+		TextBox(const char* path);
 		TextBox(const sf::Font& font, const char* str);
 		TextBox(const sf::Font& font);
-		TextBox(void);
 		virtual ~TextBox(void);
 
 		void SetPosition(const sf::Vector2f& pos) override;
 		void SetOrigin(const Pivot& pivot) override;
 		void SetOrigin(const Pivot& pivot, sf::Vector2f* offset) override;
 		void SetText(const char* str);
+		void SetFont(const sf::Font& font);
+		void SetFont(const char* path);
 		void SetColor(const sf::Color& color);
+		void SetSize(const unsigned int&& size);
 
 		sf::Vector2f* GetSize(void) override;
 		const sf::Vector2f& GetOrigin(void) const override;

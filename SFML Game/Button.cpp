@@ -74,7 +74,7 @@ void Button::SetTextFont(const char* path)
 	delete font;
 }
 
-void Button::SetTextSize(const unsigned int& size)
+void Button::SetTextSize(const unsigned int&& size)
 {
 	this->text.setCharacterSize(size);
 }

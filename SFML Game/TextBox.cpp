@@ -2,18 +2,45 @@
 
 using namespace GUI;
 
-TextBox::TextBox(const sf::Font& font, const char* str) : font(font)
+TextBox::TextBox(const char* path, const char* str)
 {
+	sf::Font* font = new sf::Font();
+	if (!font->loadFromFile(path))
+		std::cout << "Failed to load font from: " << path << "\n";
+
+	this->font = *font;
+	this->SetFont(*font);
+	this->SetText(str);
+	this->SetColor(sf::Color::White);
+	this->text.setCharacterSize(72);
+
+	delete font;
+}
+
+TextBox::TextBox(const char* path)
+{
+	sf::Font* font = new sf::Font();
+	if (!font->loadFromFile(path))
+		std::cout << "Failed to load font from: " << path << "\n";
+
+	this->font = *font;
+	this->SetFont(*font);
+	this->SetText("Text");
+	this->SetColor(sf::Color::White);
+	this->text.setCharacterSize(72);
+
+	delete font;
+}
+
+TextBox::TextBox(const sf::Font& font, const char* str)
+{
+	this->SetFont(font);
 	this->SetText(str);
 }
 
-TextBox::TextBox(const sf::Font& font) : font(font)
+TextBox::TextBox(const sf::Font& font)
 {
-	this->SetText("Text");
-}
-
-TextBox::TextBox(void)
-{
+	this->SetFont(font);
 	this->SetText("Text");
 }
 
@@ -47,9 +74,37 @@ void TextBox::SetText(const char* str)
 	this->text.setString(str);
 }
 
+void TextBox::SetFont(const sf::Font& font)
+{
+	this->font = font;
+	this->text.setFont(this->font);
+}
+
+void TextBox::SetFont(const char* path)
+{
+	sf::Font* font = new sf::Font();
+	
+	if (!font->loadFromFile(path))
+		std::cout << "Failed to load font from: " << path << "\n";
+
+	this->font = *font;
+	this->text.setFont(this->font);
+
+	delete font;
+}
+
 void TextBox::SetColor(const sf::Color& color)
 {
 	this->text.setFillColor(color);
+}
+
+void TextBox::SetSize(const unsigned int&& size)
+{
+	this->text.setCharacterSize(size);
+	this->UpdateGlobalBounds();
+
+	std::cout << "WARNING: Always call SetSize before SetOrigin to avoid "
+		<< "setting the wrong origin.\n";
 }
 
 //Getters
@@ -67,10 +122,10 @@ const sf::Vector2f& TextBox::GetOrigin(void) const
 
 void TextBox::UpdateGlobalBounds(void)
 {
-	this->globalBounds = this->text.getLocalBounds();
+	this->globalBounds = this->text.getGlobalBounds();
 }
 
 void TextBox::Draw(void)
 {
-	this->manager->window->draw(text);
+	this->manager->window->draw(this->text);
 }
