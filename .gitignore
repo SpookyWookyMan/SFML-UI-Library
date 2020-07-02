@@ -1,0 +1,10 @@
+.vs/
+Debug/
+Release/
+SFML-2.5.1/
+x64/
+*.dll
+*.vcxproj
+*.filters
+*.user
+*.sln
