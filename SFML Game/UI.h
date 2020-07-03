@@ -7,15 +7,7 @@
 #include <SFML/Graphics.hpp>
 
 //TODO:
-//	BUTTON:
-//		-Button text. (MAJOR)
-//		-Not change texture when you move the mouse.
-//		 while holding down the button. (MINOR)
-//		-Fix SetTextOrigin function offset to work with 
-//		 top and bot.(MINOR)
-//	WIDGET:
-//		-Fix SetOrigin function offset to work with 
-//		 top and bot.(MINOR)
+
 
 namespace GUI
 {
@@ -36,7 +28,6 @@ namespace GUI
 		void SetWindow(sf::RenderWindow* w);
 		void SetEvent(sf::Event* e);
 
-		//void Init ( void );
 		void Update(void);
 		void Events(void);
 		void Draw(void);
@@ -108,6 +99,7 @@ namespace GUI
 		bool hidden = false;
 
 		virtual sf::Vector2f SwitchPivot(const Pivot& pivot, sf::Vector2f* v);
+		virtual sf::Vector2f SwitchPivotOffset(const Pivot& pivot, sf::Vector2f* v, const sf::Vector2f& offset);
 
 	};
 
@@ -244,5 +236,29 @@ namespace GUI
 
 		sf::Clock clock;
 		sf::Time timer;
+
+	};
+
+	class Image : Widget
+	{
+	public:
+
+		sf::Sprite sprite;
+		sf::Texture texture;
+
+		Image(const char* path);
+		Image(const sf::Texture& texture);
+		virtual ~Image(void);
+
+		void SetPosition(const sf::Vector2f& pos) override;
+		void SetOrigin(const Pivot& pivot) override;
+		void SetOrigin(const Pivot& pivot, sf::Vector2f* offset) override;
+
+		sf::Vector2f* GetSize(void) override;
+		const sf::Vector2f& GetOrigin(void) const override;
+
+		void UpdateGlobalBounds(void) override;
+		void Draw(void) override;
+
 	};
 }

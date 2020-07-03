@@ -151,3 +151,30 @@ sf::Vector2f Widget::SwitchPivot(const Pivot& pivot, sf::Vector2f* v)
 
 	delete vec;
 }
+
+sf::Vector2f Widget::SwitchPivotOffset(const Pivot& pivot, sf::Vector2f* v, const sf::Vector2f& offset)
+{
+	std::unique_ptr<sf::Vector2f> dim(v);
+	sf::Vector2f* vec = nullptr;
+
+	switch (pivot)
+	{
+	case Widget::Pivot::TOP_LEFT: vec = new sf::Vector2f(0.0f + offset.x, 0.0f + offset.y); break;
+	case Widget::Pivot::TOP_CENTER: vec = new sf::Vector2f((dim->x / 2) + offset.x, 0.0f + offset.y); break;
+	case Widget::Pivot::TOP_RIGHT: vec = new sf::Vector2f(dim->x + offset.x, 0.0f + offset.x); break;
+
+	case Widget::Pivot::MID_LEFT: vec = new sf::Vector2f(0.0f + offset.x, (dim->y / 2) + offset.y); break;
+	case Widget::Pivot::MID_CENTER: vec = new sf::Vector2f((dim->x / 2) + offset.x, (dim->y / 2) + offset.y); break;
+	case Widget::Pivot::MID_RIGHT: vec = new sf::Vector2f(dim->x + offset.x, (dim->y / 2) + offset.y); break;
+
+	case Widget::Pivot::BOT_LEFT: vec = new sf::Vector2f(0.0f + offset.x, dim->y + offset.y); break;
+	case Widget::Pivot::BOT_CENTER: vec = new sf::Vector2f((dim->x / 2) + offset.x, dim->y + offset.y); break;
+	case Widget::Pivot::BOT_RIGHT: vec = new sf::Vector2f(dim->x + offset.x, dim->y + offset.y); break;
+
+	default: vec = new sf::Vector2f(0.0f + offset.x, 0.0f + offset.y); break;
+	}
+
+	return *vec;
+
+	delete vec;
+}

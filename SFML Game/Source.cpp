@@ -7,13 +7,12 @@ GUI::UIManager manager;
 int main() 
 {
 	sf::RenderWindow window(sf::VideoMode(1000, 1000), "UI");
+	sf::Event e;
 
 	manager.SetWindow(&window);
-	
+	manager.SetEvent(&e);
+
 	GUI::Bar bar;
-	bar.bBarDelay = 1000;
-	bar.bBarDecraseInterval = 10;
-	bar.bBarDecreaseAmount = 1.0f;
 	bar.SetPosition({100, 500});
 	bar.SetManager(&manager);
 
@@ -45,9 +44,6 @@ int main()
 
 	while (window.isOpen()) 
 	{
-		sf::Event e;
-		manager.SetEvent(&e);
-
 		while (window.pollEvent(e)) 
 		{
 			manager.Events();
@@ -58,10 +54,7 @@ int main()
 			{
 				if (e.key.code == sf::Keyboard::Space) 
 				{
-					std::cout << bar.valueBar.getSize().x << "\n";
-					//std::cout << bar.backgroundBar.getSize().x << "\n";
 					bar.ChangeValueBy(-25.0f);
-					//std::cout << bar.currentValue << "\n";
 				}
 			}
 		}

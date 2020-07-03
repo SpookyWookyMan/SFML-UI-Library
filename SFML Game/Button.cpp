@@ -44,8 +44,7 @@ void Button::SetOrigin(const Pivot& pivot)
 
 void Button::SetOrigin(const Pivot& pivot, sf::Vector2f* offset) 
 {
-	this->sprite.setOrigin(SwitchPivot(pivot, new sf::Vector2f(this->GetSize()->x + offset->x, 
-		this->GetSize()->y + offset->y)));
+	this->sprite.setOrigin(SwitchPivotOffset(pivot, this->GetSize(), *offset));
 }
 
 void Button::SetTexture(const sf::Texture& texture)
@@ -92,8 +91,8 @@ void Button::SetTextOrigin(const Pivot& pivot)
 
 void Button::SetTextOrigin(const Pivot& pivot, sf::Vector2f* offset)
 {
-	this->text.setOrigin(SwitchPivot(pivot, new sf::Vector2f(this->GetSize()->x + offset->x,
-		this->GetSize()->y + offset->y)));
+	this->text.setOrigin(SwitchPivotOffset(pivot, new sf::Vector2f(this->text.getLocalBounds().width,
+		this->text.getLocalBounds().height), *offset));
 }
 
 void Button::SetText(const char* str)

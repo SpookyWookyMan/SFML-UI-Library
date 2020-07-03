@@ -2,8 +2,6 @@
 
 using namespace GUI;
 
-
-
 Bar::Bar(const sf::Vector2f& dim, const float& maxValue, const float& minValue)
 {
 	this->SetSize(dim);
@@ -12,6 +10,10 @@ Bar::Bar(const sf::Vector2f& dim, const float& maxValue, const float& minValue)
 	this->minValue = minValue;
 
 	this->currentValue = this->maxValue;
+
+	this->bBarDelay = 1300;
+	this->bBarDecraseInterval = 7;
+	this->bBarDecreaseAmount = 1.0f;
 
 	this->valueBar.setFillColor(sf::Color::Green);
 	this->backgroundBar.setFillColor(sf::Color::Red);
@@ -26,6 +28,10 @@ Bar::Bar(const sf::Vector2f& dim)
 	this->minValue = minValue;
 
 	this->currentValue = this->maxValue;
+
+	this->bBarDelay = 1300;
+	this->bBarDecraseInterval = 7;
+	this->bBarDecreaseAmount = 1.0f;
 
 	this->valueBar.setFillColor(sf::Color::Green);
 	this->backgroundBar.setFillColor(sf::Color::Red);
@@ -42,6 +48,10 @@ Bar::Bar(void)
 	this->minValue = 0.0f;
 
 	this->currentValue = this->maxValue;
+
+	this->bBarDelay = 1300;
+	this->bBarDecraseInterval = 7;
+	this->bBarDecreaseAmount = 1.0f;
 
 	this->valueBar.setFillColor(sf::Color::Green);
 	this->backgroundBar.setFillColor(sf::Color::Red);
@@ -67,12 +77,9 @@ void Bar::SetOrigin(const Pivot& pivot)
 
 void Bar::SetOrigin(const Pivot& pivot, sf::Vector2f* offset) 
 {
-	this->valueBar.setOrigin(SwitchPivot(pivot, new sf::Vector2f(this->GetSize()->x + offset->x,
-		this->GetSize()->y + offset->y)));
-	this->backgroundBar.setOrigin(SwitchPivot(pivot, new sf::Vector2f(this->GetSize()->x + offset->x,
-		this->GetSize()->y + offset->y)));
-	this->background.setOrigin(SwitchPivot(pivot, new sf::Vector2f(this->GetSize()->x + offset->x,
-		this->GetSize()->y + offset->y)));
+	this->valueBar.setOrigin(SwitchPivotOffset(pivot, this->GetSize(), *offset));
+	this->backgroundBar.setOrigin(SwitchPivotOffset(pivot, this->GetSize(), *offset));
+	this->background.setOrigin(SwitchPivotOffset(pivot, this->GetSize(), *offset));
 }
 
 void Bar::SetSize(const sf::Vector2f& dim)
@@ -124,7 +131,6 @@ void Bar::Update(void)
 			{
 				this->decreaseVal = true;
 				this->clock.restart();
-				printf("got here\n");
 			}
 			if (decreaseVal && timer.asMilliseconds() >= bBarDecraseInterval)
 			{

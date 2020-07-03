@@ -65,8 +65,7 @@ void TextBox::SetOrigin(const Pivot& pivot)
 
 void TextBox::SetOrigin(const Pivot& pivot, sf::Vector2f* offset)
 {
-	this->text.setOrigin(SwitchPivot(pivot, new sf::Vector2f(this->GetSize()->x + offset->x,
-		this->GetSize()->y + offset->y)));
+	this->text.setOrigin(SwitchPivotOffset(pivot, this->GetSize(), *offset));
 }
 
 void TextBox::SetText(const char* str)
