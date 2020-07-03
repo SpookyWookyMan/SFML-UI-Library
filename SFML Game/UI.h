@@ -16,8 +16,6 @@
 //	WIDGET:
 //		-Fix SetOrigin function offset to work with 
 //		 top and bot.(MINOR)
-//	BAR:
-//		-Fix change value by. (MAJOR)
 
 namespace GUI
 {
@@ -208,6 +206,12 @@ namespace GUI
 		float minValue;
 		float currentValue;
 
+		int bBarDelay;
+		int bBarDecraseInterval;
+		float bBarDecreaseAmount;
+
+		bool showBackBar = true;
+
 		sf::RectangleShape valueBar;
 		sf::RectangleShape backgroundBar;
 		sf::RectangleShape background;
@@ -229,14 +233,16 @@ namespace GUI
 		void ChangeValueBy(const float&& val);
 		void UpdateGlobalBounds(void) override;
 	
-		void Update(void) override; //---> make smooth bar
+		void Update(void) override;
 		void Draw(void) override;
 
 	private:
 
+		bool decreaseVal = false;
+
 		void UpdateBarPos(void);
 
-		sf::Vector2f rectSize;
-
+		sf::Clock clock;
+		sf::Time timer;
 	};
 }

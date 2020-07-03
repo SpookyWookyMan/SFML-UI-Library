@@ -10,7 +10,12 @@ int main()
 
 	manager.SetWindow(&window);
 	
-	GUI::Bar b;
+	GUI::Bar bar;
+	bar.bBarDelay = 1000;
+	bar.bBarDecraseInterval = 10;
+	bar.bBarDecreaseAmount = 1.0f;
+	bar.SetPosition({100, 500});
+	bar.SetManager(&manager);
 
 	//GUI::TextBox textBox("Res/Fonts/VCR_OSD.ttf");
 	//textBox.SetSize(150);
@@ -49,7 +54,19 @@ int main()
 
 			if (e.type == sf::Event::Closed)
 				window.close();
+			if (e.type == sf::Event::KeyReleased) 
+			{
+				if (e.key.code == sf::Keyboard::Space) 
+				{
+					std::cout << bar.valueBar.getSize().x << "\n";
+					//std::cout << bar.backgroundBar.getSize().x << "\n";
+					bar.ChangeValueBy(-25.0f);
+					//std::cout << bar.currentValue << "\n";
+				}
+			}
 		}
+
+		manager.Update();
 
 		window.clear();
 
