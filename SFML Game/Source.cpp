@@ -10,12 +10,15 @@ int main()
 
 	manager.SetWindow(&window);
 	
-	GUI::TextBox textBox("Res/Fonts/VCR_OSD.ttf");
-	textBox.SetSize(150);
-	textBox.SetOrigin(GUI::Widget::Pivot::MID_CENTER);
-	textBox.SetPosition({500, 500});
+	GUI::Bar b;
 
-	textBox.SetManager(&manager);
+	//GUI::TextBox textBox("Res/Fonts/VCR_OSD.ttf");
+	//textBox.SetSize(150);
+	//textBox.SetOrigin(GUI::Widget::Pivot::MID_CENTER);
+	//textBox.SetPosition({500, 500});
+	//
+	//textBox.SetManager(&manager);
+	
 	//GUI::Button button;
 	//
 	//button.LoadTextures("Res/Textures/normal.png", "Res/Textures/highlight.png", "Res/Textures/clicked.png");

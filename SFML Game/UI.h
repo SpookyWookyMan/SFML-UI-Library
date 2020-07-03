@@ -16,6 +16,8 @@
 //	WIDGET:
 //		-Fix SetOrigin function offset to work with 
 //		 top and bot.(MINOR)
+//	BAR:
+//		-Fix change value by. (MAJOR)
 
 namespace GUI
 {
@@ -198,21 +200,43 @@ namespace GUI
 
 	};
 
-	//class Bar : public Widget 
-	//{
-	//public:
-	//
-	//
-	//
-	//	void SetPosition(const sf::Vector2f& pos) override;
-	//	void SetOrigin(const Pivot& pivot) override;
-	//
-	//	sf::Vector2f* GetSize(void) override;
-	//	const sf::Vector2f& GetOrigin(void) const override;
-	//
-	//	void UpdateGlobalBounds(void) override;
-	//
-	//	void Draw(void) override;
-	//
-	//};
+	class Bar : public Widget 
+	{
+	public:
+		
+		float maxValue;
+		float minValue;
+		float currentValue;
+
+		sf::RectangleShape valueBar;
+		sf::RectangleShape backgroundBar;
+		sf::RectangleShape background;
+
+		Bar(const sf::Vector2f& dim, const float& maxValue, const float& minValue);
+		Bar(const sf::Vector2f& dim);
+		Bar(void);
+		virtual ~Bar(void);
+
+		void SetPosition(const sf::Vector2f& pos) override;
+		void SetOrigin(const Pivot& pivot) override;
+		void SetOrigin(const Pivot& pivot, sf::Vector2f* offset) override;
+		
+		void SetSize(const sf::Vector2f& dim);
+
+		sf::Vector2f* GetSize(void) override;
+		const sf::Vector2f& GetOrigin(void) const override;
+		
+		void ChangeValueBy(const float&& val);
+		void UpdateGlobalBounds(void) override;
+	
+		void Update(void) override; //---> make smooth bar
+		void Draw(void) override;
+
+	private:
+
+		void UpdateBarPos(void);
+
+		sf::Vector2f rectSize;
+
+	};
 }
