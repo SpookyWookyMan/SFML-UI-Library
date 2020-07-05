@@ -90,6 +90,7 @@ namespace GUI
 		virtual void MouseRelease(void);
 		virtual void MouseRelease(const sf::Mouse::Button& mb);
 
+		virtual void Events(void);
 		virtual void Update(void);
 		virtual void Draw(void) = 0;
 
@@ -268,13 +269,15 @@ namespace GUI
 	{
 	public:
 
-		InputTextField(const char* label);
-		InputTextField(void);
+		InputTextField(const char* label, const char* path);
+		InputTextField(const char* label, const sf::Font& font);
 		virtual ~InputTextField(void);
 
 		void SetPosition(const sf::Vector2f& pos) override;
 		void SetOrigin(const Pivot& pivot) override;
 		void SetOrigin(const Pivot& pivot, sf::Vector2f* offset) override;
+		void SetFont(const sf::Font& font);
+		void SetFont(const char* path);
 
 		sf::Vector2f* GetSize(void) override;
 		const sf::Vector2f& GetOrigin(void) const override;
@@ -283,6 +286,7 @@ namespace GUI
 		void MouseClick(const sf::Mouse::Button& mb) override;
 
 		void UpdateGlobalBounds(void) override;
+		void Events(void) override;
 		void Update(void) override;
 		void Draw(void) override;
 
@@ -291,10 +295,12 @@ namespace GUI
 		sf::Text text;
 		sf::Text label;
 
+		sf::Font font;
+
 		sf::RectangleShape box;
 
-		bool typing = false;
-		bool hasText = false;
+		bool typing;
+		bool hasText;
 
 		std::string textString;
 

@@ -12,7 +12,7 @@ int main()
 	manager.SetWindow(&window);
 	manager.SetEvent(&e);
 
-	GUI::InputTextField itf;
+	GUI::InputTextField itf("Text", "Res/Fonts/VCR_OSD.ttf");
 	itf.SetManager(&manager);
 
 	//GUI::Bar bar;

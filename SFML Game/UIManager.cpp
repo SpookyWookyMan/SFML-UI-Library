@@ -38,10 +38,7 @@ void UIManager::Events(void)
 {
 	for (Widget*& w : widgets)
 	{
-		w->MouseEnter();
-		w->MouseExit();
-		w->MouseClick();
-		w->MouseRelease();
+		w->Events();
 	}
 }
 

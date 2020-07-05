@@ -120,6 +120,14 @@ void Widget::MouseRelease(void)
 	}
 }
 
+void Widget::Events(void) 
+{
+	this->MouseEnter();
+	this->MouseExit();
+	this->MouseClick();
+	this->MouseRelease();
+}
+
 void Widget::Update(void)
 {
 	UpdateFunc();

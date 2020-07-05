@@ -2,18 +2,31 @@
 
 using namespace GUI;
 
-
-
-InputTextField::InputTextField(const char* str)
+InputTextField::InputTextField(const char* str, const char* path) : typing(false), hasText(false)
 {
+	if (!this->font.loadFromFile(path))
+		std::cout << "FAILURE: Couldn't load font from file\n";
+
+	this->SetFont(font);
+	this->label.setFillColor(sf::Color(140, 140, 140, 255));
+	this->text.setFillColor(sf::Color(0, 0, 0, 255));
 	this->label.setString(str);
 	this->box.setFillColor(sf::Color::White);
+	this->box.setSize({200.0f, 50.0f});
+	this->SetPosition({0.0f, 0.0f});
+	this->UpdateGlobalBounds();
 }
 
-InputTextField::InputTextField(void)
+InputTextField::InputTextField(const char* str, const sf::Font& font) : typing(false), hasText(false)
 {
-	this->label.setString("Text");
+	this->SetFont(font);
+	this->text.setFillColor(sf::Color(140, 140, 140, 255));
+	this->label.setFillColor(sf::Color(0, 0, 0, 255));
+	this->label.setString(str);
 	this->box.setFillColor(sf::Color::White);
+	this->box.setSize({ 200.0f, 50.0f });
+	this->SetPosition({ 0.0f, 0.0f });
+	this->UpdateGlobalBounds();
 }
 
 InputTextField::~InputTextField(void)
@@ -24,6 +37,8 @@ InputTextField::~InputTextField(void)
 void InputTextField::SetPosition(const sf::Vector2f& pos)
 {
 	this->position = pos;
+	this->box.setPosition(this->position);
+	this->label.setPosition(this->position);
 	this->text.setPosition(this->position);
 	this->UpdateGlobalBounds();
 }
@@ -36,6 +51,21 @@ void InputTextField::SetOrigin(const Pivot& pivot)
 void InputTextField::SetOrigin(const Pivot& pivot, sf::Vector2f* offset)
 {
 	this->text.setOrigin(SwitchPivotOffset(pivot, this->GetSize(), *offset));
+}
+
+void InputTextField::SetFont(const sf::Font& font)
+{
+	this->text.setFont(font);
+	this->label.setFont(font);
+}
+
+void InputTextField::SetFont(const char* path)
+{
+	if(!font.loadFromFile(path))
+		std::cout << "FAILURE: Couldn't load font from file\n";
+
+	this->text.setFont(this->font);
+	this->label.setFont(this->font);
 }
 
 sf::Vector2f* InputTextField::GetSize(void)
@@ -51,14 +81,34 @@ const sf::Vector2f& InputTextField::GetOrigin(void) const
 
 void InputTextField::MouseClick(void)
 {
-	this->typing = true;
-	this->ClickFunc();
+	if (IsMouseOver())
+	{
+		if (this->manager->event->type == sf::Event::MouseButtonPressed)
+		{
+			if (this->manager->event->mouseButton.button == sf::Mouse::Button::Left)
+			{
+				this->mouseHeld = true;
+				this->typing = true;
+				this->ClickFunc();
+			}
+		}
+	}
 }
 
 void InputTextField::MouseClick(const sf::Mouse::Button& mb)
 {
-	this->typing = true;
-	this->ClickFunc();
+	if (IsMouseOver())
+	{
+		if (this->manager->event->type == sf::Event::MouseButtonPressed)
+		{
+			if (this->manager->event->mouseButton.button == mb)
+			{
+				this->mouseHeld = true;
+				this->typing = true;
+				this->ClickFunc();
+			}
+		}
+	}
 }
 
 void InputTextField::UpdateGlobalBounds(void)
@@ -66,24 +116,24 @@ void InputTextField::UpdateGlobalBounds(void)
 	this->globalBounds = this->box.getGlobalBounds();
 }
 
-void InputTextField::Update(void)
+void InputTextField::Events(void) 
 {
-	if (this->textString.length() > 0) 
+	if (this->textString.length() > 0)
 	{
 		this->hasText = true;
 	}
-	else 
+	else
 	{
 		this->hasText = false;
 	}
 
-	if(this->typing)
+	if (this->typing)
 	{
-		if (this->manager->event->type == sf::Event::TextEntered) 
+		if (this->manager->event->type == sf::Event::TextEntered)
 		{
 			char keyCode = this->manager->event->text.unicode;
 
-			if (keyCode != 8) 
+			if (keyCode != 8)
 			{
 				this->textString.push_back(keyCode);
 			}
@@ -104,13 +154,21 @@ void InputTextField::Update(void)
 			&& this->manager->event->type == sf::Event::MouseButtonReleased)
 		{
 			if (this->manager->event->mouseButton.button == sf::Mouse::Left
-				|| this->manager->event->mouseButton.button == sf::Mouse::Right) 
+				|| this->manager->event->mouseButton.button == sf::Mouse::Right)
 			{
 				this->typing = !this->typing;
 			}
 		}
 	}
 
+	this->MouseEnter();
+	this->MouseExit();
+	this->MouseClick();
+	this->MouseRelease();
+}
+
+void InputTextField::Update(void)
+{
 	this->UpdateFunc();
 }
 
