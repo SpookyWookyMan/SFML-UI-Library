@@ -49,7 +49,8 @@ void UIManager::Draw(void)
 {
 	for (Widget*& w : widgets)
 	{
-		w->Draw();
+		if(!w->IsHidden())
+			w->Draw();
 	}
 }
 

@@ -126,5 +126,5 @@ void TextBox::UpdateGlobalBounds(void)
 
 void TextBox::Draw(void)
 {
-	this->manager->window->draw(this->text);
+		this->manager->window->draw(this->text);
 }

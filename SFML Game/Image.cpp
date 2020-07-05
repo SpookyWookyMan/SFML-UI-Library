@@ -54,9 +54,6 @@ void Image::UpdateGlobalBounds(void)
 
 void Image::Draw(void)
 {
-	if(!hidden)
-	{
-		this->manager->window->draw(this->sprite);
-	}
+	this->manager->window->draw(this->sprite);
 }
 

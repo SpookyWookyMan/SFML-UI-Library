@@ -159,13 +159,10 @@ void Button::HideText(const bool& b)
 
 void Button::Draw(void)
 {
-	if (!this->hidden)
+	this->manager->window->draw(this->sprite);
+	if (!this->hideText) 
 	{
-		this->manager->window->draw(this->sprite);
-		if (!this->hideText) 
-		{
-			this->manager->window->draw(this->text);
-		}
+		this->manager->window->draw(this->text);
 	}
 }
 

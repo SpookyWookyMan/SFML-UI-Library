@@ -116,7 +116,7 @@ void Bar::ChangeValueBy(const float&& val)
 
 void Bar::UpdateGlobalBounds(void)
 {
-	this->globalBounds = this->valueBar.getGlobalBounds();
+	this->globalBounds = this->background.getGlobalBounds();
 }
 
 void Bar::Update(void)
@@ -151,12 +151,9 @@ void Bar::Update(void)
 
 void Bar::Draw(void)
 {
-	if (!hidden) 
-	{
-		this->manager->window->draw(this->background);
-		if(showBackBar) this->manager->window->draw(this->backgroundBar);
-		this->manager->window->draw(this->valueBar);
-	}
+	this->manager->window->draw(this->background);
+	if(showBackBar) this->manager->window->draw(this->backgroundBar);
+	this->manager->window->draw(this->valueBar);
 }
 
 void Bar::UpdateBarPos(void)

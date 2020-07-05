@@ -7,7 +7,9 @@
 #include <SFML/Graphics.hpp>
 
 //TODO:
-
+//	INPUT FIELD:
+//		-Fix text typing. (MAJOR)
+//		-Draw the box itself. (MAJOR)
 
 namespace GUI
 {
@@ -239,7 +241,7 @@ namespace GUI
 
 	};
 
-	class Image : Widget
+	class Image : public Widget
 	{
 	public:
 
@@ -259,6 +261,42 @@ namespace GUI
 
 		void UpdateGlobalBounds(void) override;
 		void Draw(void) override;
+
+	};
+
+	class InputTextField : public Widget
+	{
+	public:
+
+		InputTextField(const char* label);
+		InputTextField(void);
+		virtual ~InputTextField(void);
+
+		void SetPosition(const sf::Vector2f& pos) override;
+		void SetOrigin(const Pivot& pivot) override;
+		void SetOrigin(const Pivot& pivot, sf::Vector2f* offset) override;
+
+		sf::Vector2f* GetSize(void) override;
+		const sf::Vector2f& GetOrigin(void) const override;
+
+		void MouseClick(void) override;
+		void MouseClick(const sf::Mouse::Button& mb) override;
+
+		void UpdateGlobalBounds(void) override;
+		void Update(void) override;
+		void Draw(void) override;
+
+	private:
+
+		sf::Text text;
+		sf::Text label;
+
+		sf::RectangleShape box;
+
+		bool typing = false;
+		bool hasText = false;
+
+		std::string textString;
 
 	};
 }

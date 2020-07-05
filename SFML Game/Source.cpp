@@ -12,9 +12,12 @@ int main()
 	manager.SetWindow(&window);
 	manager.SetEvent(&e);
 
-	GUI::Bar bar;
-	bar.SetPosition({100, 500});
-	bar.SetManager(&manager);
+	GUI::InputTextField itf;
+	itf.SetManager(&manager);
+
+	//GUI::Bar bar;
+	//bar.SetPosition({100, 500});
+	//bar.SetManager(&manager);
 
 	//GUI::TextBox textBox("Res/Fonts/VCR_OSD.ttf");
 	//textBox.SetSize(150);
@@ -54,7 +57,7 @@ int main()
 			{
 				if (e.key.code == sf::Keyboard::Space) 
 				{
-					bar.ChangeValueBy(-25.0f);
+					//bar.ChangeValueBy(-25.0f);
 				}
 			}
 		}
