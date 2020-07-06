@@ -70,16 +70,12 @@ void Bar::SetPosition(const sf::Vector2f& pos)
 
 void Bar::SetOrigin(const Pivot& pivot) 
 {
-	this->valueBar.setOrigin(SwitchPivot(pivot, new sf::Vector2f(this->GetSize()->x, this->GetSize()->y)));
-	this->backgroundBar.setOrigin(SwitchPivot(pivot, new sf::Vector2f(this->GetSize()->x, this->GetSize()->y)));
-	this->background.setOrigin(SwitchPivot(pivot, new sf::Vector2f(this->GetSize()->x, this->GetSize()->y)));
+	
 }
 
 void Bar::SetOrigin(const Pivot& pivot, sf::Vector2f* offset) 
 {
-	this->valueBar.setOrigin(SwitchPivotOffset(pivot, this->GetSize(), *offset));
-	this->backgroundBar.setOrigin(SwitchPivotOffset(pivot, this->GetSize(), *offset));
-	this->background.setOrigin(SwitchPivotOffset(pivot, this->GetSize(), *offset));
+	//Make this not a pure virtual function
 }
 
 void Bar::SetSize(const sf::Vector2f& dim)

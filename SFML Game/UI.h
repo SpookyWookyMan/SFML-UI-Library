@@ -7,9 +7,13 @@
 #include <SFML/Graphics.hpp>
 
 //TODO:
+//	CLEANLINESS:
+//		-Use 'std::make_unique' instead of 'new' when creating
+//		smart pointers. (MINOR)
 //	INPUT FIELD:
-//		-Fix text typing. (MAJOR)
-//		-Draw the box itself. (MAJOR)
+//		-Implement character limit. (MAJOR)
+//	BAR & SLIDER:
+//		-SetOrigin method might not be necessary. (MINOR)
 
 namespace GUI
 {
@@ -59,8 +63,6 @@ namespace GUI
 
 		sf::Vector2f position;
 
-		bool mouseHeld = false;
-
 		std::function<void(void)> MouseEnterFunc = []{};
 		std::function<void(void)> MouseExitFunc = []{};
 		std::function<void(void)> ClickFunc = []{};
@@ -100,6 +102,7 @@ namespace GUI
 
 		bool active = true;
 		bool hidden = false;
+		bool mouseHeld = false;
 
 		virtual sf::Vector2f SwitchPivot(const Pivot& pivot, sf::Vector2f* v);
 		virtual sf::Vector2f SwitchPivotOffset(const Pivot& pivot, sf::Vector2f* v, const sf::Vector2f& offset);
@@ -281,6 +284,7 @@ namespace GUI
 
 		sf::Vector2f* GetSize(void) override;
 		const sf::Vector2f& GetOrigin(void) const override;
+		const std::string& GetString(void) const;
 
 		void MouseClick(void) override;
 		void MouseClick(const sf::Mouse::Button& mb) override;
@@ -304,5 +308,140 @@ namespace GUI
 
 		std::string textString;
 
+		sf::Vector2f* GetTextSize(const sf::Text& text) const;
+
 	};
+
+	class CheckBox : public Widget 
+	{
+	public:
+
+		CheckBox(const float&& size);
+		CheckBox(void);
+		virtual ~CheckBox(void);
+
+		void SetSize(const sf::Vector2f& size);
+		void SetPosition(const sf::Vector2f& pos) override;
+		void SetOrigin(const Pivot& pivot) override;
+		void SetOrigin(const Pivot& pivot, sf::Vector2f* offset) override;
+		void SetCheckmarkColor(const sf::Color& color);
+		void SetBackgroundColor(const sf::Color& color);
+		void SetOutlineColor(const sf::Color& color);
+		void SetOutlineThickness(const float& thickness);
+
+		sf::Vector2f* GetSize(void) override;
+		const sf::Vector2f& GetOrigin(void) const override;
+
+		virtual void MouseRelease(void) override;
+		virtual void MouseRelease(const sf::Mouse::Button& mb) override;
+
+		const bool& IsChecked(void) const;
+		void UpdateGlobalBounds(void) override;
+		void Update(void) override; 
+		void Draw(void) override;
+
+	private:
+
+		sf::RectangleShape checkMark;
+		sf::RectangleShape background;
+		
+		bool checked;
+
+		float outlineThickness;
+
+	};
+
+	class Slider : public Widget 
+	{
+	public:
+
+		float maxValue;
+		float minValue;
+		float currentValue;
+
+		Slider(const float& maxValue, const float& minValue);
+		Slider(void);
+		virtual ~Slider(void);
+
+		void SetPosition(const sf::Vector2f& pos) override;
+		void SetSize(const sf::Vector2f& size);
+		void SetHandleSize(const sf::Vector2f& size);
+		void SetBackgroundColor(const sf::Color& color);
+		void SetFillColor(const sf::Color& color);
+		void SetHandleColor(const sf::Color& color);
+
+		virtual sf::Vector2f* GetSize(void) override;
+		virtual const sf::Vector2f& GetOrigin(void) const override;
+		
+		const float& GetCurrentValue(void);
+
+		void MouseClick(void) override;
+		void MouseClick(const sf::Mouse::Button& mb) override;
+		void Update(void) override;
+
+		virtual void UpdateGlobalBounds(void) override;
+		virtual void Draw(void) override;
+
+	private:
+
+		sf::RectangleShape background;
+		sf::RectangleShape fill;
+		sf::RectangleShape handle;
+
+		virtual void SetOrigin(const Pivot& pivot) override;
+		virtual void SetOrigin(const Pivot& pivot, sf::Vector2f* offset) override;
+
+		const float& NewValue(void) const;
+		const float& NewWidth(void) const;
+
+	};
+
+	class MessageBox : public Widget
+	{
+	public:
+
+		virtual void SetPosition(const sf::Vector2f& pos) override;
+		virtual void SetOrigin(const Pivot& pivot) override;;
+		virtual void SetOrigin(const Pivot& pivot, sf::Vector2f* offset) override;
+
+		virtual sf::Vector2f* GetSize(void) override;
+		virtual const sf::Vector2f& GetOrigin(void) const override;
+
+		virtual void UpdateGlobalBounds(void) override;
+
+		virtual void Draw(void) override;
+	};
+
+	class DropDownList : public Widget 
+	{
+	public:
+
+		virtual void SetPosition(const sf::Vector2f& pos) override;
+		virtual void SetOrigin(const Pivot& pivot) override;;
+		virtual void SetOrigin(const Pivot& pivot, sf::Vector2f* offset) override;
+
+		virtual sf::Vector2f* GetSize(void) override;
+		virtual const sf::Vector2f& GetOrigin(void) const override;
+
+		virtual void UpdateGlobalBounds(void) override;
+
+		virtual void Draw(void) override;
+	};
+
+	class Panel : public Widget 
+	{
+	public:
+
+		virtual void SetPosition(const sf::Vector2f& pos) override;
+		virtual void SetOrigin(const Pivot& pivot) override;;
+		virtual void SetOrigin(const Pivot& pivot, sf::Vector2f* offset) override;
+
+		virtual sf::Vector2f* GetSize(void) override;
+		virtual const sf::Vector2f& GetOrigin(void) const override;
+
+		virtual void UpdateGlobalBounds(void) override;
+
+		virtual void Draw(void) override;
+	};
+
 }

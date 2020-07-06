@@ -12,8 +12,16 @@ int main()
 	manager.SetWindow(&window);
 	manager.SetEvent(&e);
 
-	GUI::InputTextField itf("Text", "Res/Fonts/VCR_OSD.ttf");
-	itf.SetManager(&manager);
+
+
+	//GUI::CheckBox cb(50.0f);
+	//cb.SetOutlineThickness(2.0f);
+	//cb.SetPosition({500.0f, 500.0f});
+	//cb.SetManager(&manager);
+
+	//GUI::InputTextField itf("Text", "Res/Fonts/VCR_OSD.ttf");
+	//itf.SetPosition({500.0f, 500.0f});
+	//itf.SetManager(&manager);
 
 	//GUI::Bar bar;
 	//bar.SetPosition({100, 500});

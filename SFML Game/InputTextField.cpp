@@ -45,12 +45,16 @@ void InputTextField::SetPosition(const sf::Vector2f& pos)
 
 void InputTextField::SetOrigin(const Pivot& pivot)
 {
-	this->text.setOrigin(SwitchPivot(pivot, this->GetSize()));
+	this->text.setOrigin(SwitchPivot(pivot, this->GetTextSize(this->text)));
+	this->label.setOrigin(SwitchPivot(pivot, this->GetTextSize(this->label)));
+	this->box.setOrigin(SwitchPivot(pivot, this->GetSize()));
 }
 
 void InputTextField::SetOrigin(const Pivot& pivot, sf::Vector2f* offset)
 {
-	this->text.setOrigin(SwitchPivotOffset(pivot, this->GetSize(), *offset));
+	this->text.setOrigin(SwitchPivotOffset(pivot, this->GetTextSize(this->text), *offset));
+	this->label.setOrigin(SwitchPivotOffset(pivot, this->GetTextSize(this->label), *offset));
+	this->box.setOrigin(SwitchPivotOffset(pivot, this->GetSize(), *offset));
 }
 
 void InputTextField::SetFont(const sf::Font& font)
@@ -77,6 +81,11 @@ sf::Vector2f* InputTextField::GetSize(void)
 const sf::Vector2f& InputTextField::GetOrigin(void) const
 {
 	return this->text.getOrigin();
+}
+
+const std::string& InputTextField::GetString(void) const
+{
+	return this->textString;
 }
 
 void InputTextField::MouseClick(void)
@@ -133,7 +142,7 @@ void InputTextField::Events(void)
 		{
 			char keyCode = this->manager->event->text.unicode;
 
-			if (keyCode != 8)
+			if (keyCode != 8) // 8 -> Backspace
 			{
 				this->textString.push_back(keyCode);
 			}
@@ -144,8 +153,6 @@ void InputTextField::Events(void)
 					this->textString.pop_back();
 				}
 			}
-
-			std::cout << this->textString << "\n";
 
 			this->text.setString(this->textString);
 		}
@@ -180,3 +187,13 @@ void InputTextField::Draw(void)
 	else if(this->typing || this->hasText)
 		this->manager->window->draw(this->text);
 }
+
+sf::Vector2f* InputTextField::GetTextSize(const sf::Text& text) const
+{
+	sf::Vector2f* vec = new sf::Vector2f(text.getLocalBounds().width, text.getLocalBounds().height);
+
+	return vec;
+
+	delete vec;
+}
+

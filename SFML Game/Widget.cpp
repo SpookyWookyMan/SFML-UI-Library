@@ -13,8 +13,6 @@ void Widget::SetActive(const bool& active)
 	this->active = active;
 }
 
-//Getters
-
 const bool& Widget::IsActive(void) const
 {
 	return active;
@@ -25,7 +23,6 @@ const bool& Widget::IsHidden(void) const
 	return hidden;
 }
 
-//Base Functions
 inline bool Widget::IsMouseOver(void)
 {
 	if (active)
