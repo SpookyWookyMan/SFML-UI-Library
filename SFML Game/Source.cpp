@@ -14,6 +14,9 @@ int main()
 
 
 
+	//GUI::Slider slider;
+	//slider.SetManager(&manager);
+
 	//GUI::CheckBox cb(50.0f);
 	//cb.SetOutlineThickness(2.0f);
 	//cb.SetPosition({500.0f, 500.0f});

@@ -10,6 +10,10 @@
 //	CLEANLINESS:
 //		-Use 'std::make_unique' instead of 'new' when creating
 //		smart pointers. (MINOR)
+//		-Review every single class and remove usless 
+//		methods and chunks of code as well as
+//		"fragmenting" every method to make it easier to read. (MAJOR)
+//		-Rename methods and variables. (MAJOR)
 //	INPUT FIELD:
 //		-Implement character limit. (MAJOR)
 //	BAR & SLIDER:
@@ -392,30 +396,15 @@ namespace GUI
 		virtual void SetOrigin(const Pivot& pivot, sf::Vector2f* offset) override;
 
 		const float& NewValue(void) const;
-		const float& NewWidth(void) const;
-
-	};
-
-	class MessageBox : public Widget
-	{
-	public:
-
-		virtual void SetPosition(const sf::Vector2f& pos) override;
-		virtual void SetOrigin(const Pivot& pivot) override;;
-		virtual void SetOrigin(const Pivot& pivot, sf::Vector2f* offset) override;
-
-		virtual sf::Vector2f* GetSize(void) override;
-		virtual const sf::Vector2f& GetOrigin(void) const override;
-
-		virtual void UpdateGlobalBounds(void) override;
-
-		virtual void Draw(void) override;
+		void UpdateSlider(void);
 	};
 
 	class DropDownList : public Widget 
 	{
 	public:
 
+
+
 		virtual void SetPosition(const sf::Vector2f& pos) override;
 		virtual void SetOrigin(const Pivot& pivot) override;;
 		virtual void SetOrigin(const Pivot& pivot, sf::Vector2f* offset) override;
@@ -426,6 +415,11 @@ namespace GUI
 		virtual void UpdateGlobalBounds(void) override;
 
 		virtual void Draw(void) override;
+
+	private:
+
+		
+
 	};
 
 	class Panel : public Widget 

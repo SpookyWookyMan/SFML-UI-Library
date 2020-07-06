@@ -9,6 +9,14 @@ Slider::Slider(const float& maxValue, const float& minValue)
 	this->SetFillColor(sf::Color::Cyan);
 	this->SetHandleColor(sf::Color::White);
 
+	this->background.setSize({ 700.0f, 10.0f });
+	this->fill.setSize({ 200.0f, 10.0f });
+	this->handle.setSize({ 20.0f, 50.0f });
+
+	this->SetOrigin(Widget::Pivot::MID_CENTER);
+
+	this->SetPosition({ 200.0f, 500.0f });
+
 	this->handle.setOutlineColor(sf::Color(100.0f, 100.0f, 100.0f, 255.0f));
 	this->handle.setOutlineThickness(1.0f);
 
@@ -20,6 +28,14 @@ currentValue(100.0f)
 	this->SetBackgroundColor(sf::Color::White);
 	this->SetFillColor(sf::Color::Cyan);
 	this->SetHandleColor(sf::Color::White);
+
+	this->background.setSize({700.0f, 10.0f});
+	this->fill.setSize({ 200.0f, 10.0f });
+	this->handle.setSize({20.0f, 50.0f});
+
+	this->SetOrigin(Widget::Pivot::MID_CENTER);
+
+	this->SetPosition({200.0f, 500.0f});
 
 	this->handle.setOutlineColor(sf::Color(100.0f, 100.0f, 100.0f, 255.0f));
 	this->handle.setOutlineThickness(1.0f);
@@ -35,18 +51,19 @@ void Slider::SetPosition(const sf::Vector2f& pos)
 
 	this->background.setPosition(this->position);
 	this->fill.setPosition(this->position);
-	//handle position w/ offset
+	this->handle.setPosition({ this->fill.getPosition().x + this->fill.getSize().x,
+			this->position.y + this->GetSize()->y / 2 });
+
+	this->UpdateGlobalBounds();
 }
 
 void Slider::SetOrigin(const Pivot& pivot)
 {
-	//this->background.setOrigin(SwitchPivot(pivot, this->GetSize()));
-	//this->fill.setOrigin(SwitchPivot(pivot, this->GetSize()));
+	this->handle.setOrigin(this->SwitchPivot(pivot, new sf::Vector2f(this->handle.getSize().x, this->handle.getSize().y)));
 }
 
 void Slider::SetOrigin(const Pivot& pivot, sf::Vector2f* offset)
 {
-	//this->valueBar.setOrigin(SwitchPivotOffset(pivot, this->GetSize(), *offset));
 }
 
 void Slider::SetSize(const sf::Vector2f& size)
@@ -58,6 +75,8 @@ void Slider::SetSize(const sf::Vector2f& size)
 void GUI::Slider::SetHandleSize(const sf::Vector2f& size)
 {
 	this->handle.setSize(size);
+
+	this->UpdateGlobalBounds();
 }
 
 void Slider::SetBackgroundColor(const sf::Color& color)
@@ -68,6 +87,11 @@ void Slider::SetBackgroundColor(const sf::Color& color)
 void Slider::SetFillColor(const sf::Color& color)
 {
 	this->fill.setFillColor(color);
+}
+
+void Slider::SetHandleColor(const sf::Color& color) 
+{
+	this->handle.setFillColor(color);
 }
 
 sf::Vector2f* Slider::GetSize(void)
@@ -123,10 +147,7 @@ void Slider::Update(void)
 {
 	if(this->mouseHeld)
 	{
-		this->handle.setPosition({ this->fill.getPosition().x + this->fill.getSize().x,
-			this->position.y + this->GetSize()->y / 2 });
-		this->fill.setSize({NewWidth(), this->fill.getSize().y});
-		this->currentValue = NewValue();
+		this->UpdateSlider();
 	}
 
 	this->UpdateFunc();
@@ -149,19 +170,33 @@ const float& Slider::NewValue(void) const
 	return (this->fill.getSize().x * this->maxValue) / this->background.getSize().x;
 }
 
-const float& Slider::NewWidth(void) const 
+void Slider::UpdateSlider(void) 
 {
-	std::unique_ptr<sf::Vector2f> mousePos = std::make_unique<sf::Vector2f>(sf::Mouse::getPosition(*this->manager->window));
-	std::unique_ptr<float> xdistance = std::make_unique<float>(mousePos.get()->x - this->fill.getPosition().x);
+	float* xmpos = new float((float)sf::Mouse::getPosition(*this->manager->window).x);
+	float* xdistance = new float(*xmpos - this->fill.getPosition().x);
 
-	if (*xdistance > this->background.getSize().x) 
+	if (*xdistance > this->background.getSize().x)
 	{
 		*xdistance = this->background.getSize().x;
 	}
 	else if (*xdistance < 0.0f) 
+	{ 
+		*xdistance = 0.0f; 
+	}
+	
+	if (*xmpos > this->background.getPosition().x + this->GetSize()->x)
+	{													  
+		*xmpos = this->background.getPosition().x + this->GetSize()->x;
+	}
+	else if (*xmpos < this->background.getPosition().x)
 	{
-		*xdistance = 0.0f;
+		*xmpos = this->background.getPosition().x;
 	}
 
-	return *xdistance;
+	this->handle.setPosition({ *xmpos, this->position.y + this->GetSize()->y / 2 });
+	this->UpdateGlobalBounds();
+	this->fill.setSize({ *xdistance, this->fill.getSize().y });
+	this->currentValue = this->NewValue();
+
+	delete xmpos, xdistance;
 }
