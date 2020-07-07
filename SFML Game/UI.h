@@ -403,7 +403,8 @@ namespace GUI
 	{
 	public:
 
-
+		DropDownList(void);
+		virtual ~DropDownList(void);
 
 		virtual void SetPosition(const sf::Vector2f& pos) override;
 		virtual void SetOrigin(const Pivot& pivot) override;;
@@ -412,13 +413,32 @@ namespace GUI
 		virtual sf::Vector2f* GetSize(void) override;
 		virtual const sf::Vector2f& GetOrigin(void) const override;
 
-		virtual void UpdateGlobalBounds(void) override;
+		void AddOption(const char* optionString);
 
+		virtual void UpdateGlobalBounds(void) override;
 		virtual void Draw(void) override;
 
 	private:
 
-		
+		struct Option
+		{
+			std::string textString;
+			sf::Text text;
+			sf::RectangleShape optionRect;
+
+			Option(const char* str) : textString(str) 
+			{
+				this->text.setString(this->textString);
+			}
+		};
+
+		sf::RectangleShape optionDisplay;
+		std::vector<Option*> list;
+		Option* selectedOption;
+
+		bool showOptions = false;
+
+		void UpdateOptionBoxPosition(void);
 
 	};
 
@@ -436,6 +456,11 @@ namespace GUI
 		virtual void UpdateGlobalBounds(void) override;
 
 		virtual void Draw(void) override;
+	};
+
+	class Grid 
+	{
+	
 	};
 
 }
