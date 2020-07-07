@@ -336,8 +336,8 @@ namespace GUI
 		sf::Vector2f* GetSize(void) override;
 		const sf::Vector2f& GetOrigin(void) const override;
 
-		virtual void MouseRelease(void) override;
-		virtual void MouseRelease(const sf::Mouse::Button& mb) override;
+		void MouseRelease(void) override;
+		void MouseRelease(const sf::Mouse::Button& mb) override;
 
 		const bool& IsChecked(void) const;
 		void UpdateGlobalBounds(void) override;
@@ -374,8 +374,8 @@ namespace GUI
 		void SetFillColor(const sf::Color& color);
 		void SetHandleColor(const sf::Color& color);
 
-		virtual sf::Vector2f* GetSize(void) override;
-		virtual const sf::Vector2f& GetOrigin(void) const override;
+		sf::Vector2f* GetSize(void) override;
+		const sf::Vector2f& GetOrigin(void) const override;
 		
 		const float& GetCurrentValue(void);
 
@@ -383,8 +383,8 @@ namespace GUI
 		void MouseClick(const sf::Mouse::Button& mb) override;
 		void Update(void) override;
 
-		virtual void UpdateGlobalBounds(void) override;
-		virtual void Draw(void) override;
+		void UpdateGlobalBounds(void) override;
+		void Draw(void) override;
 
 	private:
 
@@ -392,8 +392,8 @@ namespace GUI
 		sf::RectangleShape fill;
 		sf::RectangleShape handle;
 
-		virtual void SetOrigin(const Pivot& pivot) override;
-		virtual void SetOrigin(const Pivot& pivot, sf::Vector2f* offset) override;
+		void SetOrigin(const Pivot& pivot) override;
+		void SetOrigin(const Pivot& pivot, sf::Vector2f* offset) override;
 
 		const float& NewValue(void) const;
 		void UpdateSlider(void);
@@ -401,22 +401,34 @@ namespace GUI
 
 	class DropDownList : public Widget 
 	{
+	private:
+
+		struct Option;
+
 	public:
 
+		DropDownList(const sf::Vector2f& size);
 		DropDownList(void);
 		virtual ~DropDownList(void);
 
-		virtual void SetPosition(const sf::Vector2f& pos) override;
-		virtual void SetOrigin(const Pivot& pivot) override;;
-		virtual void SetOrigin(const Pivot& pivot, sf::Vector2f* offset) override;
+		void SetPosition(const sf::Vector2f& pos) override;
+		void SetOrigin(const Pivot& pivot) override;;
+		void SetOrigin(const Pivot& pivot, sf::Vector2f* offset) override;
+		
+		void SetSize(const sf::Vector2f& size);
+		void SetFont(const char* path);
+		void SetFont(const sf::Font& font);
 
-		virtual sf::Vector2f* GetSize(void) override;
-		virtual const sf::Vector2f& GetOrigin(void) const override;
+		sf::Vector2f* GetSize(void) override;
+		const sf::Vector2f& GetOrigin(void) const override;
 
 		void AddOption(const char* optionString);
 
-		virtual void UpdateGlobalBounds(void) override;
-		virtual void Draw(void) override;
+		void MouseClick(void) override;
+		void MouseClick(const sf::Mouse::Button& mb) override;
+
+		void UpdateGlobalBounds(void) override;
+		void Draw(void) override;
 
 	private:
 
@@ -433,12 +445,24 @@ namespace GUI
 		};
 
 		sf::RectangleShape optionDisplay;
+
+		sf::Text displayLabel;
+
 		std::vector<Option*> list;
 		Option* selectedOption;
 
+		sf::Vector2f optionDim;
+		
+		sf::Font optionFont;
+
+		sf::Color optionColor;
+		sf::Color optionHighlightColor;
+
 		bool showOptions = false;
+		bool optionSelected = false;
 
 		void UpdateOptionBoxPosition(void);
+		void UpdateDisplay(void);
 
 	};
 
@@ -446,16 +470,16 @@ namespace GUI
 	{
 	public:
 
-		virtual void SetPosition(const sf::Vector2f& pos) override;
-		virtual void SetOrigin(const Pivot& pivot) override;;
-		virtual void SetOrigin(const Pivot& pivot, sf::Vector2f* offset) override;
+		void SetPosition(const sf::Vector2f& pos) override;
+		void SetOrigin(const Pivot& pivot) override;;
+		void SetOrigin(const Pivot& pivot, sf::Vector2f* offset) override;
 
-		virtual sf::Vector2f* GetSize(void) override;
-		virtual const sf::Vector2f& GetOrigin(void) const override;
+		sf::Vector2f* GetSize(void) override;
+		const sf::Vector2f& GetOrigin(void) const override;
 
-		virtual void UpdateGlobalBounds(void) override;
+		void UpdateGlobalBounds(void) override;
 
-		virtual void Draw(void) override;
+		void Draw(void) override;
 	};
 
 	class Grid 
