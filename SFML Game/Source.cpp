@@ -12,11 +12,14 @@ int main()
 	manager.SetWindow(&window);
 	manager.SetEvent(&e);
 
-	GUI::DropDownList ddl;
-	ddl.SetFont("Res/Fonts/VCR_OSD.ttf");
-	ddl.SetPosition({500.0f, 500.0f});
-	ddl.AddOption("Option 1");
-	ddl.SetManager(&manager);
+	//GUI::DropDownList ddl;
+	//ddl.SetFont("Res/Fonts/VCR_OSD.ttf");
+	//ddl.SetPosition({500.0f, 500.0f});
+	//ddl.AddOption("Option 1");
+	//ddl.AddOption("Option 2");
+	//ddl.AddOption("Option 3");
+	//ddl.AddOption("Option 4");
+	//ddl.SetManager(&manager);
 
 	//GUI::Slider slider;
 	//slider.SetManager(&manager);

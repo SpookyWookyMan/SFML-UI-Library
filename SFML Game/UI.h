@@ -461,30 +461,14 @@ namespace GUI
 		bool showOptions = false;
 		bool optionSelected = false;
 
-		void UpdateOptionBoxPosition(void);
+		void UpdateOptionBox(void);
 		void UpdateDisplay(void);
 
 	};
 
-	class Panel : public Widget 
-	{
-	public:
-
-		void SetPosition(const sf::Vector2f& pos) override;
-		void SetOrigin(const Pivot& pivot) override;;
-		void SetOrigin(const Pivot& pivot, sf::Vector2f* offset) override;
-
-		sf::Vector2f* GetSize(void) override;
-		const sf::Vector2f& GetOrigin(void) const override;
-
-		void UpdateGlobalBounds(void) override;
-
-		void Draw(void) override;
-	};
-
 	class Grid 
 	{
-	
+		
 	};
 
 }

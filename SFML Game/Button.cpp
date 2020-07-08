@@ -132,9 +132,6 @@ void Button::LoadTexture(const std::string& path, TextureType ttype)
 	case TextureType::HIGHLIGHT: this->highlight = *texture; break;
 	case TextureType::CLICKED: this->clicked = *texture; break;
 	}
-
-	//std::cout << texture << " loaded from: " << path << " of type " << &ttype << "\n";
-	//this->SetTexture(this->normal);
 }
 
 void Button::LoadTextures(const char* path, const char* _path, const char* __path)

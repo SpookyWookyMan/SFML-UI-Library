@@ -13,8 +13,10 @@ DropDownList::DropDownList(const sf::Vector2f& size)
 
 DropDownList::DropDownList(void)
 {
-	this->SetSize({200.0f, 40.0f});
+	this->SetSize({300.0f, 30.0f});
 	this->optionDisplay.setFillColor(sf::Color::White);
+	this->displayLabel.setString("Text");
+	this->displayLabel.setFillColor(sf::Color::Black);
 
 	this->optionColor = sf::Color::White;
 	this->optionHighlightColor = sf::Color::Blue;
@@ -26,8 +28,9 @@ DropDownList::~DropDownList(void)
 
 void DropDownList::SetPosition(const sf::Vector2f& pos)
 {
-	this->position = position;
+	this->position = pos;
 	this->optionDisplay.setPosition(this->position);
+	this->displayLabel.setPosition(this->position);
 	this->UpdateGlobalBounds();
 }
 
@@ -52,6 +55,8 @@ void DropDownList::SetFont(const char* path)
 {
 	if (!this->optionFont.loadFromFile(path))
 		std::cout << "FAILURE: Couldn't load font from: " << path << "\n";
+
+	this->displayLabel.setFont(this->optionFont);
 }
 
 void DropDownList::SetFont(const sf::Font& font)
@@ -77,6 +82,9 @@ void DropDownList::AddOption(const char* optionString)
 {
 	Option* option = new Option(optionString);
 	
+	option->text.setFont(this->optionFont);
+	option->text.setFillColor(sf::Color::Black);
+
 	option->optionRect.setSize(this->optionDim);
 
 	this->list.push_back(option);
@@ -92,12 +100,17 @@ void DropDownList::MouseClick(void)
 			{
 				mouseHeld = true;
 				this->showOptions = !this->showOptions;
+				this->UpdateOptionBox();
 				ClickFunc();
 			}
 		}
 	}
 	if (showOptions)
 	{
+	    //printf("Got here: so\n");
+		//this->UpdateOptionBox();
+		//printf("Got here: so\n");
+
 		std::unique_ptr<sf::Vector2f> mousePos =
 			std::make_unique<sf::Vector2f>(sf::Mouse::getPosition(*this->manager->window));
 
@@ -111,6 +124,7 @@ void DropDownList::MouseClick(void)
 				{
 					this->selectedOption = o;
 					this->UpdateDisplay();
+					this->showOptions = false;
 				}
 			}
 			else
@@ -131,6 +145,7 @@ void DropDownList::MouseClick(const sf::Mouse::Button& mb)
 			{
 				mouseHeld = true;
 				this->showOptions = !this->showOptions;
+				this->UpdateOptionBox();
 				ClickFunc();
 			}
 		}
@@ -150,6 +165,7 @@ void DropDownList::MouseClick(const sf::Mouse::Button& mb)
 				{
 					this->selectedOption = o;
 					this->UpdateDisplay();
+					this->showOptions = false;
 				}
 			}
 			else 
@@ -178,11 +194,13 @@ void DropDownList::Draw(void)
 	if (!optionSelected) this->manager->window->draw(displayLabel);
 }
 
-void DropDownList::UpdateOptionBoxPosition(void)
+void DropDownList::UpdateOptionBox(void)
 {
+	//printf("Got here: uobp\n");
+
 	sf::Vector2f* pos = new sf::Vector2f(this->optionDisplay.getPosition());
 
-	for (auto i = 0; i < sizeof(this->list) / sizeof(Option); i++)
+	for (auto i = 0; i < this->list.size(); i++)
 	{
 		sf::Vector2f* vec = nullptr;
 
@@ -192,7 +210,7 @@ void DropDownList::UpdateOptionBoxPosition(void)
 		}
 		else 
 		{
-			vec = new sf::Vector2f(pos->x, pos->y + this->list.at(i)->optionRect.getSize().y * i);
+			vec = new sf::Vector2f(pos->x, pos->y + this->list.at(i)->optionRect.getSize().y * (i+1));
 		}
 		
 		this->list.at(i)->optionRect.setPosition(*vec);
@@ -200,10 +218,14 @@ void DropDownList::UpdateOptionBoxPosition(void)
 			new sf::Vector2f(this->list.at(i)->text.getLocalBounds().width, this->list.at(i)->text.getLocalBounds().height)));
 		this->list.at(i)->text.setPosition({vec->x, vec->y + this->list.at(i)->optionRect.getSize().y / 2});
 
+
 		delete vec;
 	}
 
 	delete pos;
+
+
+
 }
 
 void DropDownList::UpdateDisplay(void)
