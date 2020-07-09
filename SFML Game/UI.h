@@ -33,7 +33,7 @@ namespace GUI
 
 		UIManager(sf::RenderWindow* w);
 		UIManager(void);
-		virtual ~UIManager(void);
+		~UIManager(void);
 
 		void SetWindow(sf::RenderWindow* w);
 		void SetEvent(sf::Event* e);
@@ -134,7 +134,7 @@ namespace GUI
 
 		Button(const sf::Texture& normTex);
 		Button(void);
-		virtual ~Button(void);
+		~Button(void);
 
 		void SetPosition(const sf::Vector2f& pos) override;
 		void SetOrigin(const Pivot& pivot) override;
@@ -180,7 +180,7 @@ namespace GUI
 		TextBox(const char* path);
 		TextBox(const sf::Font& font, const char* str);
 		TextBox(const sf::Font& font);
-		virtual ~TextBox(void);
+		~TextBox(void);
 
 		void SetPosition(const sf::Vector2f& pos) override;
 		void SetOrigin(const Pivot& pivot) override;
@@ -221,7 +221,7 @@ namespace GUI
 		Bar(const sf::Vector2f& dim, const float& maxValue, const float& minValue);
 		Bar(const sf::Vector2f& dim);
 		Bar(void);
-		virtual ~Bar(void);
+		~Bar(void);
 
 		void SetPosition(const sf::Vector2f& pos) override;
 		void SetOrigin(const Pivot& pivot) override;
@@ -258,7 +258,7 @@ namespace GUI
 
 		Image(const char* path);
 		Image(const sf::Texture& texture);
-		virtual ~Image(void);
+		~Image(void);
 
 		void SetPosition(const sf::Vector2f& pos) override;
 		void SetOrigin(const Pivot& pivot) override;
@@ -278,7 +278,7 @@ namespace GUI
 
 		InputTextField(const char* label, const char* path);
 		InputTextField(const char* label, const sf::Font& font);
-		virtual ~InputTextField(void);
+		~InputTextField(void);
 
 		void SetPosition(const sf::Vector2f& pos) override;
 		void SetOrigin(const Pivot& pivot) override;
@@ -322,7 +322,7 @@ namespace GUI
 
 		CheckBox(const float&& size);
 		CheckBox(void);
-		virtual ~CheckBox(void);
+		~CheckBox(void);
 
 		void SetSize(const sf::Vector2f& size);
 		void SetPosition(const sf::Vector2f& pos) override;
@@ -365,7 +365,7 @@ namespace GUI
 
 		Slider(const float& maxValue, const float& minValue);
 		Slider(void);
-		virtual ~Slider(void);
+		~Slider(void);
 
 		void SetPosition(const sf::Vector2f& pos) override;
 		void SetSize(const sf::Vector2f& size);
@@ -409,7 +409,7 @@ namespace GUI
 
 		DropDownList(const sf::Vector2f& size);
 		DropDownList(void);
-		virtual ~DropDownList(void);
+		~DropDownList(void);
 
 		void SetPosition(const sf::Vector2f& pos) override;
 		void SetOrigin(const Pivot& pivot) override;;
@@ -468,7 +468,28 @@ namespace GUI
 
 	class Grid 
 	{
-		
-	};
+	public:
 
+		sf::Vector2f size;
+		sf::Vector2f position;
+
+		std::vector<Widget*> widgets;
+
+		bool wrapContent;
+
+		Grid(const sf::Vector2f& size);
+		Grid(void);
+		~Grid(void);
+
+		void AddToGrid(Widget& widget);
+
+	private:
+
+		std::map<int, float> rowMap;
+
+		void UpdateWidgetPosition(void);
+		Widget* GetWidgetAt(unsigned int&& i);
+		void FindMaximumRowHeight(void);
+
+	};
 }
