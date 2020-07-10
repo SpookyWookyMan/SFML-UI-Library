@@ -67,12 +67,11 @@ namespace GUI
 
 		sf::Vector2f position;
 
-		std::function<void(void)> MouseEnterFunc = []{};
-		std::function<void(void)> MouseExitFunc = []{};
-		std::function<void(void)> ClickFunc = []{};
-		std::function<void(void)> ReleaseFunc = []{};
-
-		std::function<void(void)> UpdateFunc = []{};
+		std::function<void(void)> MouseEnterFunc = [] {};
+		std::function<void(void)> MouseExitFunc = [] {};
+		std::function<void(void)> ReleaseFunc = [] {};
+		std::function<void(void)> UpdateFunc = [] {};
+		std::function<void(void)> ClickFunc = [] {};
 
 		virtual void SetManager(UIManager* m = NULL);
 		virtual void SetPosition(const sf::Vector2f& pos) = 0;
@@ -421,6 +420,7 @@ namespace GUI
 
 		sf::Vector2f* GetSize(void) override;
 		const sf::Vector2f& GetOrigin(void) const override;
+		const std::string& GetSelectedOption(void) const;
 
 		void AddOption(const char* optionString);
 
@@ -432,64 +432,23 @@ namespace GUI
 
 	private:
 
-		struct Option
-		{
-			std::string textString;
-			sf::Text text;
-			sf::RectangleShape optionRect;
-
-			Option(const char* str) : textString(str) 
-			{
-				this->text.setString(this->textString);
-			}
-		};
-
 		sf::RectangleShape optionDisplay;
 
 		sf::Text displayLabel;
-
-		std::vector<Option*> list;
-		Option* selectedOption;
+		sf::Font optionFont;
+		sf::Color optionColor;
+		sf::Color optionHighlightColor;
 
 		sf::Vector2f optionDim;
 		
-		sf::Font optionFont;
-
-		sf::Color optionColor;
-		sf::Color optionHighlightColor;
+		std::vector<Option*> list; 
+		Option* selectedOption;
 
 		bool showOptions = false;
 		bool optionSelected = false;
 
 		void UpdateOptionBox(void);
 		void UpdateDisplay(void);
-
-	};
-
-	class Grid 
-	{
-	public:
-
-		sf::Vector2f size;
-		sf::Vector2f position;
-
-		std::vector<Widget*> widgets;
-
-		bool wrapContent;
-
-		Grid(const sf::Vector2f& size);
-		Grid(void);
-		~Grid(void);
-
-		void AddToGrid(Widget& widget);
-
-	private:
-
-		std::map<int, float> rowMap;
-
-		void UpdateWidgetPosition(void);
-		Widget* GetWidgetAt(unsigned int&& i);
-		void FindMaximumRowHeight(void);
 
 	};
 }

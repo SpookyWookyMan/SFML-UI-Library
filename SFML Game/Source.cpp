@@ -29,9 +29,9 @@ int main()
 	//cb.SetPosition({500.0f, 500.0f});
 	//cb.SetManager(&manager);
 
-	//GUI::InputTextField itf("Text", "Res/Fonts/VCR_OSD.ttf");
-	//itf.SetPosition({500.0f, 500.0f});
-	//itf.SetManager(&manager);
+	GUI::InputTextField itf("Text", "Res/Fonts/VCR_OSD.ttf");
+	itf.SetPosition({500.0f, 500.0f});
+	itf.SetManager(&manager);
 
 	//GUI::Bar bar;
 	//bar.SetPosition({100, 500});
@@ -39,9 +39,9 @@ int main()
 
 	//GUI::TextBox textBox("Res/Fonts/VCR_OSD.ttf");
 	//textBox.SetSize(150);
-	//textBox.SetOrigin(GUI::Widget::Pivot::MID_CENTER);
+	//textBox.SetOrigin(GUI::Widget::Pivot::TOP_LEFT);
 	//textBox.SetPosition({500, 500});
-	//
+	
 	//textBox.SetManager(&manager);
 	
 	//GUI::Button button;
@@ -49,12 +49,12 @@ int main()
 	//button.LoadTextures("Res/Textures/normal.png", "Res/Textures/highlight.png", "Res/Textures/clicked.png");
 	//
 	//button.SetTexture(button.normal);
-	//button.SetOrigin(GUI::Widget::Pivot::MID_CENTER, new sf::Vector2f(-5.0f, -45.0f));
+	//button.SetOrigin(GUI::Widget::Pivot::TOP_LEFT, new sf::Vector2f(-5.0f, -45.0f));
 	//button.SetPosition({500.0f, 500.0f});
 	//
 	//button.SetTextFont("Res/Fonts/VCR_OSD.ttf");
 	//button.SetTextColor(sf::Color::White);
-	//button.SetTextOrigin(GUI::Widget::Pivot::MID_CENTER);
+	//button.SetTextOrigin(GUI::Widget::Pivot::TOP_LEFT);
 	//
 	//button.MouseEnterFunc = [&] { button.SetTexture(button.highlight); };
 	//button.MouseExitFunc = [&] { button.SetTexture(button.normal); };

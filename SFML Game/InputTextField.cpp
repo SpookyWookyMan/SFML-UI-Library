@@ -141,8 +141,9 @@ void InputTextField::Events(void)
 		if (this->manager->event->type == sf::Event::TextEntered)
 		{
 			char keyCode = this->manager->event->text.unicode;
-
-			if (keyCode != 8) // 8 -> Backspace
+			
+			if (keyCode == 27) typing = !typing;
+			else if (keyCode != 8)
 			{
 				this->textString.push_back(keyCode);
 			}
@@ -196,4 +197,3 @@ sf::Vector2f* InputTextField::GetTextSize(const sf::Text& text) const
 
 	delete vec;
 }
-

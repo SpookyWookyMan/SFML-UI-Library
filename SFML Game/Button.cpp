@@ -64,7 +64,7 @@ void Button::SetTextFont(const char* path)
 	sf::Font* font = new sf::Font();
 
 	if(!font->loadFromFile(path))
-		printf("FAILURE TO LOAD FONT FROM: %p", path);
+		printf("Failed to load texture from: %p", path);
 
 	this->textFont = *font;
 	this->text.setFont(this->textFont);
@@ -124,7 +124,7 @@ void Button::LoadTexture(const std::string& path, TextureType ttype)
 {
 	std::unique_ptr<sf::Texture> texture(new sf::Texture);
 	if (!texture->loadFromFile(path))
-		printf("FAILURE TO LOAD TEXTURE AT %p", path);
+		printf("Failed to load texture from: %p", path);
 
 	switch (ttype)
 	{

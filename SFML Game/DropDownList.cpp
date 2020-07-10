@@ -2,6 +2,18 @@
 
 using namespace GUI;
 
+struct DropDownList::Option 
+{
+	std::string textString;
+	sf::Text text;
+	sf::RectangleShape optionRect;
+
+	Option(const char* str) : textString(str)
+	{
+		this->text.setString(this->textString);
+	}
+};
+
 DropDownList::DropDownList(const sf::Vector2f& size)
 {
 	this->SetSize(size);
@@ -78,6 +90,11 @@ const sf::Vector2f& DropDownList::GetOrigin(void) const
 	return this->optionDisplay.getOrigin();
 }
 
+const std::string& DropDownList::GetSelectedOption(void) const
+{
+	return this->selectedOption->text.getString();
+}
+
 void DropDownList::AddOption(const char* optionString)
 {
 	Option* option = new Option(optionString);
@@ -107,10 +124,6 @@ void DropDownList::MouseClick(void)
 	}
 	if (showOptions)
 	{
-	    //printf("Got here: so\n");
-		//this->UpdateOptionBox();
-		//printf("Got here: so\n");
-
 		std::unique_ptr<sf::Vector2f> mousePos =
 			std::make_unique<sf::Vector2f>(sf::Mouse::getPosition(*this->manager->window));
 
@@ -196,8 +209,6 @@ void DropDownList::Draw(void)
 
 void DropDownList::UpdateOptionBox(void)
 {
-	//printf("Got here: uobp\n");
-
 	sf::Vector2f* pos = new sf::Vector2f(this->optionDisplay.getPosition());
 
 	for (auto i = 0; i < this->list.size(); i++)
@@ -223,9 +234,6 @@ void DropDownList::UpdateOptionBox(void)
 	}
 
 	delete pos;
-
-
-
 }
 
 void DropDownList::UpdateDisplay(void)
