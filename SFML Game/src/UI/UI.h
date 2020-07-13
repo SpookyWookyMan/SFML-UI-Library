@@ -19,7 +19,7 @@
 //	BAR & SLIDER:
 //		-SetOrigin method might not be necessary. (MINOR)
 
-namespace GUI
+namespace gui
 {
 
 	class Widget;

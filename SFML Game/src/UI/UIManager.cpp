@@ -1,6 +1,6 @@
 #include "UI.h"
 
-using namespace GUI;
+using namespace gui;
 
 UIManager::UIManager(sf::RenderWindow* w)
 	: window(w), event(NULL)

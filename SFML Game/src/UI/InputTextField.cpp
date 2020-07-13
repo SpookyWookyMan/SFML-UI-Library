@@ -1,6 +1,6 @@
 #include "UI.h"
 
-using namespace GUI;
+using namespace gui;
 
 InputTextField::InputTextField(const char* str, const char* path) : typing(false), hasText(false)
 {

@@ -1,6 +1,6 @@
 #include "UI.h"
 
-using namespace GUI;
+using namespace gui;
 
 TextBox::TextBox(const char* path, const char* str)
 {

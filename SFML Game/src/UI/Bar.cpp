@@ -1,6 +1,6 @@
 #include "UI.h"
 
-using namespace GUI;
+using namespace gui;
 
 Bar::Bar(const sf::Vector2f& dim, const float& maxValue, const float& minValue)
 {
@@ -24,8 +24,8 @@ Bar::Bar(const sf::Vector2f& dim)
 {
 	this->SetSize(dim);
 
-	this->maxValue = maxValue;
-	this->minValue = minValue;
+	this->maxValue = 100.0f;
+	this->minValue = 0.0f;
 
 	this->currentValue = this->maxValue;
 
@@ -44,7 +44,7 @@ Bar::Bar(void)
 
 	this->SetSize(*dim);
 
-	this->maxValue = 100.0f;
+	this->maxValue = 500.0f;
 	this->minValue = 0.0f;
 
 	this->currentValue = this->maxValue;

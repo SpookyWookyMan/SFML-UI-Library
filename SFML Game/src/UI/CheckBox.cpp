@@ -1,6 +1,6 @@
 #include "UI.h"
 
-using namespace GUI;
+using namespace gui;
 
 CheckBox::CheckBox(const float&& size) 
 {

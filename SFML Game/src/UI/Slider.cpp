@@ -1,6 +1,6 @@
 #include "UI.h"
 
-using namespace GUI;
+using namespace gui;
 
 Slider::Slider(const float& maxValue, const float& minValue)
 	: maxValue(maxValue), minValue(minValue), currentValue(maxValue)
@@ -72,7 +72,7 @@ void Slider::SetSize(const sf::Vector2f& size)
 	this->fill.setSize(size);
 }
 
-void GUI::Slider::SetHandleSize(const sf::Vector2f& size)
+void Slider::SetHandleSize(const sf::Vector2f& size)
 {
 	this->handle.setSize(size);
 
@@ -126,6 +126,16 @@ void Slider::MouseClick(void)
 			}
 		}
 	}
+	else 
+	{
+		if (this->manager->event->type == sf::Event::MouseButtonReleased)
+		{
+			if (this->manager->event->mouseButton.button == sf::Mouse::Button::Left)
+			{
+				mouseHeld = false;
+			}
+		}
+	}
 }
 
 void Slider::MouseClick(const sf::Mouse::Button& mb)
@@ -138,6 +148,16 @@ void Slider::MouseClick(const sf::Mouse::Button& mb)
 			{
 				mouseHeld = true;
 				ClickFunc();
+			}
+		}
+	}
+	else
+	{
+		if (this->manager->event->type == sf::Event::MouseButtonReleased)
+		{
+			if (this->manager->event->mouseButton.button == mb)
+			{
+				mouseHeld = false;
 			}
 		}
 	}
