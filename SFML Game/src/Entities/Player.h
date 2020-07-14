@@ -11,7 +11,7 @@ public:
 
 	void Init(void);
 	void Events(void);
-	void Update(void) override;
-	void Draw(void) override;
+	//void Update(void) override;
+	//void Draw(void) override;
 
 };

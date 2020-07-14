@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "UI\UI.h"
+#include "Entities/Object.h"
 
 gui::UIManager manager;
 
@@ -11,6 +12,19 @@ int main()
 
 	manager.SetWindow(&window);
 	manager.SetEvent(&e);
+
+	Object o, o2;
+	sf::RectangleShape r({75.0f, 75.0f});
+	sf::RectangleShape r2({200.0f, 200.0f});
+
+	r.setFillColor(sf::Color::Green);
+	r2.setFillColor(sf::Color::White);
+
+	o.collisionRect.size = r.getSize();
+
+	o2.SetPosition({500.0f, 500.0f});
+	o2.collisionRect.size = r2.getSize();
+	r2.setPosition(o2.position);
 
 	//gui::Slider slider;
 	//slider.SetManager(&manager);
@@ -41,9 +55,26 @@ int main()
 			}
 		}
 
+		o.SetPosition({ (float)sf::Mouse::getPosition(window).x, (float)sf::Mouse::getPosition(window).y });
+		r.setPosition(o.position);
+
+		if (o.collisionRect.GetCollisionDirection(o2.collisionRect) == coll::CollisionRect::CollisionDirection::NONE)
+			printf("No collision\n");
+		else if(o.collisionRect.GetCollisionDirection(o2.collisionRect) == coll::CollisionRect::CollisionDirection::RIGHT)
+			printf("Collision from the right\n");
+		else if(o.collisionRect.GetCollisionDirection(o2.collisionRect) == coll::CollisionRect::CollisionDirection::LEFT)
+			printf("Collision from the left\n");
+		else if (o.collisionRect.GetCollisionDirection(o2.collisionRect) == coll::CollisionRect::CollisionDirection::TOP)
+			printf("Collision from the top\n");
+		else if (o.collisionRect.GetCollisionDirection(o2.collisionRect) == coll::CollisionRect::CollisionDirection::BOTTOM)
+			printf("Collision from the bottom\n");
+
 		manager.Update();
 
 		window.clear();
+
+		window.draw(r);
+		window.draw(r2);
 
 		manager.Draw();
 

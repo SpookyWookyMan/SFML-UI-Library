@@ -19,12 +19,12 @@ void Player::Events(void)
 
 }
 
-void Player::Update(void) 
-{
-
-}
-
-void Player::Draw(void) 
-{
-
-}
+//void Player::Update(void) 
+//{
+//
+//}
+//
+//void Player::Draw(void) 
+//{
+//
+//}
