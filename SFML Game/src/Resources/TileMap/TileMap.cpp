@@ -3,8 +3,8 @@
 TileMap::TileMap(void)
 {
 	this->gridSize = 50;
-	this->size.x = 100;
-	this->size.y = 100;
+	this->size.x = 10;
+	this->size.y = 10;
 	this->layers = 1;
 
 	this->map.resize(this->size.x);
@@ -18,7 +18,8 @@ TileMap::TileMap(void)
 			for (auto z = 0; z < this->layers; z++) 
 			{
 				this->map[x][y].resize(this->layers);
-				this->map[x][y].push_back(Tile());
+				this->map[x][y].push_back(Tile({ static_cast<float>(x * this->gridSize), 
+					static_cast<float>(y * this->gridSize) }, this->gridSize));
 			}
 		}
 	}
@@ -26,3 +27,22 @@ TileMap::TileMap(void)
 TileMap::~TileMap(void) 
 {
 }
+
+void TileMap::Update(void)
+{
+}
+
+void TileMap::Draw(sf::RenderTarget& target)
+{
+	for (auto& x : this->map) 
+	{
+		for (auto& y : x)
+		{
+			for (auto& z : y)
+			{
+				z.Draw(target);
+			}
+		}
+	}
+}
+

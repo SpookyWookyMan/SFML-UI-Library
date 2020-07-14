@@ -6,7 +6,7 @@ class Object
 {
 public:
 
-	//sf::Sprite sprite;
+	sf::Sprite sprite;
 
 	sf::Vector2f position;
 	sf::Vector2f velocity;
@@ -19,11 +19,15 @@ public:
 	
 	const bool& IsActive(void) const;
 
-	//virtual void Update(void) = 0;
-	//virtual void Draw(void) = 0;
+	virtual void Update(void);
+	virtual void Draw(sf::RenderTarget& target);
 
 private:
 
 	bool isActive = true;
+
+protected:
+
+	void BindCollisionRectToObject(void);
 
 };

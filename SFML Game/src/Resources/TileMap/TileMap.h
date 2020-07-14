@@ -17,4 +17,7 @@ public:
 	TileMap(void);
 	~TileMap(void);
 
+	void Update(void);
+	void Draw(sf::RenderTarget& target);
+
 };
