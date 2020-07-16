@@ -3,9 +3,10 @@
 void Object::SetPosition(const sf::Vector2f& position) 
 {
 	this->position = position;
+	this->sprite.setPosition(this->position);
 	this->collisionRect.position = this->position;
 }
-void Object::SetVelocity(const sf::Vector2f& velocity) 
+void Object::SetVelocity(const sf::Vector2f& velocity)
 {
 	this->velocity = velocity;
 }

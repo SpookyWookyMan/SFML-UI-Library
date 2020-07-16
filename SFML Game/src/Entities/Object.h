@@ -10,6 +10,7 @@ public:
 
 	sf::Vector2f position;
 	sf::Vector2f velocity;
+	float grav;
 
 	coll::CollisionRect collisionRect;
 
@@ -22,12 +23,12 @@ public:
 	virtual void Update(void);
 	virtual void Draw(sf::RenderTarget& target);
 
+	void BindCollisionRectToObject(void);
 private:
 
 	bool isActive = true;
 
 protected:
 
-	void BindCollisionRectToObject(void);
 
 };
