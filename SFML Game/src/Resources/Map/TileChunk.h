@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include "Tile.h"
+#include "../../Collision/CollisionRect.h"
 
 class TileChunk 
 {
@@ -21,4 +22,5 @@ public:
 	const sf::Vector2u& GetSize(void) const;
 	void GenerateTiles();
 	void DrawChunk(sf::RenderTarget& target);
+	CollisionRect::CollisionDirection CheckCollision(CollisionRect& rect) const;
 };

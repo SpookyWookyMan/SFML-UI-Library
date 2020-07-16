@@ -1,7 +1,5 @@
 #include "CollisionRect.h"
 
-using namespace coll;
-
 bool CollisionRect::IsCollidingWith(CollisionRect& r)
 {
 	return (this->position.x + this->size.x > r.position.x

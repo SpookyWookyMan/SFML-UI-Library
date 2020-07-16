@@ -6,21 +6,20 @@ class Tile
 {
 public:
 
-	enum class TileType 
+	enum class TileCollType //check what to do with this
 	{
 		COLLISION,
 		DECOR
-	};
+	} collisionType;
 
 	sf::Sprite sprite;
 
-	coll::CollisionRect collisionRect;
+	CollisionRect collisionRect;
 
-	Tile(const sf::Vector2f& position, sf::Texture* tileset, sf::IntRect* txtrRect);
+	Tile(const sf::Vector2f& position, sf::Texture* tileset, sf::IntRect* txtrRect, const TileCollType& collType);
 	~Tile(void);
 
 	void SetPosition(const sf::Vector2f& position);
-	void SetTexture(const sf::Texture& texture);
 	void SetTextureRect(const sf::IntRect& rect);
 
 private:

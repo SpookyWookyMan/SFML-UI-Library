@@ -12,7 +12,7 @@ public:
 	sf::Vector2f velocity;
 	float grav;
 
-	coll::CollisionRect collisionRect;
+	CollisionRect collisionRect;
 
 	void SetPosition(const sf::Vector2f& position);
 	void SetVelocity(const sf::Vector2f& velocity);

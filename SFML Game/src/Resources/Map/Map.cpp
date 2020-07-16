@@ -15,11 +15,11 @@ void Map::Init(void)
 	testchunk.tileSize = 8;
 	testchunk.position = {100.0f, 100.0f};
 	testchunk.layout = {
-							{47, 00, 47, 47, 47},
-							{48, 00, 48, 00, 00},
-							{48, 48, 48, 48, 48},
-							{00, 00, 48, 00, 48},
-							{49, 49, 49, 00, 49}
+							{147, 200, 147, 147, 147},
+							{148, 200, 148, 200, 200},
+							{148, 148, 148, 148, 148},
+							{200, 200, 148, 200, 148},
+							{149, 149, 149, 200, 149}
 					   };
 	testchunk.GenerateTiles();
 	this->chunkManager.AddChunk(testchunk);
