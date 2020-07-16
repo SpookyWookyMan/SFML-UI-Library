@@ -3,6 +3,7 @@
 #include "UI/UI.h"
 #include "Entities/Object.h"
 #include "Entities/Player.h"
+#include "Resources/Map/Map.h"
 
 gui::UIManager manager;
 
@@ -11,11 +12,17 @@ int main()
 	sf::RenderWindow window(sf::VideoMode(1000, 1000), "Game");
 	sf::Event e;
 
+	sf::Vector2f Center(150,150);
+	sf::Vector2f HalfSize(175, 175);
+	sf::View View1(Center, HalfSize);
+
+	window.setView(View1);
+
 	manager.SetWindow(&window);
 	manager.SetEvent(&e);
 
-	std::cout << 12 << " -> "<< 12/10 << " " << 12 % 10 << "\n";
-
+	Map map("Res/Tileset/caves.png");
+	map.Init();
 	//Player p;
 	//p.SetVelocity({ 0.2f, 0.1f });
 	//
@@ -59,6 +66,7 @@ int main()
 			}
 		}
 
+		map.Update();
 		//p.Update();
 		//o.Update();
 		//
@@ -72,7 +80,7 @@ int main()
 
 		//p.Draw(window);
 		//o.Draw(window);
-
+		map.Draw(window);
 		manager.Draw();
 
 		window.display();

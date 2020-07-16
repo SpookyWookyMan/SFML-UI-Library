@@ -7,8 +7,9 @@ class Map
 public:
 
 	TileChunkManager chunkManager;
+	sf::Texture tileset;
 
-	Map(const sf::Texture& tileset);
+	Map(const char* pathToTexture);
 
 	void Init(void);	
 	void Update(void);

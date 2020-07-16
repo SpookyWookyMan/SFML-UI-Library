@@ -2,7 +2,8 @@
 
 TileChunkManager::TileChunkManager(sf::Texture* tileset)
 {
-	for (auto& i : this->tileChunks) i.tileset = tileset;
+	this->tileset = *tileset;
+	for (auto& i : this->tileChunks) i.tileset = &this->tileset;
 }
 TileChunkManager::TileChunkManager(void)
 {
