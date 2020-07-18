@@ -26,11 +26,8 @@ void TileChunk::GenerateTiles()
 			unsigned y = tileLoc % 0xF;
 
 			bool isEmpty = (x + y) < 0x1;
-			std::cout << isEmpty << "\n";
 
 			Tile::TileCollType tileCollType = collType == 0x1 ? Tile::TileCollType::COLLISION : Tile::TileCollType::DECOR;
-			//if (collType == 0x1) tileCollType = Tile::TileCollType::COLLISION;
-			//else if (collType == 0x2) tileCollType = Tile::TileCollType::DECOR;
 
 			sf::IntRect* intrect = new sf::IntRect(x * this->tileSize, y * this->tileSize, this->tileSize, this->tileSize);
 			sf::Vector2f* pos = new sf::Vector2f(this->position.x + (this->tileSize * j), this->position.y + (this->tileSize * i));
@@ -60,8 +57,6 @@ void TileChunk::CheckPlayerCollision()
 			{
 				CLD colDir = player->collisionRect.GetCollisionDirection(tile->collisionRect);
 
-				if (colDir == CLD::RIGHT || colDir == CLD::LEFT)
-					printf("sides\n");
 				tile->sprite.setColor(sf::Color::Red);
 				tile->coldir = colDir;
 				tile->colliding = true;
