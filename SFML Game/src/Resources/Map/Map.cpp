@@ -1,5 +1,8 @@
 #include "Map.h"
 
+//TODO:
+//	-Fix messed up tileScale thing
+
 Map::Map(const char* pathToTexture) 
 {
 	if (!this->tileset.loadFromFile(pathToTexture)) printf("Failed to load tileset\n");
@@ -12,7 +15,6 @@ void Map::Init(Player* player)
 	this->chunkManager.tileset = this->tileset;
 	
 	testchunk.tileset = &this->chunkManager.tileset;
-	testchunk.tileSize = 8;
 	testchunk.position = { 15.0f, 500.0f };
 	testchunk.layout = {
 							{143, 200, 141, 147, 147},
@@ -21,8 +23,9 @@ void Map::Init(Player* player)
 							{167, 134, 143, 200, 148},
 							{145, 144, 144, 200, 149}
 					   };
-	testchunk.GenerateTiles();
+	testchunk.GenerateTiles(8, 2);
 	this->chunkManager.AddChunk(testchunk);
+	this->chunkManager.generatedChunks.push_back(&this->chunkManager.tileChunks.at(0));
 
 	for (auto& chunk : chunkManager.tileChunks) chunk.player = player;
 }

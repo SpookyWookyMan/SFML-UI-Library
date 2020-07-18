@@ -8,13 +8,20 @@ TileChunk::~TileChunk(void)
 	for (auto& i : this->tiles) i = nullptr;
 	this->tiles.clear();
 }
-const sf::Vector2u& TileChunk::GetSize(void) const
+const sf::Vector2u& TileChunk::GetElementSize(void) const
 {
 	return { static_cast<unsigned>(this->layout.at(0).size()), 
 			 static_cast<unsigned>(this->layout.size())  };
 }
-void TileChunk::GenerateTiles() 
+const sf::Vector2f& TileChunk::GetSize(void) const 
 {
+	return { static_cast<float>(this->layout.at(0).size() * this->tileSize),
+			 static_cast<float>(this->layout.size() * this->tileSize) };
+}
+void TileChunk::GenerateTiles(unsigned&& tileSize, unsigned&& tileScale)
+{
+	this->tileSize = tileSize * tileScale;
+
 	for (auto i = 0; i < layout.size(); i++)
 	{
 		for (auto j = 0; j < layout.at(0).size(); j++)
@@ -32,7 +39,7 @@ void TileChunk::GenerateTiles()
 			sf::IntRect* intrect = new sf::IntRect(x * this->tileSize, y * this->tileSize, this->tileSize, this->tileSize);
 			sf::Vector2f* pos = new sf::Vector2f(this->position.x + (this->tileSize * j), this->position.y + (this->tileSize * i));
 			
-			if(!isEmpty) this->tiles.push_back(new Tile(*pos, this->tileset, intrect, tileCollType)); 
+			if(!isEmpty) this->tiles.push_back(new Tile(*pos, this->tileset, intrect, tileCollType, tileScale)); 
 
 			delete intrect, pos;
 		}
@@ -47,43 +54,55 @@ void TileChunk::DrawChunk(sf::RenderTarget& target)
 }
 void TileChunk::CheckPlayerCollision() 
 {
-	for (auto& tile : this->tiles) 
+	if (this->IsWithinBounds(this->player->collisionRect)) 
 	{
-		using CLD = CollisionRect::CollisionDirection;
-
-		if (tile->collisionType == Tile::TileCollType::COLLISION)
+		for (auto& tile : this->tiles)
 		{
-			if (tile->collisionRect.IsCollidingWith(player->collisionRect)) 
-			{
-				CLD colDir = player->collisionRect.GetCollisionDirection(tile->collisionRect);
+			using CLD = CollisionRect::CollisionDirection;
 
-				tile->sprite.setColor(sf::Color::Red);
-				tile->coldir = colDir;
-				tile->colliding = true;
-				switch (colDir)
+			if (tile->collisionType == Tile::TileCollType::COLLISION)
+			{
+				if (tile->collisionRect.IsCollidingWith(player->collisionRect))
 				{
-				    case CLD::TOP: player->isGrounded = true; break;
+					CLD colDir = player->collisionRect.GetCollisionDirection(tile->collisionRect);
+
+					tile->sprite.setColor(sf::Color::Red);
+					tile->coldir = colDir;
+					tile->colliding = true;
+					switch (colDir)
+					{
+					case CLD::TOP: player->isGrounded = true; break;
 					case CLD::BOTTOM: break;
 					case CLD::LEFT: player->canMoveRight = false; break;
 					case CLD::RIGHT: player->canMoveLeft = false; break;
-				    default: break;
+					default: break;
+					}
 				}
-			}
-			if (tile->colliding && !tile->collisionRect.IsCollidingWith(player->collisionRect))
-			{
-				switch (tile->coldir)
+				if (tile->colliding && !tile->collisionRect.IsCollidingWith(player->collisionRect))
 				{
+					switch (tile->coldir)
+					{
 					case CLD::TOP: player->isGrounded = false; break;
 					case CLD::BOTTOM: break;
 					case CLD::LEFT: player->canMoveRight = true; break;
 					case CLD::RIGHT: player->canMoveLeft = true; break;
 					default: break;
+					}
+					tile->sprite.setColor(sf::Color::White);
+					tile->coldir = CLD::NONE;
+					tile->colliding = false;
 				}
-				tile->sprite.setColor(sf::Color::White);
-				tile->coldir = CLD::NONE;
-				tile->colliding = false;
-			}
 
-		} else continue;
+			}
+			else continue;
+		}
 	}
+}
+bool TileChunk::IsWithinBounds(CollisionRect& crect) const
+{
+	return (crect.position.x + crect.size.x) > this->position.x || crect.position.x < (this->position.x + this->GetSize().x);
+}
+bool TileChunk::IsWithinView(const sf::View& view) const 
+{
+	return (this->position.x + this->GetSize().x) > (view.getCenter().x - view.getSize().x / 2);
 }

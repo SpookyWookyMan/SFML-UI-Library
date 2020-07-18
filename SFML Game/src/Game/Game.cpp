@@ -21,6 +21,8 @@ Map map("Res/Tileset/caves.png");
 
 void Game::Init(void)
 {
+	srand(time(NULL));
+
 	window.setView(View1);
 
 	player.Init();
@@ -47,12 +49,12 @@ void Game::UpdateDeltaTime(void)
 void Game::Update(void)
 {
 	this->UpdateDeltaTime();
-	player.Update(this->deltaTime);
+	//player.Update(this->deltaTime);
 	map.Update();
 }
 void Game::Draw(void)
 {
-	player.Draw(window);
+	//player.Draw(window);
 	map.Draw(window);
 }
 void Game::Run(void)

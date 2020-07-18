@@ -22,8 +22,11 @@ public:
 	TileChunk(void);
 	~TileChunk(void);
 
-	const sf::Vector2u& GetSize(void) const;
-	void GenerateTiles();
+	const sf::Vector2u& GetElementSize(void) const;
+	const sf::Vector2f& GetSize(void) const;
+	void GenerateTiles(unsigned&& tileSize, unsigned&& tileScale);
 	void DrawChunk(sf::RenderTarget& target);
 	void CheckPlayerCollision(void);
+	bool IsWithinBounds(CollisionRect& crect) const;
+	bool IsWithinView(const sf::View& view) const;
 };
