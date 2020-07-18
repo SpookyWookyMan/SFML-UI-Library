@@ -13,7 +13,7 @@ const CollisionRect::CollisionDirection& CollisionRect::GetCollisionDirection(Co
 	if (this->IsCollidingWith(r))
 	{
 		if (this->position.y < r.position.y) return CollisionDirection::TOP;
-		else if (this->position.y > r.position.y + r.size.y - this->size.y) return CollisionDirection::BOTTOM;
+		else if (this->position.y > r.position.y + r.size.y - this->size.y / 5) return CollisionDirection::BOTTOM;
 		else if (this->position.x < r.position.x) return CollisionDirection::LEFT;
 		else if (this->position.x > r.position.x + r.size.x - this->size.x) return CollisionDirection::RIGHT;
 	}

@@ -17,7 +17,7 @@ public:
 
 	void Init(void);
 	void Events(sf::Event& event);
-	void Update(void) override;
+	void Update(float& deltaTime) override;
 	void Draw(sf::RenderTarget& target) override;
 
 };

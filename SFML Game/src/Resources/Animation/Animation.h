@@ -15,7 +15,7 @@ public:
 
 private:
 
-	unsigned int frameCount;
+	unsigned frameCount;
 
 	std::vector<sf::Texture*> frames;
 

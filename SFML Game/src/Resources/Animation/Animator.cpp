@@ -16,6 +16,8 @@ Animation* Animator::GetAnimation(const std::string& name) const
 	return animations.at(name);
 }
 
+
+
 void Animator::Init(void) 
 {
 

@@ -36,4 +36,4 @@ public:
 
 	void Init(void);
 
-};
+} __declspec(selectany) resourceManager("Res");

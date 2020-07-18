@@ -20,7 +20,7 @@ public:
 	
 	const bool& IsActive(void) const;
 
-	virtual void Update(void);
+	virtual void Update(float& deltaTime);
 	virtual void Draw(sf::RenderTarget& target);
 
 	void BindCollisionRectToObject(void);

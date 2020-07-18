@@ -17,5 +17,4 @@ public:
 
 	void AddChunk(const TileChunk& tchunk);
 	void DrawChunks(sf::RenderTarget& target);
-	
 };

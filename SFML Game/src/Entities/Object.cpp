@@ -19,7 +19,7 @@ const bool& Object::IsActive(void) const
 	return this->isActive;
 }
 
-void Object::Update(void)
+void Object::Update(float& deltaTime)
 {
 }
 void Object::Draw(sf::RenderTarget& target)

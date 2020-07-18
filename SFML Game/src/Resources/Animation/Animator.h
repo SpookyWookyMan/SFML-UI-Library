@@ -18,4 +18,4 @@ public:
 	void Init(void);
 	void Update(void);
 
-};
+} _declspec(selectany) animator;

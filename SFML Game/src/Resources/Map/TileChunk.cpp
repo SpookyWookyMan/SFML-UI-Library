@@ -19,15 +19,18 @@ void TileChunk::GenerateTiles()
 	{
 		for (auto j = 0; j < layout.at(0).size(); j++)
 		{
-			unsigned collType = this->layout.at(i).at(j) / 100;
-			unsigned tileLoc = this->layout.at(i).at(j) % 100;
+			unsigned collType = this->layout.at(i).at(j) / 0x64;
+			unsigned tileLoc = this->layout.at(i).at(j) % 0x64;
 
-			unsigned x = tileLoc / 10;
-			unsigned y = tileLoc % 10;
+			unsigned x = tileLoc / 0xF;
+			unsigned y = tileLoc % 0xF;
 
-			bool isEmpty = (x + y) == 0;
+			bool isEmpty = (x + y) < 0x1;
+			std::cout << isEmpty << "\n";
 
-			Tile::TileCollType tileCollType = collType == 1 ? Tile::TileCollType::COLLISION : Tile::TileCollType::DECOR;
+			Tile::TileCollType tileCollType = collType == 0x1 ? Tile::TileCollType::COLLISION : Tile::TileCollType::DECOR;
+			//if (collType == 0x1) tileCollType = Tile::TileCollType::COLLISION;
+			//else if (collType == 0x2) tileCollType = Tile::TileCollType::DECOR;
 
 			sf::IntRect* intrect = new sf::IntRect(x * this->tileSize, y * this->tileSize, this->tileSize, this->tileSize);
 			sf::Vector2f* pos = new sf::Vector2f(this->position.x + (this->tileSize * j), this->position.y + (this->tileSize * i));
@@ -42,30 +45,50 @@ void TileChunk::DrawChunk(sf::RenderTarget& target)
 {
 	for (auto& i : this->tiles) 
 	{
-		std::cout << i->sprite.getTexture();
 		target.draw(i->sprite);
 	}
 }
-CollisionRect::CollisionDirection TileChunk::CheckCollision(CollisionRect& rect) const
+void TileChunk::CheckPlayerCollision() 
 {
-	for (auto& i : this->tiles) 
+	for (auto& tile : this->tiles) 
 	{
-		if (i->collisionRect.GetCollisionDirection(rect) != CollisionRect::CollisionDirection::NONE)
+		using CLD = CollisionRect::CollisionDirection;
+
+		if (tile->collisionType == Tile::TileCollType::COLLISION)
 		{
-			switch (i->collisionRect.GetCollisionDirection(rect)) //forgive me
+			if (tile->collisionRect.IsCollidingWith(player->collisionRect)) 
 			{
-			case CollisionRect::CollisionDirection::TOP: 
-				return CollisionRect::CollisionDirection::BOTTOM; break;
-			case CollisionRect::CollisionDirection::BOTTOM:
-				return CollisionRect::CollisionDirection::TOP; break;
-			case CollisionRect::CollisionDirection::LEFT:
-				return CollisionRect::CollisionDirection::RIGHT; break;
-			case CollisionRect::CollisionDirection::RIGHT:
-				return CollisionRect::CollisionDirection::LEFT; break;
-			default: return CollisionRect::CollisionDirection::NONE; break;
+				CLD colDir = player->collisionRect.GetCollisionDirection(tile->collisionRect);
+
+				if (colDir == CLD::RIGHT || colDir == CLD::LEFT)
+					printf("sides\n");
+				tile->sprite.setColor(sf::Color::Red);
+				tile->coldir = colDir;
+				tile->colliding = true;
+				switch (colDir)
+				{
+				    case CLD::TOP: player->isGrounded = true; break;
+					case CLD::BOTTOM: break;
+					case CLD::LEFT: player->canMoveRight = false; break;
+					case CLD::RIGHT: player->canMoveLeft = false; break;
+				    default: break;
+				}
 			}
-		} 
-		else continue;
+			if (tile->colliding && !tile->collisionRect.IsCollidingWith(player->collisionRect))
+			{
+				switch (tile->coldir)
+				{
+					case CLD::TOP: player->isGrounded = false; break;
+					case CLD::BOTTOM: break;
+					case CLD::LEFT: player->canMoveRight = true; break;
+					case CLD::RIGHT: player->canMoveLeft = true; break;
+					default: break;
+				}
+				tile->sprite.setColor(sf::Color::White);
+				tile->coldir = CLD::NONE;
+				tile->colliding = false;
+			}
+
+		} else continue;
 	}
-	return CollisionRect::CollisionDirection::NONE;
 }

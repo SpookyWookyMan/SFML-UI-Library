@@ -3,12 +3,15 @@
 #include <iostream>
 #include "Tile.h"
 #include "../../Collision/CollisionRect.h"
+#include "../../Entities/Player.h"
 
 class TileChunk 
 {
 public:
 
 	unsigned tileSize;
+
+	Player* player;
 
 	sf::Texture* tileset;
 	sf::Vector2f position;
@@ -22,5 +25,5 @@ public:
 	const sf::Vector2u& GetSize(void) const;
 	void GenerateTiles();
 	void DrawChunk(sf::RenderTarget& target);
-	CollisionRect::CollisionDirection CheckCollision(CollisionRect& rect) const;
+	void CheckPlayerCollision(void);
 };

@@ -7,13 +7,13 @@ Map::Map(const char* pathToTexture)
 }
 
 TileChunk testchunk;
-void Map::Init(void) 
+void Map::Init(Player* player) 
 {
 	this->chunkManager.tileset = this->tileset;
 	
 	testchunk.tileset = &this->chunkManager.tileset;
 	testchunk.tileSize = 8;
-	testchunk.position = {100.0f, 100.0f};
+	testchunk.position = { 15.0f, 500.0f };
 	testchunk.layout = {
 							{143, 200, 141, 147, 147},
 							{141, 200, 143, 139, 200},
@@ -23,9 +23,12 @@ void Map::Init(void)
 					   };
 	testchunk.GenerateTiles();
 	this->chunkManager.AddChunk(testchunk);
+
+	for (auto& chunk : chunkManager.tileChunks) chunk.player = player;
 }
 void Map::Update(void) 
 {
+	for (auto& chunk : chunkManager.tileChunks) { chunk.CheckPlayerCollision(); }
 }
 void Map::Draw(sf::RenderTarget& target) 
 {

@@ -11,7 +11,7 @@ public:
 
 	Map(const char* pathToTexture);
 
-	void Init(void);	
+	void Init(Player* player);	
 	void Update(void);
 	void Draw(sf::RenderTarget& target);
 };

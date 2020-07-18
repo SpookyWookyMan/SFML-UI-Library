@@ -14,6 +14,11 @@ public:
 
 	sf::Sprite sprite;
 
+	//testing
+	bool colliding = false;
+	CollisionRect::CollisionDirection coldir = CollisionRect::CollisionDirection::NONE;
+	//testing^
+
 	CollisionRect collisionRect;
 
 	Tile(const sf::Vector2f& position, sf::Texture* tileset, sf::IntRect* txtrRect, const TileCollType& collType);
