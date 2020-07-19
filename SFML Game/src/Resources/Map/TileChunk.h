@@ -10,6 +10,7 @@ class TileChunk
 public:
 
 	unsigned tileSize;
+	unsigned tileScale;
 
 	Player* player;
 

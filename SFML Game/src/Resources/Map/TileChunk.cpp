@@ -11,16 +11,17 @@ TileChunk::~TileChunk(void)
 const sf::Vector2u& TileChunk::GetElementSize(void) const
 {
 	return { static_cast<unsigned>(this->layout.at(0).size()), 
-			 static_cast<unsigned>(this->layout.size())  };
+			 static_cast<unsigned>(this->layout.size())};
 }
 const sf::Vector2f& TileChunk::GetSize(void) const 
 {
-	return { static_cast<float>(this->layout.at(0).size() * this->tileSize),
-			 static_cast<float>(this->layout.size() * this->tileSize) };
+	return { static_cast<float>(this->layout.at(0).size() * this->tileSize * this->tileScale),
+			 static_cast<float>(this->layout.size() * this->tileSize * this->tileScale) };
 }
 void TileChunk::GenerateTiles(unsigned&& tileSize, unsigned&& tileScale)
 {
-	this->tileSize = tileSize * tileScale;
+	this->tileSize = tileSize;
+	this->tileScale = tileScale;
 
 	for (auto i = 0; i < layout.size(); i++)
 	{
@@ -29,15 +30,15 @@ void TileChunk::GenerateTiles(unsigned&& tileSize, unsigned&& tileScale)
 			unsigned collType = this->layout.at(i).at(j) / 0x64;
 			unsigned tileLoc = this->layout.at(i).at(j) % 0x64;
 
-			unsigned x = tileLoc / 0xF;
-			unsigned y = tileLoc % 0xF;
+			unsigned x = tileLoc / 0xA;
+			unsigned y = tileLoc % 0xA;
 
 			bool isEmpty = (x + y) < 0x1;
 
 			Tile::TileCollType tileCollType = collType == 0x1 ? Tile::TileCollType::COLLISION : Tile::TileCollType::DECOR;
 
 			sf::IntRect* intrect = new sf::IntRect(x * this->tileSize, y * this->tileSize, this->tileSize, this->tileSize);
-			sf::Vector2f* pos = new sf::Vector2f(this->position.x + (this->tileSize * j), this->position.y + (this->tileSize * i));
+			sf::Vector2f* pos = new sf::Vector2f(this->position.x + (this->tileSize * j * tileScale), this->position.y + (this->tileSize * i * tileScale));
 			
 			if(!isEmpty) this->tiles.push_back(new Tile(*pos, this->tileset, intrect, tileCollType, tileScale)); 
 

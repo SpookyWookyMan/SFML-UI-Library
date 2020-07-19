@@ -24,6 +24,7 @@ void Game::Init(void)
 	srand(time(NULL));
 
 	window.setView(View1);
+	window.setFramerateLimit(60);
 
 	player.Init();
 	map.Init(&player);
@@ -49,6 +50,9 @@ void Game::UpdateDeltaTime(void)
 void Game::Update(void)
 {
 	this->UpdateDeltaTime();
+	Center.x += 30.0f *deltaTime;
+	View1.setCenter(Center);
+	window.setView(View1);
 	//player.Update(this->deltaTime);
 	map.Update();
 }

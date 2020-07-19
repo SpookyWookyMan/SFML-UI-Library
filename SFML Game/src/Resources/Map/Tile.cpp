@@ -5,10 +5,10 @@ Tile::Tile(const sf::Vector2f& position, sf::Texture* tileset, sf::IntRect* txtr
 , const unsigned& tileScale)
 {
 	this->sprite.setTexture(*tileset);
+	this->SetTextureRect(*txtrRect);
 	this->sprite.setScale({ static_cast<float>(tileScale), 
 					        static_cast<float>(tileScale)});
 	this->SetPosition(position);
-	this->SetTextureRect(*txtrRect);
 
 	this->collisionType  = collType;
 	this->UpdateCollisionBox();
