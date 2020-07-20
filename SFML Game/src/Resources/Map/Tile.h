@@ -15,7 +15,8 @@ public:
 	sf::Sprite sprite;
 
 	//testing
-	bool colliding = false;
+	bool colliding;
+	bool posUpdated;
 	CollisionRect::CollisionDirection coldir = CollisionRect::CollisionDirection::NONE;
 	//testing^
 

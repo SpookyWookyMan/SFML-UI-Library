@@ -7,16 +7,20 @@ class TileChunkManager
 {
 public:
 
-	std::vector<TileChunk> tileChunks;
-	std::vector<TileChunk*> generatedChunks;
+	std::vector<std::vector<std::vector<unsigned> > > layouts;
+	std::vector<TileChunk> generatedChunks;
+
+	unsigned tileSize;
+	unsigned tileScale;
 
 	sf::Texture tileset;
+
+	Player* player;
 
 	TileChunkManager(sf::Texture* tileset);
 	TileChunkManager(void);
 	~TileChunkManager(void);
 
-	void AddChunk(const TileChunk& tchunk);
 	void DrawChunks(sf::RenderTarget& target);
 	void GenerateNewChunk(const sf::View& view);
 };

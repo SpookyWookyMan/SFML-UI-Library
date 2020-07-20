@@ -50,10 +50,11 @@ void Game::UpdateDeltaTime(void)
 void Game::Update(void)
 {
 	this->UpdateDeltaTime();
-	Center.x += 30.0f *deltaTime;
+	Center.x += 11380.0f *deltaTime;
 	View1.setCenter(Center);
 	window.setView(View1);
 	//player.Update(this->deltaTime);
+
 	map.Update();
 }
 void Game::Draw(void)

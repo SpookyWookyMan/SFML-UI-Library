@@ -3,10 +3,36 @@
 TileChunk::TileChunk(void) 
 {
 }
+TileChunk::TileChunk(const TileChunk& tchunk) 
+{
+	this->tileSize = tchunk.tileSize;
+	this->tileScale = tchunk.tileScale;
+	this->layout = tchunk.layout;
+	this->player = tchunk.player;
+	this->tiles = tchunk.tiles;
+	this->tileset = tchunk.tileset;
+	this->position = tchunk.position;
+	this->hasGenerated = tchunk.hasGenerated;
+}
 TileChunk::~TileChunk(void) 
 {
 	for (auto& i : this->tiles) i = nullptr;
 	this->tiles.clear();
+}
+TileChunk& TileChunk::operator=(const TileChunk& tchunk) 
+{
+	if (this != &tchunk) 
+	{
+		this->tileSize = tchunk.tileSize;
+		this->tileScale = tchunk.tileScale;
+		this->layout = tchunk.layout;
+		this->player = tchunk.player;
+		this->tiles = tchunk.tiles;
+		this->tileset = tchunk.tileset;
+		this->position = tchunk.position;
+		this->hasGenerated = tchunk.hasGenerated;
+	}
+	return *this;
 }
 const sf::Vector2u& TileChunk::GetElementSize(void) const
 {
@@ -23,9 +49,9 @@ void TileChunk::GenerateTiles(unsigned&& tileSize, unsigned&& tileScale)
 	this->tileSize = tileSize;
 	this->tileScale = tileScale;
 
-	for (auto i = 0; i < layout.size(); i++)
+	for (size_t i = 0; i < layout.size(); i++)
 	{
-		for (auto j = 0; j < layout.at(0).size(); j++)
+		for (size_t j = 0; j < layout.at(0).size(); j++)
 		{
 			unsigned collType = this->layout.at(i).at(j) / 0x64;
 			unsigned tileLoc = this->layout.at(i).at(j) % 0x64;
@@ -98,6 +124,36 @@ void TileChunk::CheckPlayerCollision()
 			else continue;
 		}
 	}
+}
+void TileChunk::UpdatePosition(void) 
+{
+	std::vector<sf::Vector2f*>* vec = new std::vector<sf::Vector2f*>();
+
+	for (size_t i = 0; i < layout.size(); i++)
+	{
+		for (size_t j = 0; j < layout.at(0).size(); j++)
+		{
+			sf::Vector2f* pos = new sf::Vector2f(this->position.x + (this->tileSize * j * tileScale), this->position.y + (this->tileSize * i * tileScale));
+			
+			unsigned tileLoc = this->layout.at(i).at(j) % 0x64;
+
+			unsigned x = tileLoc / 0xA;
+			unsigned y = tileLoc % 0xA;
+
+			bool isEmpty = (x + y) < 0x1;
+			
+			if (!isEmpty) vec->push_back(pos);
+		}
+	}
+
+	for (size_t i = 0; i < vec->size(); i++) 
+	{
+		this->tiles.at(i)->SetPosition(*vec->at(i)); 
+		delete vec->at(i);
+	}
+	
+	vec->clear();
+	delete vec;
 }
 bool TileChunk::IsWithinBounds(CollisionRect& crect) const
 {

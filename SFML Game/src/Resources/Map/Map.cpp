@@ -11,40 +11,51 @@ Map::Map(const char* pathToTexture)
 
 TileChunk testchunk;
 TileChunk testchunk2;
+TileChunk testchunk3;
+TileChunk testchunk4;
+
 void Map::Init(Player* player) 
 {
 	this->chunkManager.tileset = this->tileset;
-	
-	testchunk.tileset = &this->chunkManager.tileset;
-	testchunk.position = { 15.0f, 520.0f };
-	testchunk.layout = {
-							{143, 200, 141, 147, 147},
-							{141, 200, 143, 139, 200},
-							{142, 148, 145, 148, 148},
-							{167, 134, 143, 200, 148},
-							{145, 144, 144, 200, 149}
-					   };
-	testchunk.GenerateTiles(8, 2);
-	testchunk2.tileset = &this->chunkManager.tileset;
-	testchunk2.position = { 160.0f, 520.0f };
-	testchunk2.layout = {
-							{143, 200, 141, 147, 147},
-							{141, 200, 143, 139, 200},
-							{142, 148, 145, 148, 148},
-							{167, 134, 143, 200, 148},
-							{145, 144, 144, 200, 149}
-	};
-	testchunk2.GenerateTiles(8, 2);
-	
-	this->chunkManager.AddChunk(testchunk);
-	this->chunkManager.AddChunk(testchunk2);
+	this->chunkManager.player = player;
+	this->chunkManager.tileSize = 8;
+	this->chunkManager.tileScale = 2;
 
-	this->chunkManager.generatedChunks.push_back(&this->chunkManager.tileChunks.at(0));
-	for (auto& chunk : chunkManager.tileChunks) chunk.player = player;
+	this->chunkManager.layouts = 
+	{
+		{
+			{200, 200, 141, 147, 147},
+			{141, 200, 143, 139, 200},
+			{142, 148, 145, 148, 148},
+			{167, 134, 143, 200, 148},
+			{145, 144, 144, 200, 149}
+		},
+		{
+			{144, 200, 141, 147, 147},
+			{141, 200, 143, 139, 200},
+			{142, 148, 145, 148, 148},
+			{167, 134, 143, 200, 148},
+			{145, 144, 144, 200, 149}
+		},
+		{
+			{141, 200, 141, 147, 147},
+			{141, 200, 143, 139, 200},
+			{142, 148, 145, 148, 148},
+			{167, 134, 143, 200, 148},
+			{145, 144, 144, 200, 149}
+		},
+		{
+			{148, 200, 141, 147, 147},
+			{141, 200, 143, 139, 200},
+			{142, 148, 145, 148, 148},
+			{167, 134, 143, 200, 148},
+			{145, 144, 144, 200, 149}
+		}
+	};
 }
 void Map::Update(void) 
 {
-	for (auto& chunk : chunkManager.tileChunks) { chunk.CheckPlayerCollision(); }
+	for (auto& chunk : chunkManager.generatedChunks) { chunk.CheckPlayerCollision(); }
 }
 void Map::Draw(sf::RenderTarget& target) 
 {
