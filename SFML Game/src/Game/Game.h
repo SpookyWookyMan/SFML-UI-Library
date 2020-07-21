@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include "../Entities/Player.h"
 #include "../Resources/Map/Map.h"
+#include "Camera.h"
 
 class Game 
 {
@@ -12,7 +13,7 @@ private:
 	//sf::Event event;
 
 	sf::Clock deltaTimeClock;
-	float deltaTime;
+	float deltaTime = 0.0f;
 
 	void Init(void);
 	void Events(void);

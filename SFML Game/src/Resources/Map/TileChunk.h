@@ -30,7 +30,7 @@ public:
 
 	const sf::Vector2u& GetElementSize(void) const;
 	const sf::Vector2f& GetSize(void) const;
-	void GenerateTiles(unsigned&& tileSize, unsigned&& tileScale);
+	void GenerateTiles(const unsigned& tileSize, const unsigned& tileScale);
 	void DrawChunk(sf::RenderTarget& target);
 	void CheckPlayerCollision(void);
 	void UpdatePosition(void);

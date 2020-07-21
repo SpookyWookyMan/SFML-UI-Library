@@ -3,55 +3,35 @@
 using namespace gui;
 
 UIManager::UIManager(sf::RenderWindow* w)
-	: window(w), event(NULL)
-{
+	: window{w}, event{nullptr} {
 }
-
 UIManager::UIManager(void)
-	: window(NULL), event(NULL)
-{
+	: window{nullptr}, event{nullptr} {
 }
-
-UIManager::~UIManager(void)
-{
+UIManager::~UIManager(void) {
 }
-
-void UIManager::SetWindow(sf::RenderWindow* w)
-{
+void UIManager::SetWindow(sf::RenderWindow* w) {
 	this->window = w;
 }
-
-void UIManager::SetEvent(sf::Event* e)
-{
+void UIManager::SetEvent(sf::Event* e) {
 	this->event = e;
 }
-
-void UIManager::Update(void)
-{
-	for (Widget*& w : widgets)
-	{
+void UIManager::Update(void) {
+	for (Widget*& w : widgets) {
 		w->Update();
 	}
 }
-
-void UIManager::Events(void)
-{
-	for (Widget*& w : widgets)
-	{
+void UIManager::Events(void) {
+	for (Widget*& w : widgets) {
 		w->Events();
 	}
 }
-
-void UIManager::Draw(void)
-{
-	for (Widget*& w : widgets)
-	{
+void UIManager::Draw(void) {
+	for (Widget*& w : widgets) {
 		if(!w->IsHidden())
 			w->Draw();
 	}
 }
-
-void UIManager::InsertWidget(Widget* widget)
-{
+void UIManager::InsertWidget(Widget* widget) {
 	widgets.push_back(widget);
 }

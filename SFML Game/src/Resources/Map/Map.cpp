@@ -3,8 +3,7 @@
 //TODO:
 //	-Fix messed up tileScale thing
 
-Map::Map(const char* pathToTexture) 
-{
+Map::Map(const char* pathToTexture) {
 	if (!this->tileset.loadFromFile(pathToTexture)) printf("Failed to load tileset\n");
 	else printf("Tilset loaded\n");
 }
@@ -14,8 +13,7 @@ TileChunk testchunk2;
 TileChunk testchunk3;
 TileChunk testchunk4;
 
-void Map::Init(Player* player) 
-{
+void Map::Init(Player* player) {
 	this->chunkManager.tileset = this->tileset;
 	this->chunkManager.player = player;
 	this->chunkManager.tileSize = 8;
@@ -53,11 +51,9 @@ void Map::Init(Player* player)
 		}
 	};
 }
-void Map::Update(void) 
-{
-	for (auto& chunk : chunkManager.generatedChunks) { chunk.CheckPlayerCollision(); }
+void Map::Update(void) {
+	for (auto& chunk : chunkManager.generatedChunks) { chunk->CheckPlayerCollision(); }
 }
-void Map::Draw(sf::RenderTarget& target) 
-{
+void Map::Draw(sf::RenderTarget& target) {
 	this->chunkManager.DrawChunks(target);
 }

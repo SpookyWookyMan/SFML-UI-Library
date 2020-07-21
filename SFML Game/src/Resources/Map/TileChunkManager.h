@@ -8,7 +8,7 @@ class TileChunkManager
 public:
 
 	std::vector<std::vector<std::vector<unsigned> > > layouts;
-	std::vector<TileChunk> generatedChunks;
+	std::vector<TileChunk*> generatedChunks;
 
 	unsigned tileSize;
 	unsigned tileScale;

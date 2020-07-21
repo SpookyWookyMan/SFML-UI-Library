@@ -2,121 +2,81 @@
 
 using namespace gui;
 
-void Widget::SetManager(UIManager* m)
-{
+void Widget::SetManager(UIManager* m) {
 	this->manager = m;
 	this->manager->InsertWidget(this);
 }
-
-void Widget::SetActive(const bool& active)
-{
+void Widget::SetActive(const bool& active) {
 	this->active = active;
 }
-
-const bool& Widget::IsActive(void) const
-{
+const bool& Widget::IsActive(void) const {
 	return active;
 }
-
-const bool& Widget::IsHidden(void) const
-{
+const bool& Widget::IsHidden(void) const {
 	return hidden;
 }
-
-inline bool Widget::IsMouseOver(void)
-{
-	if (active)
-	{
+inline bool Widget::IsMouseOver(void) {
+	if (active) {
 		std::unique_ptr<sf::Vector2f> pos(new sf::Vector2f(sf::Mouse::getPosition(*manager->window)));
 		return globalBounds.contains(*pos);
 	}
-	else
-	{
+	else {
 		return false;
 	}
 }
-
-void Widget::Hide(const bool& hide)
-{
+void Widget::Hide(const bool& hide) {
 	this->hidden = hide;
 }
-
-void Widget::MouseEnter(void)
-{
-	if (IsMouseOver())
-	{
+void Widget::MouseEnter(void) {
+	if (IsMouseOver()) {
 		MouseEnterFunc();
 	}
 }
-
-void Widget::MouseExit(void)
-{
-	if (!IsMouseOver())
-	{
+void Widget::MouseExit(void) {
+	if (!IsMouseOver()) {
 		MouseExitFunc();
 	}
 }
-
-void Widget::MouseRelease(const sf::Mouse::Button& mb)
-{
-	if (IsMouseOver())
-	{
-		if (this->manager->event->type == sf::Event::MouseButtonReleased)
-		{
-			if (this->manager->event->mouseButton.button == mb)
-			{
+void Widget::MouseRelease(const sf::Mouse::Button& mb) {
+	if (IsMouseOver()) {
+		if (this->manager->event->type == sf::Event::MouseButtonReleased) {
+			if (this->manager->event->mouseButton.button == mb) {
 				mouseHeld = false;
 				ReleaseFunc();
 			}
 		}
 	}
 }
-
-void Widget::MouseClick(void)
-{
-	if (IsMouseOver())
-	{
-		if (this->manager->event->type == sf::Event::MouseButtonPressed)
-		{
-			if (this->manager->event->mouseButton.button == sf::Mouse::Button::Left)
-			{
+void Widget::MouseClick(void) {
+	if (IsMouseOver()) {
+		if (this->manager->event->type == sf::Event::MouseButtonPressed) {
+			if (this->manager->event->mouseButton.button == sf::Mouse::Button::Left) {
 				mouseHeld = true;
 				ClickFunc();
 			}
 		}
 	}
 }
-
-void Widget::MouseClick(const sf::Mouse::Button& mb)
-{
-	if (IsMouseOver())
-	{
-		if (this->manager->event->type == sf::Event::MouseButtonPressed)
-		{
-			if (this->manager->event->mouseButton.button == mb)
-			{
+void Widget::MouseClick(const sf::Mouse::Button& mb) {
+	if (IsMouseOver()) {
+		if (this->manager->event->type == sf::Event::MouseButtonPressed) {
+			if (this->manager->event->mouseButton.button == mb) {
 				mouseHeld = true;
 				ClickFunc();
 			}
 		}
 	}
 }
-
-void Widget::MouseRelease(void)
-{
-	if (IsMouseOver())
-	{
-		if (this->manager->event->type == sf::Event::MouseButtonReleased)
-		{
-			if (this->manager->event->mouseButton.button == sf::Mouse::Button::Left)
-			{
+void Widget::MouseRelease(void) {
+	if (IsMouseOver()) {
+		if (this->manager->event->type == sf::Event::MouseButtonReleased) {
+			if (this->manager->event->mouseButton.button == sf::Mouse::Button::Left) {
 				mouseHeld = false;
 				ReleaseFunc();
 			}
 		}
 	}
 }
-
 void Widget::Events(void) 
 {
 	this->MouseEnter();
@@ -124,19 +84,14 @@ void Widget::Events(void)
 	this->MouseClick();
 	this->MouseRelease();
 }
-
-void Widget::Update(void)
-{
+void Widget::Update(void) {
 	UpdateFunc();
 }
-
-sf::Vector2f Widget::SwitchPivot(const Pivot& pivot, sf::Vector2f* v)
-{
+sf::Vector2f Widget::SwitchPivot(const Pivot& pivot, sf::Vector2f* v) {
 	std::unique_ptr<sf::Vector2f> dim(v);
 	sf::Vector2f* vec = nullptr;
 
-	switch (pivot)
-	{
+	switch (pivot) {
 	case Widget::Pivot::TOP_LEFT: vec = new sf::Vector2f(0.0f, 0.0f); break;
 	case Widget::Pivot::TOP_CENTER: vec = new sf::Vector2f(dim->x / 2, 0.0f); break;
 	case Widget::Pivot::TOP_RIGHT: vec = new sf::Vector2f(dim->x, 0.0f); break;
@@ -156,14 +111,11 @@ sf::Vector2f Widget::SwitchPivot(const Pivot& pivot, sf::Vector2f* v)
 
 	delete vec;
 }
-
-sf::Vector2f Widget::SwitchPivotOffset(const Pivot& pivot, sf::Vector2f* v, const sf::Vector2f& offset)
-{
+sf::Vector2f Widget::SwitchPivotOffset(const Pivot& pivot, sf::Vector2f* v, const sf::Vector2f& offset) {
 	std::unique_ptr<sf::Vector2f> dim(v);
 	sf::Vector2f* vec = nullptr;
 
-	switch (pivot)
-	{
+	switch (pivot) {
 	case Widget::Pivot::TOP_LEFT: vec = new sf::Vector2f(0.0f + offset.x, 0.0f + offset.y); break;
 	case Widget::Pivot::TOP_CENTER: vec = new sf::Vector2f((dim->x / 2) + offset.x, 0.0f + offset.y); break;
 	case Widget::Pivot::TOP_RIGHT: vec = new sf::Vector2f(dim->x + offset.x, 0.0f + offset.x); break;

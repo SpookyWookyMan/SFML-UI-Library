@@ -2,8 +2,7 @@
 
 using namespace gui;
 
-Bar::Bar(const sf::Vector2f& dim, const float& maxValue, const float& minValue)
-{
+Bar::Bar(const sf::Vector2f& dim, const float& maxValue, const float& minValue) {
 	this->SetSize(dim);
 
 	this->maxValue = maxValue;
@@ -19,9 +18,7 @@ Bar::Bar(const sf::Vector2f& dim, const float& maxValue, const float& minValue)
 	this->backgroundBar.setFillColor(sf::Color::Red);
 	this->background.setFillColor(sf::Color::Blue);
 }
-
-Bar::Bar(const sf::Vector2f& dim)
-{
+Bar::Bar(const sf::Vector2f& dim) {
 	this->SetSize(dim);
 
 	this->maxValue = 100.0f;
@@ -37,9 +34,7 @@ Bar::Bar(const sf::Vector2f& dim)
 	this->backgroundBar.setFillColor(sf::Color::Red);
 	this->background.setFillColor(sf::Color::Blue);
 }
-
-Bar::Bar(void)
-{
+Bar::Bar(void) {
 	std::unique_ptr<sf::Vector2f>dim(new sf::Vector2f(700.0f, 10.0f));
 
 	this->SetSize(*dim);
@@ -57,46 +52,28 @@ Bar::Bar(void)
 	this->backgroundBar.setFillColor(sf::Color::Red);
 	this->background.setFillColor(sf::Color::Blue);
 }
-
-Bar::~Bar(void)
-{
+Bar::~Bar(void){
 }
-
-void Bar::SetPosition(const sf::Vector2f& pos)
-{
+void Bar::SetPosition(const sf::Vector2f& pos){
 	this->position = pos;
 	this->UpdateBarPos();
 }
-
-void Bar::SetOrigin(const Pivot& pivot) 
-{
-	
+void Bar::SetOrigin(const Pivot& pivot) {
 }
-
-void Bar::SetOrigin(const Pivot& pivot, sf::Vector2f* offset) 
-{
-	//Make this not a pure virtual function
+void Bar::SetOrigin(const Pivot& pivot, sf::Vector2f* offset) {
 }
-
-void Bar::SetSize(const sf::Vector2f& dim)
-{
+void Bar::SetSize(const sf::Vector2f& dim) {
 	this->valueBar.setSize(dim);
 	this->backgroundBar.setSize(dim);
 	this->background.setSize(dim);
 }
-
-sf::Vector2f* Bar::GetSize(void) 
-{
+sf::Vector2f* Bar::GetSize(void) {
 	return new sf::Vector2f(this->background.getSize().x, this->background.getSize().y);
 }
-
-const sf::Vector2f& Bar::GetOrigin(void) const 
-{
+const sf::Vector2f& Bar::GetOrigin(void) const {
 	return this->valueBar.getOrigin();
 }
-
-void Bar::ChangeValueBy(const float&& val)
-{
+void Bar::ChangeValueBy(const float&& val) {
 	this->currentValue += val;
 
 	if (this->currentValue > this->maxValue) this->currentValue = this->maxValue;
@@ -109,51 +86,38 @@ void Bar::ChangeValueBy(const float&& val)
 
 	delete x;
 }
-
-void Bar::UpdateGlobalBounds(void)
-{
+void Bar::UpdateGlobalBounds(void) {
 	this->globalBounds = this->background.getGlobalBounds();
 }
-
-void Bar::Update(void)
-{
-	if (this->showBackBar) 
-	{
-		if (this->backgroundBar.getSize().x > this->valueBar.getSize().x)
-		{
+void Bar::Update(void) {
+	if (this->showBackBar) {
+		if (this->backgroundBar.getSize().x > this->valueBar.getSize().x) {
 			timer = clock.getElapsedTime();
 
-			if (timer.asMilliseconds() >= this->bBarDelay && !this->decreaseVal)
-			{
+			if (timer.asMilliseconds() >= this->bBarDelay && !this->decreaseVal) {
 				this->decreaseVal = true;
 				this->clock.restart();
 			}
-			if (decreaseVal && timer.asMilliseconds() >= bBarDecraseInterval)
-			{
+			if (decreaseVal && timer.asMilliseconds() >= bBarDecraseInterval) {
 				std::unique_ptr<sf::Vector2f> size(new sf::Vector2f(this->backgroundBar.getSize().x - bBarDecreaseAmount, this->backgroundBar.getSize().y));
 				this->backgroundBar.setSize(*size);
 
 				this->clock.restart();
 			}
 		}
-		else 
-		{
+		else {
 			this->decreaseVal = false;
 		}
 	}
 
 	this->UpdateFunc();
 }
-
-void Bar::Draw(void)
-{
+void Bar::Draw(void) {
 	this->manager->window->draw(this->background);
 	if(showBackBar) this->manager->window->draw(this->backgroundBar);
 	this->manager->window->draw(this->valueBar);
 }
-
-void Bar::UpdateBarPos(void)
-{
+void Bar::UpdateBarPos(void) {
 	this->valueBar.setPosition(this->position);
 	this->backgroundBar.setPosition(this->position);
 	this->background.setPosition(this->position);

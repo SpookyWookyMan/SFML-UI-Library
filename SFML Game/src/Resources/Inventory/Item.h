@@ -5,6 +5,7 @@ class Item
 public:
 
 	const char* name;
-	
+	unsigned id;
+
 
 };

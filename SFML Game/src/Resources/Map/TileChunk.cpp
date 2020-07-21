@@ -1,10 +1,10 @@
 #include "TileChunk.h"
 
 TileChunk::TileChunk(void) 
-{
+	:hasGenerated{false}, player{nullptr}, tileSize{0}, tileScale{0},
+	tileset{nullptr} {
 }
-TileChunk::TileChunk(const TileChunk& tchunk) 
-{
+TileChunk::TileChunk(const TileChunk& tchunk) {
 	this->tileSize = tchunk.tileSize;
 	this->tileScale = tchunk.tileScale;
 	this->layout = tchunk.layout;
@@ -14,15 +14,12 @@ TileChunk::TileChunk(const TileChunk& tchunk)
 	this->position = tchunk.position;
 	this->hasGenerated = tchunk.hasGenerated;
 }
-TileChunk::~TileChunk(void) 
-{
+TileChunk::~TileChunk(void) {
 	for (auto& i : this->tiles) i = nullptr;
 	this->tiles.clear();
 }
-TileChunk& TileChunk::operator=(const TileChunk& tchunk) 
-{
-	if (this != &tchunk) 
-	{
+TileChunk& TileChunk::operator=(const TileChunk& tchunk) {
+	if (this != &tchunk) {
 		this->tileSize = tchunk.tileSize;
 		this->tileScale = tchunk.tileScale;
 		this->layout = tchunk.layout;
@@ -34,25 +31,20 @@ TileChunk& TileChunk::operator=(const TileChunk& tchunk)
 	}
 	return *this;
 }
-const sf::Vector2u& TileChunk::GetElementSize(void) const
-{
+const sf::Vector2u& TileChunk::GetElementSize(void) const {
 	return { static_cast<unsigned>(this->layout.at(0).size()), 
-			 static_cast<unsigned>(this->layout.size())};
+			 static_cast<unsigned>(this->layout.size()) };
 }
-const sf::Vector2f& TileChunk::GetSize(void) const 
-{
+const sf::Vector2f& TileChunk::GetSize(void) const {
 	return { static_cast<float>(this->layout.at(0).size() * this->tileSize * this->tileScale),
 			 static_cast<float>(this->layout.size() * this->tileSize * this->tileScale) };
 }
-void TileChunk::GenerateTiles(unsigned&& tileSize, unsigned&& tileScale)
-{
+void TileChunk::GenerateTiles(const unsigned& tileSize, const unsigned& tileScale) {
 	this->tileSize = tileSize;
 	this->tileScale = tileScale;
 
-	for (size_t i = 0; i < layout.size(); i++)
-	{
-		for (size_t j = 0; j < layout.at(0).size(); j++)
-		{
+	for (size_t i = 0; i < layout.size(); i++) {
+		for (size_t j = 0; j < layout.at(0).size(); j++) {
 			unsigned collType = this->layout.at(i).at(j) / 0x64;
 			unsigned tileLoc = this->layout.at(i).at(j) % 0x64;
 
@@ -72,32 +64,24 @@ void TileChunk::GenerateTiles(unsigned&& tileSize, unsigned&& tileScale)
 		}
 	}
 }
-void TileChunk::DrawChunk(sf::RenderTarget& target) 
-{
-	for (auto& i : this->tiles) 
-	{
+void TileChunk::DrawChunk(sf::RenderTarget& target) {
+	for (auto& i : this->tiles) {
 		target.draw(i->sprite);
 	}
 }
-void TileChunk::CheckPlayerCollision() 
-{
-	if (this->IsWithinBounds(this->player->collisionRect)) 
-	{
-		for (auto& tile : this->tiles)
-		{
+void TileChunk::CheckPlayerCollision() {
+	if (this->IsWithinBounds(this->player->collisionRect)) {
+		for (auto& tile : this->tiles) {
 			using CLD = CollisionRect::CollisionDirection;
 
-			if (tile->collisionType == Tile::TileCollType::COLLISION)
-			{
-				if (tile->collisionRect.IsCollidingWith(player->collisionRect))
-				{
+			if (tile->collisionType == Tile::TileCollType::COLLISION) {
+				if (tile->collisionRect.IsCollidingWith(player->collisionRect)) {
 					CLD colDir = player->collisionRect.GetCollisionDirection(tile->collisionRect);
 
 					tile->sprite.setColor(sf::Color::Red);
 					tile->coldir = colDir;
 					tile->colliding = true;
-					switch (colDir)
-					{
+					switch (colDir) {
 					case CLD::TOP: player->isGrounded = true; break;
 					case CLD::BOTTOM: break;
 					case CLD::LEFT: player->canMoveRight = false; break;
@@ -105,10 +89,8 @@ void TileChunk::CheckPlayerCollision()
 					default: break;
 					}
 				}
-				if (tile->colliding && !tile->collisionRect.IsCollidingWith(player->collisionRect))
-				{
-					switch (tile->coldir)
-					{
+				if (tile->colliding && !tile->collisionRect.IsCollidingWith(player->collisionRect)) {
+					switch (tile->coldir) {
 					case CLD::TOP: player->isGrounded = false; break;
 					case CLD::BOTTOM: break;
 					case CLD::LEFT: player->canMoveRight = true; break;
@@ -129,10 +111,8 @@ void TileChunk::UpdatePosition(void)
 {
 	std::vector<sf::Vector2f*>* vec = new std::vector<sf::Vector2f*>();
 
-	for (size_t i = 0; i < layout.size(); i++)
-	{
-		for (size_t j = 0; j < layout.at(0).size(); j++)
-		{
+	for (size_t i = 0; i < layout.size(); i++) {
+		for (size_t j = 0; j < layout.at(0).size(); j++) {
 			sf::Vector2f* pos = new sf::Vector2f(this->position.x + (this->tileSize * j * tileScale), this->position.y + (this->tileSize * i * tileScale));
 			
 			unsigned tileLoc = this->layout.at(i).at(j) % 0x64;
@@ -146,8 +126,7 @@ void TileChunk::UpdatePosition(void)
 		}
 	}
 
-	for (size_t i = 0; i < vec->size(); i++) 
-	{
+	for (size_t i = 0; i < vec->size(); i++) {
 		this->tiles.at(i)->SetPosition(*vec->at(i)); 
 		delete vec->at(i);
 	}
@@ -155,11 +134,9 @@ void TileChunk::UpdatePosition(void)
 	vec->clear();
 	delete vec;
 }
-bool TileChunk::IsWithinBounds(CollisionRect& crect) const
-{
+bool TileChunk::IsWithinBounds(CollisionRect& crect) const {
 	return (crect.position.x + crect.size.x) > this->position.x || crect.position.x < (this->position.x + this->GetSize().x);
 }
-bool TileChunk::IsWithinView(const sf::View& view) const 
-{
+bool TileChunk::IsWithinView(const sf::View& view) const {
 	return (this->position.x + this->GetSize().x) > (view.getCenter().x - view.getSize().x / 2);
 }
