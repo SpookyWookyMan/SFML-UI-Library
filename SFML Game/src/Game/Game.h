@@ -4,6 +4,7 @@
 #include "../Entities/Player.h"
 #include "../Resources/Map/Map.h"
 #include "Camera.h"
+#include "../UI/UI.h"
 
 class Game 
 {

@@ -95,6 +95,7 @@ void TileChunk::CheckPlayerCollision() {
 							tile->collisionRect.size.x - player->collisionRect.size.x) colDir = CLD::RIGHT;
 					}
 
+					if (!this->collided) this->destTimer.restart();
 					this->collided = true;
 
 					tile->sprite.setColor(sf::Color::Red);
@@ -158,6 +159,12 @@ void TileChunk::UpdatePosition(void)
 	
 	vec->clear();
 	delete vec;
+}
+void TileChunk::Update(void){
+	if (this->destTimer.getElapsedTime().asSeconds() > 1.5f && collided) {
+		this->position.y += 0.05f;
+		this->UpdatePosition();
+	}
 }
 bool TileChunk::IsWithinBounds(CollisionRect& crect) const {
 	return (crect.position.x + crect.size.x) > this->position.x || crect.position.x < (this->position.x + this->GetSize().x);

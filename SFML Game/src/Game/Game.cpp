@@ -3,10 +3,13 @@
 Game::Game(void) {
 }
 Game::~Game() {
+
 }
 
 sf::RenderWindow window(sf::VideoMode(0x3E8, 0x3E8), "SFML Game", sf::Style::Default);
 sf::Event _event;
+
+gui::UI ui(window, _event);
 
 Camera camera(window, { 15.0f, 500.0f }, {200.0f, 200.0f});
 
@@ -26,12 +29,18 @@ void Game::Init(void) {
 
 	player.Init();
 	map.Init(&player);
+	//ui.Init();
 }
 void Game::Events(void) {
 	while (window.pollEvent(_event)) {
 		player.Events(_event);
+		ui.Events();
 		if (_event.type == sf::Event::Closed)
 			window.close();
+		if (_event.type == sf::Event::KeyPressed) {
+			if (_event.key.code == sf::Keyboard::Tab)
+				this->paused = !this->paused;
+		}
 		if (_event.type == sf::Event::KeyReleased) {
 			if (_event.key.code == sf::Keyboard::Escape)
 				window.close();
@@ -47,14 +56,18 @@ void Game::Update(void) {
 	player.Update(this->deltaTime);
 	camera.MoveToTarget(player.position, 4.0f, this->deltaTime);
 
-	if (player.position.y > camera.position.y + camera.size.y / 2)
+	if (player.position.y > camera.position.y + camera.size.y / 2) {
+		player.canMoveLeft = player.canMoveRight = false;
 		printf("Game Over\n");
+	}
 
 	map.Update();
+	//ui.Update(window.getView());
 }
 void Game::Draw(void) {
 	player.Draw(window);
 	map.Draw(window);
+	//ui.Draw();
 }
 void Game::Run(void) {
 	this->Init();

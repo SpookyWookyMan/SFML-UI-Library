@@ -179,6 +179,7 @@ namespace gui
 		TextBox(const char* path);
 		TextBox(const sf::Font& font, const char* str);
 		TextBox(const sf::Font& font);
+		TextBox(void);
 		~TextBox(void);
 
 		void SetPosition(const sf::Vector2f& pos) override;
@@ -449,6 +450,25 @@ namespace gui
 
 		void UpdateOptionBox(void);
 		void UpdateDisplay(void);
+
+	};
+	class UI
+	{
+	public:
+
+		UI(sf::RenderWindow& target, sf::Event& event);
+		UI(void) = delete;
+		~UI(void);
+
+		void Init(void);
+		void Events(void);
+		void Update(const sf::View& view);
+		void Draw(void);
+
+	private:
+
+		sf::RenderWindow& target;
+		sf::Event& _event;
 
 	};
 }

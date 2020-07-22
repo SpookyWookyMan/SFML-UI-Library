@@ -36,6 +36,8 @@ TextBox::TextBox(const sf::Font& font) {
 	this->SetFont(font);
 	this->SetText("Text");
 }
+TextBox::TextBox(void) {
+}
 TextBox::~TextBox(void) {
 }
 void TextBox::SetPosition(const sf::Vector2f& pos) {

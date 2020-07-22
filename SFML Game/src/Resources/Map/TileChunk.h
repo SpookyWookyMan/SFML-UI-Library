@@ -31,11 +31,18 @@ public:
 
 	const sf::Vector2u& GetElementSize(void) const;
 	const sf::Vector2f& GetSize(void) const;
+
 	void GenerateTiles(const unsigned& tileSize, const unsigned& tileScale);
 	void DrawChunk(sf::RenderTarget& target);
 	void CheckPlayerCollision(void);
 	void UpdatePosition(void);
+	void Update(void);
+
 	bool IsWithinBounds(CollisionRect& crect) const;
 	bool IsWithinView(const sf::View& view) const;
+
+private:
+
+	sf::Clock destTimer;
 
 };

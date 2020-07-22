@@ -8,9 +8,9 @@ class Player : public Object
 
 public:
 
-	bool isGrounded;    //
-	bool canMoveRight = true; // temporary
-	bool canMoveLeft = true; //
+	bool isGrounded;    
+	bool canMoveRight = true; 
+	bool canMoveLeft = true; 
 
 	Player(void);
 	~Player(void);
