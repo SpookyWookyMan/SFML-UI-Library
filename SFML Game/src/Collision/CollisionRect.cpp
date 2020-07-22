@@ -14,4 +14,4 @@ const CollisionRect::CollisionDirection& CollisionRect::GetCollisionDirection(Co
 		else if (this->position.x > r.position.x + r.size.x - this->size.x) return CollisionDirection::RIGHT;
 	}
 	return CollisionDirection::NONE;
-}
+} 

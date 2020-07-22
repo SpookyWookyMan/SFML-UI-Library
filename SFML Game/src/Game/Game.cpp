@@ -1,8 +1,8 @@
 #include "Game.h"
 
-Game::Game(void){
+Game::Game(void) {
 }
-Game::~Game(){
+Game::~Game() {
 }
 
 sf::RenderWindow window(sf::VideoMode(0x3E8, 0x3E8), "SFML Game", sf::Style::Default);
@@ -22,7 +22,7 @@ void Game::Init(void) {
 	window.setIcon(32, 32, icon.getPixelsPtr());
 	//
 
-	window.setFramerateLimit(60);
+	//window.setFramerateLimit(60);
 
 	player.Init();
 	map.Init(&player);
@@ -44,12 +44,16 @@ void Game::UpdateDeltaTime(void) {
 void Game::Update(void) {
 	this->UpdateDeltaTime();
 	
-	//player.Update(this->deltaTime);
+	player.Update(this->deltaTime);
+	camera.MoveToTarget(player.position, 4.0f, this->deltaTime);
+
+	if (player.position.y > camera.position.y + camera.size.y / 2)
+		printf("Game Over\n");
 
 	map.Update();
 }
 void Game::Draw(void) {
-	//player.Draw(window);
+	player.Draw(window);
 	map.Draw(window);
 }
 void Game::Run(void) {

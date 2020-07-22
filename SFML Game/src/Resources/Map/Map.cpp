@@ -50,6 +50,28 @@ void Map::Init(Player* player) {
 			{145, 144, 144, 200, 149}
 		}
 	};
+
+	TileChunk* initialChunk = new TileChunk();
+
+	initialChunk->tileset = &this->tileset;
+	initialChunk->player = player;
+	initialChunk->layout = chunkManager.layouts.at(0);
+	initialChunk->GenerateTiles(chunkManager.tileSize, chunkManager.tileScale);
+	initialChunk->position = { -70.0f, 500.0f };
+	initialChunk->UpdatePosition();
+	initialChunk->hasGenerated = true;
+
+	TileChunk* initialChunk2 = new TileChunk();
+
+	initialChunk2->tileset = &this->tileset;
+	initialChunk2->player = player;
+	initialChunk2->layout = chunkManager.layouts.at(0);
+	initialChunk2->GenerateTiles(chunkManager.tileSize, chunkManager.tileScale);
+	initialChunk2->position = { 15.0f + chunkManager.tileSize * 2, 500.0f };
+	initialChunk2->UpdatePosition();
+
+	this->chunkManager.generatedChunks.push_back(initialChunk);
+	this->chunkManager.generatedChunks.push_back(initialChunk2);
 }
 void Map::Update(void) {
 	for (auto& chunk : chunkManager.generatedChunks) { chunk->CheckPlayerCollision(); }

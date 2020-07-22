@@ -25,5 +25,5 @@ public:
 	void SetCameraPosition(const sf::Vector2f& position);
 	void SetCameraSize(const sf::Vector2f& size);
 
-	void MoveToTarget(const sf::Vector2f& target, float& dt);
+	void MoveToTarget(const sf::Vector2f& target, const float& speed, const float& dt);
 };

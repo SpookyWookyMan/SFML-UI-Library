@@ -13,6 +13,7 @@ public:
 	unsigned tileScale;
 
 	bool hasGenerated;
+	bool collided;
 
 	Player* player;
 
@@ -36,4 +37,5 @@ public:
 	void UpdatePosition(void);
 	bool IsWithinBounds(CollisionRect& crect) const;
 	bool IsWithinView(const sf::View& view) const;
+
 };

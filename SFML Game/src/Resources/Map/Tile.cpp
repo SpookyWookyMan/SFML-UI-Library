@@ -2,15 +2,17 @@
 #include <iostream>
 
 Tile::Tile(const sf::Vector2f& position, sf::Texture* tileset, sf::IntRect* txtrRect, const TileCollType& collType, 
-	const unsigned& tileScale) {
+	const unsigned& tileScale, bool collDirs[]) {
 	this->sprite.setTexture(*tileset);
 	this->SetTextureRect(*txtrRect);
 	this->sprite.setScale({ static_cast<float>(tileScale), 
 					        static_cast<float>(tileScale)});
 	this->SetPosition(position);
 
+	for (size_t i = 0; i < 4; i++) this->collDirs[i] = collDirs[i];
+
 	this->collisionType  = collType;
-	this->UpdateCollisionBox();
+	this->UpdateCollisionBox();	 
 }
 Tile::~Tile(void) {
 }

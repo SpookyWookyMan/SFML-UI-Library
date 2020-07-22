@@ -13,9 +13,9 @@ Player::~Player(void)
 
 void Player::Init(void) 
 {
-	this->SetVelocity({ 16.5f, 0.05f });
-	this->SetPosition({20.0f, 420.0f});
-	this->sprite.setScale({0.1f, 0.1f});
+	this->SetVelocity({ 40.5f, 0.1f });
+	this->SetPosition({154.0f, 420.0f});
+	this->sprite.setScale({0.1f, 0.3f});
 	this->BindCollisionRectToObject();
 }
 void Player::Events(sf::Event& event)
@@ -26,7 +26,7 @@ void Player::Events(sf::Event& event)
 		{
 			this->position.y -= 0.3f;
 			this->SetPosition(this->position);
-			this->velocity.y = -0.02f;
+			this->velocity.y = -0.1f;
 		}
 	}
 	if (event.type == sf::Event::KeyReleased)
@@ -48,8 +48,7 @@ void Player::Update(float& deltaTime)
 
 	if (!isGrounded)
 	{
-		//printf("here\n");
-		this->velocity.y += (velocity.y > 0.05f ? 0.0f : 0.04f) *deltaTime;
+		this->velocity.y += (velocity.y > 0.1f ? 0.0f : 0.1f) *deltaTime;
 		this->position.y += this->velocity.y;
 	}
 

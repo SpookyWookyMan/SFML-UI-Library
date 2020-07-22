@@ -9,11 +9,10 @@ class Game
 {
 private:
 
-	//sf::RenderWindow* window;
-	//sf::Event event;
-
 	sf::Clock deltaTimeClock;
 	float deltaTime = 0.0f;
+
+	bool paused;
 
 	void Init(void);
 	void Events(void);

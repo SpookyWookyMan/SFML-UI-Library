@@ -2,6 +2,9 @@
 
 #include "../../Collision/CollisionRect.h"
 
+//TODO:
+//	-Make chunks fall 3 seconds after collision with player
+
 class Tile 
 {
 public:
@@ -9,21 +12,21 @@ public:
 	enum class TileCollType
 	{
 		COLLISION,
-		DECOR
+		DECOR,
+		DEADLY
 	} collisionType;
 
 	sf::Sprite sprite;
 
-	//testing
 	bool colliding;
-	bool posUpdated;
+	bool collDirs[4];
+
 	CollisionRect::CollisionDirection coldir = CollisionRect::CollisionDirection::NONE;
-	//testing^
 
 	CollisionRect collisionRect;
 
 	Tile(const sf::Vector2f& position, sf::Texture* tileset, sf::IntRect* txtrRect, 
-		 const TileCollType& collType, const unsigned& tileScale);
+		 const TileCollType& collType, const unsigned& tileScale, bool collDirs[]);
 	~Tile(void);
 
 	void SetPosition(const sf::Vector2f& position);

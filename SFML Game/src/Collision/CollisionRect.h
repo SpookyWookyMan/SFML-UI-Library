@@ -8,11 +8,11 @@ public:
 
 	enum class CollisionDirection
 	{
-		TOP    =  1,
-		BOTTOM = -1,
-		LEFT   =  2,
-		RIGHT  = -2,
-		NONE   =  0
+		TOP,
+		BOTTOM,
+		LEFT,
+		RIGHT,
+		NONE   
 	};
 
 	sf::Vector2f position;
