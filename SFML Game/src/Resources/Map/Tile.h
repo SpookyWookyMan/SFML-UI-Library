@@ -25,7 +25,7 @@ public:
 
 	CollisionRect collisionRect;
 
-	Tile(const sf::Vector2f& position, sf::Texture* tileset, sf::IntRect* txtrRect, 
+	Tile(const sf::Vector2f& position, sf::Texture* tileset, const sf::IntRect& txtrRect,
 		 const TileCollType& collType, const unsigned& tileScale, bool collDirs[]);
 	~Tile(void);
 

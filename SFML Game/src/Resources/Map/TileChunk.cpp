@@ -54,30 +54,22 @@ void TileChunk::GenerateTiles(const unsigned& tileSize, const unsigned& tileScal
 			bool isEmpty = (x + y) < 0x1;
 			bool collDirs[4] = {true, true, true, true};
 
-			if (/*i > 0 &&*/ i <= layout.size() - 1) {
-				if (i != 0)
-					if (this->layout.at(i - 1).at(j) != 0xC8) collDirs[0] = false; //top
-				if (i != layout.size() - 1)
-					if (this->layout.at(i + 1).at(j) != 0xC8) collDirs[1] = false; //bottom	
+			if (i <= layout.size() - 1) {
+				if (i != 0 && this->layout.at(i - 1).at(j) != 0xC8) collDirs[0] = false; //top
+				if (i != layout.size() - 1 && this->layout.at(i + 1).at(j) != 0xC8) collDirs[1] = false; //bottom	
 			}
-			if (/*j > 0 &&*/ j <= layout.at(0).size() - 1) {
-				if (j != 0)
-					if (this->layout.at(i).at(j - 1) != 0xC8) collDirs[2] = false; //left	
-				if (j != layout.at(0).size() - 1)
-					if (this->layout.at(i).at(j + 1) != 0xC8) collDirs[3] = false; //right
+			if (j <= layout.at(0).size() - 1) {
+				if (j != 0 && this->layout.at(i).at(j - 1) != 0xC8) collDirs[2] = false; //left	
+				if (j != layout.at(0).size() - 1 && this->layout.at(i).at(j + 1) != 0xC8) collDirs[3] = false; //right
 			}
-
-			if (j == layout.at(0).size() - 1) std::cout << collDirs[2] << "\n";
 
 			using CT = Tile::TileCollType;
 			CT tileCollType = collType == 0x1 ? CT::COLLISION : collType == 0x2 ? CT::DECOR : CT::DEADLY;
 
-			sf::IntRect* intrect = new sf::IntRect(x * this->tileSize, y * this->tileSize, this->tileSize, this->tileSize);
-			sf::Vector2f* pos = new sf::Vector2f(this->position.x + (this->tileSize * j * tileScale), this->position.y + (this->tileSize * i * tileScale));
+			sf::IntRect intrect(x * this->tileSize, y * this->tileSize, this->tileSize, this->tileSize);
+			sf::Vector2f pos(this->position.x + (this->tileSize * j * tileScale), this->position.y + (this->tileSize * i * tileScale));
 			
-			if (!isEmpty) this->tiles.push_back(new Tile(*pos, this->tileset, intrect, tileCollType, tileScale, collDirs));
-
-			delete intrect, pos;
+			if (!isEmpty) this->tiles.push_back(new Tile(pos, this->tileset, intrect, tileCollType, tileScale, collDirs));
 		}
 	}
 }
@@ -111,8 +103,8 @@ void TileChunk::CheckPlayerCollision() {
 					switch (colDir) {
 					case CLD::TOP: if (tile->collDirs[0] && player->velocity.y > 0.0f) player->isGrounded = true; break;
 					case CLD::BOTTOM: if (tile->collDirs[1]) player->velocity.y *= -1; break;
-					case CLD::LEFT: if (tile->collDirs[2]); player->canMoveRight = false; break;
-					case CLD::RIGHT: if (tile->collDirs[3]); player->canMoveLeft = false; break;
+					case CLD::LEFT: if (tile->collDirs[2]) player->canMoveRight = false; break;
+					case CLD::RIGHT: if (tile->collDirs[3]) player->canMoveLeft = false; break;
 					default: break;
 					}
 				}
@@ -120,8 +112,12 @@ void TileChunk::CheckPlayerCollision() {
 					switch (tile->coldir) {
 					case CLD::TOP: player->isGrounded = false; break;
 					case CLD::BOTTOM: break;
-					case CLD::LEFT: player->canMoveRight = true; break;
-					case CLD::RIGHT: player->canMoveLeft = true; break;
+					case CLD::LEFT: player->canMoveRight = true; 
+						if (player->position.y < tile->collisionRect.position.y)
+							player->isGrounded = false; break;
+					case CLD::RIGHT: player->canMoveLeft = true; 
+						if (player->position.y < tile->collisionRect.position.y) 
+							player->isGrounded = false; break;
 					default: break;
 					}
 					tile->sprite.setColor(sf::Color::White);
@@ -139,11 +135,11 @@ void TileChunk::CheckPlayerCollision() {
 }
 void TileChunk::UpdatePosition(void) 
 {
-	std::vector<sf::Vector2f*>* vec = new std::vector<sf::Vector2f*>();
+	std::vector<sf::Vector2f> vec;
 
 	for (size_t i = 0; i < layout.size(); i++) {
 		for (size_t j = 0; j < layout.at(0).size(); j++) {
-			sf::Vector2f* pos = new sf::Vector2f(this->position.x + (this->tileSize * j * tileScale), this->position.y + (this->tileSize * i * tileScale));
+			sf::Vector2f pos(this->position.x + (this->tileSize * j * tileScale), this->position.y + (this->tileSize * i * tileScale));
 			
 			unsigned tileLoc = this->layout.at(i).at(j) % 0x64;
 
@@ -152,25 +148,23 @@ void TileChunk::UpdatePosition(void)
 
 			bool isEmpty = (x + y) < 0x1;
 			
-			if (!isEmpty) vec->push_back(pos);
+			if (!isEmpty) vec.push_back(pos);
 		}
 	}
 
-	for (size_t i = 0; i < vec->size(); i++) {
-		this->tiles.at(i)->SetPosition(*vec->at(i)); 
+	for (size_t i = 0; i < vec.size(); i++) {
+		this->tiles.at(i)->SetPosition(vec.at(i)); 
 		this->tiles.at(i)->collisionRect.size = { this->tiles.at(i)->collisionRect.size.x * this->tileScale, 
 												  this->tiles.at(i)->collisionRect.size.y * this->tileScale };
-		this->tiles.at(i)->collisionRect.position = *vec->at(i);
-		delete vec->at(i);
+		this->tiles.at(i)->collisionRect.position = vec.at(i);
 	}
 	
-	vec->clear();
-	delete vec;
+	vec.clear();
 }
 void TileChunk::Update(const float& dt){
 	if (this->destTimer.getElapsedTime().asSeconds() > 1.5f && collided
 		&& this->position.y) {
-		this->position.y += 50.5f * dt;
+		//this->position.y += 50.5f * dt;
 		this->UpdatePosition();
 	}
 }

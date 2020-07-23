@@ -59,7 +59,6 @@ void Game::Update(void) {
 	if (player.position.y > camera.position.y + camera.size.y / 2) {
 		player.canMoveLeft = player.canMoveRight = false;
 		ui.tb_gameOver.Hide(false);
-		printf("Game Over\n");
 	}
 
 	map.Update(this->deltaTime);

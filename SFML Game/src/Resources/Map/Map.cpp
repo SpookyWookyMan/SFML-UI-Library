@@ -8,11 +8,6 @@ Map::Map(const char* pathToTexture) {
 	else printf("Tilset loaded\n");
 }
 
-TileChunk testchunk;
-TileChunk testchunk2;
-TileChunk testchunk3;
-TileChunk testchunk4;
-
 void Map::Init(Player* player) {
 	this->chunkManager.tileset = this->tileset;
 	this->chunkManager.player = player;

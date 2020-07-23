@@ -1,10 +1,10 @@
 #include "Tile.h"
 #include <iostream>
 
-Tile::Tile(const sf::Vector2f& position, sf::Texture* tileset, sf::IntRect* txtrRect, const TileCollType& collType, 
+Tile::Tile(const sf::Vector2f& position, sf::Texture* tileset, const sf::IntRect& txtrRect, const TileCollType& collType, 
 	const unsigned& tileScale, bool collDirs[]) {
 	this->sprite.setTexture(*tileset);
-	this->SetTextureRect(*txtrRect);
+	this->SetTextureRect(txtrRect);
 	this->sprite.setScale({ static_cast<float>(tileScale), 
 					        static_cast<float>(tileScale)});
 	this->SetPosition(position);
