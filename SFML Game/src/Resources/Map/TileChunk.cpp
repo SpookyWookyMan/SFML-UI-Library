@@ -54,14 +54,20 @@ void TileChunk::GenerateTiles(const unsigned& tileSize, const unsigned& tileScal
 			bool isEmpty = (x + y) < 0x1;
 			bool collDirs[4] = {true, true, true, true};
 
-			if (i > 0)
-				if (this->layout.at(i - 1).at(j) != 0xC8) collDirs[0] = false; //top
-			if (i < layout.size() - 1)				
-				if (this->layout.at(i + 1).at(j) != 0xC8) collDirs[1] = false; //bottom	
-			if (j > 0)								
-				if (this->layout.at(i).at(j - 1) != 0xC8) collDirs[2] = false; //left		
-			if (j < layout.at(0).size() - 1)		
-				if (this->layout.at(i).at(j + 1) != 0xC8) collDirs[3] = false; //right
+			if (/*i > 0 &&*/ i <= layout.size() - 1) {
+				if (i != 0)
+					if (this->layout.at(i - 1).at(j) != 0xC8) collDirs[0] = false; //top
+				if (i != layout.size() - 1)
+					if (this->layout.at(i + 1).at(j) != 0xC8) collDirs[1] = false; //bottom	
+			}
+			if (/*j > 0 &&*/ j <= layout.at(0).size() - 1) {
+				if (j != 0)
+					if (this->layout.at(i).at(j - 1) != 0xC8) collDirs[2] = false; //left	
+				if (j != layout.at(0).size() - 1)
+					if (this->layout.at(i).at(j + 1) != 0xC8) collDirs[3] = false; //right
+			}
+
+			if (j == layout.at(0).size() - 1) std::cout << collDirs[2] << "\n";
 
 			using CT = Tile::TileCollType;
 			CT tileCollType = collType == 0x1 ? CT::COLLISION : collType == 0x2 ? CT::DECOR : CT::DEADLY;
@@ -89,13 +95,14 @@ void TileChunk::CheckPlayerCollision() {
 				if (tile->collisionRect.IsCollidingWith(player->collisionRect)) {
 					CLD colDir = player->collisionRect.GetCollisionDirection(tile->collisionRect);
 
-					if (tile->collDirs[0] && player->velocity.y < 0.0f) {
+					if (tile->collDirs[0] && player->velocity.y < 0.0f
+						|| tile->collDirs[1] && player->velocity.y > 0.0f) {
 						if (player->position.x < tile->collisionRect.position.x) colDir = CLD::LEFT;
 						else if (player->position.x > tile->collisionRect.position.x +
 							tile->collisionRect.size.x - player->collisionRect.size.x) colDir = CLD::RIGHT;
 					}
 
-					if (!this->collided) this->destTimer.restart();
+					if (!this->collided) { this->destTimer.restart(); }
 					this->collided = true;
 
 					tile->sprite.setColor(sf::Color::Red);
@@ -160,9 +167,10 @@ void TileChunk::UpdatePosition(void)
 	vec->clear();
 	delete vec;
 }
-void TileChunk::Update(void){
-	if (this->destTimer.getElapsedTime().asSeconds() > 1.5f && collided) {
-		this->position.y += 0.05f;
+void TileChunk::Update(const float& dt){
+	if (this->destTimer.getElapsedTime().asSeconds() > 1.5f && collided
+		&& this->position.y) {
+		this->position.y += 50.5f * dt;
 		this->UpdatePosition();
 	}
 }

@@ -13,7 +13,7 @@ Player::~Player(void)
 
 void Player::Init(void) 
 {
-	this->SetVelocity({ 60.5f, 0.1f });
+	this->SetVelocity({ 60.5f, 130.5f });
 	this->SetPosition({154.0f, 420.0f});
 	this->sprite.setScale({0.1f, 0.3f});
 	this->BindCollisionRectToObject();
@@ -26,7 +26,7 @@ void Player::Events(sf::Event& event)
 		{
 			this->position.y -= 0.3f;
 			this->SetPosition(this->position);
-			this->velocity.y = -0.05f;
+			this->velocity.y = -75.1f;
 		}
 	}
 	if (event.type == sf::Event::KeyReleased)
@@ -48,8 +48,8 @@ void Player::Update(float& deltaTime)
 
 	if (!isGrounded)
 	{
-		this->velocity.y += (velocity.y > 0.1f ? 0.0f : 0.1f) *deltaTime;
-		this->position.y += this->velocity.y;
+		this->velocity.y += (velocity.y > 130.5f ? 0.0f : 155.1f) *deltaTime;
+		this->position.y += this->velocity.y * deltaTime;
 	}
 
 	this->sprite.setPosition(this->position);

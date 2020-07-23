@@ -3,30 +3,22 @@
 using namespace gui;
 
 TextBox::TextBox(const char* path, const char* str) {
-	sf::Font* font = new sf::Font();
-	if (!font->loadFromFile(path))
+	if (!this->font.loadFromFile(path))
 		std::cout << "Failed to load font from: " << path << "\n";
 
-	this->font = *font;
-	this->SetFont(*font);
+	this->SetFont(font);
 	this->SetText(str);
 	this->SetColor(sf::Color::White);
 	this->text.setCharacterSize(72);
-
-	delete font;
 }
 TextBox::TextBox(const char* path) {
-	sf::Font* font = new sf::Font();
-	if (!font->loadFromFile(path))
+	if (!this->font.loadFromFile(path))
 		std::cout << "Failed to load font from: " << path << "\n";
 
-	this->font = *font;
-	this->SetFont(*font);
+	this->SetFont(font);
 	this->SetText("Text");
 	this->SetColor(sf::Color::White);
 	this->text.setCharacterSize(72);
-
-	delete font;
 }
 TextBox::TextBox(const sf::Font& font, const char* str) {
 	this->SetFont(font);
@@ -59,15 +51,9 @@ void TextBox::SetFont(const sf::Font& font) {
 	this->text.setFont(this->font);
 }
 void TextBox::SetFont(const char* path) {
-	sf::Font* font = new sf::Font();
-	
-	if (!font->loadFromFile(path))
+	if (!this->font.loadFromFile(path))
 		std::cout << "Failed to load font from: " << path << "\n";
-
-	this->font = *font;
 	this->text.setFont(this->font);
-
-	delete font;
 }
 void TextBox::SetColor(const sf::Color& color) {
 	this->text.setFillColor(color);

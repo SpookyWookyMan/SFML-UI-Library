@@ -29,7 +29,7 @@ void Game::Init(void) {
 
 	player.Init();
 	map.Init(&player);
-	//ui.Init();
+	ui.Init();
 }
 void Game::Events(void) {
 	while (window.pollEvent(_event)) {
@@ -58,16 +58,17 @@ void Game::Update(void) {
 
 	if (player.position.y > camera.position.y + camera.size.y / 2) {
 		player.canMoveLeft = player.canMoveRight = false;
+		ui.tb_gameOver.Hide(false);
 		printf("Game Over\n");
 	}
 
-	map.Update();
-	//ui.Update(window.getView());
+	map.Update(this->deltaTime);
+	ui.Update(window.getView());
 }
 void Game::Draw(void) {
 	player.Draw(window);
 	map.Draw(window);
-	//ui.Draw();
+	ui.Draw();
 }
 void Game::Run(void) {
 	this->Init();

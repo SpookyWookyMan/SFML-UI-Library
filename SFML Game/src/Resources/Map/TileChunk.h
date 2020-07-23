@@ -36,7 +36,7 @@ public:
 	void DrawChunk(sf::RenderTarget& target);
 	void CheckPlayerCollision(void);
 	void UpdatePosition(void);
-	void Update(void);
+	void Update(const float& dt);
 
 	bool IsWithinBounds(CollisionRect& crect) const;
 	bool IsWithinView(const sf::View& view) const;

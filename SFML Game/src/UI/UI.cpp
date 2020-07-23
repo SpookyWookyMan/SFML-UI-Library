@@ -2,35 +2,36 @@
 
 using PIVOT = gui::Widget::Pivot;
 
-gui::UIManager uiManager;
-
-gui::TextBox tb_gameOver;
-
 gui::UI::UI(sf::RenderWindow& target, sf::Event& event) : target{target}, _event{event} {
-	uiManager.SetWindow(&this->target);
-	uiManager.SetEvent(&this->_event);
+	
 }
 gui::UI::~UI() {
 }
 void gui::UI::Init(void) {
 	
-	tb_gameOver.SetManager(&uiManager);
-	tb_gameOver.SetFont("Res/Fonts/VCR_OSD.ttf");
-	tb_gameOver.SetText("Game Over");
-	tb_gameOver.SetColor(sf::Color::White);
-	tb_gameOver.SetOrigin(PIVOT::MID_CENTER);
-	tb_gameOver.SetSize(12);
+	this->uiManager.SetWindow(&this->target);
+	this->uiManager.SetEvent(&this->_event);
 
-	tb_gameOver.text.setOutlineThickness(1);
-	tb_gameOver.text.setOutlineColor(sf::Color::Red);
+	this->tb_gameOver.SetManager(&uiManager);
+	this->tb_gameOver.SetFont("Res/Fonts/VCR_OSD.ttf");
+	this->tb_gameOver.SetText("Game Over");
+	this->tb_gameOver.SetColor(sf::Color::White);
+	this->tb_gameOver.SetSize(24);
+	this->tb_gameOver.SetOrigin(PIVOT::MID_CENTER);
+
+	this->tb_gameOver.text.setOutlineThickness(1);
+	this->tb_gameOver.text.setOutlineColor(sf::Color::Red);
+
+	this->tb_gameOver.Hide(true);
+
 }
 void gui::UI::Events(void) {
-	uiManager.Events();
+	this->uiManager.Events();
 }
 void gui::UI::Update(const sf::View& view) {
-	tb_gameOver.SetPosition(view.getCenter());
-	uiManager.Update();
+	this->tb_gameOver.SetPosition(view.getCenter());
+	this->uiManager.Update();
 }
 void gui::UI::Draw(void) {
-	uiManager.Draw();
+	this->uiManager.Draw();
 }

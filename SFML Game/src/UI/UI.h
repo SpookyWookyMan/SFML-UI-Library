@@ -456,6 +456,10 @@ namespace gui
 	{
 	public:
 
+		UIManager uiManager;
+
+		TextBox tb_gameOver;
+
 		UI(sf::RenderWindow& target, sf::Event& event);
 		UI(void) = delete;
 		~UI(void);

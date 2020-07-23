@@ -73,10 +73,10 @@ void Map::Init(Player* player) {
 	this->chunkManager.generatedChunks.push_back(initialChunk);
 	this->chunkManager.generatedChunks.push_back(initialChunk2);
 }
-void Map::Update(void) {
+void Map::Update(const float& dt) {
 	for (auto& chunk : chunkManager.generatedChunks) { 
 		chunk->CheckPlayerCollision();
-		chunk->Update();
+		chunk->Update(dt);
 	}
 }
 void Map::Draw(sf::RenderTarget& target) {
