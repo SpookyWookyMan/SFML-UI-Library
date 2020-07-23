@@ -40,6 +40,12 @@ void Game::Events(void) {
 		if (_event.type == sf::Event::KeyPressed) {
 			if (_event.key.code == sf::Keyboard::Tab)
 				this->paused = !this->paused;
+			if (_event.key.code == sf::Keyboard::Space && player.gameOver) {
+				player.Restart();
+				camera.SetCameraPosition(player.position);
+				ui.tb_gameOver.Hide(true);
+				player.gameOver = false;
+			}
 		}
 		if (_event.type == sf::Event::KeyReleased) {
 			if (_event.key.code == sf::Keyboard::Escape)
@@ -48,6 +54,7 @@ void Game::Events(void) {
 	}
 }
 void Game::UpdateDeltaTime(void) {
+	//this->deltaTime = !paused ? this->deltaTimeClock.restart().asSeconds() : 0.0f;
 	this->deltaTime = this->deltaTimeClock.restart().asSeconds();
 }
 void Game::Update(void) {
@@ -59,6 +66,9 @@ void Game::Update(void) {
 	if (player.position.y > camera.position.y + camera.size.y / 2) {
 		player.canMoveLeft = player.canMoveRight = false;
 		ui.tb_gameOver.Hide(false);
+		map.chunkManager.generatedChunks.clear();
+		map.Init(&player);
+		player.gameOver = true;
 	}
 
 	map.Update(this->deltaTime);

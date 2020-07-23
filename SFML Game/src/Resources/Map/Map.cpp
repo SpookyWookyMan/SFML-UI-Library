@@ -1,8 +1,5 @@
 #include "Map.h"
 
-//TODO:
-//	-Fix messed up tileScale thing
-
 Map::Map(const char* pathToTexture) {
 	if (!this->tileset.loadFromFile(pathToTexture)) printf("Failed to load tileset\n");
 	else printf("Tilset loaded\n");
@@ -52,7 +49,7 @@ void Map::Init(Player* player) {
 	initialChunk->player = player;
 	initialChunk->layout = chunkManager.layouts.at(0);
 	initialChunk->GenerateTiles(chunkManager.tileSize, chunkManager.tileScale);
-	initialChunk->position = { -70.0f, 500.0f };
+	initialChunk->position = { -70.0f, 520.0f };
 	initialChunk->UpdatePosition();
 	initialChunk->hasGenerated = true;
 
@@ -62,7 +59,7 @@ void Map::Init(Player* player) {
 	initialChunk2->player = player;
 	initialChunk2->layout = chunkManager.layouts.at(0);
 	initialChunk2->GenerateTiles(chunkManager.tileSize, chunkManager.tileScale);
-	initialChunk2->position = { 15.0f + chunkManager.tileSize * 2, 500.0f };
+	initialChunk2->position = { 15.0f + chunkManager.tileSize * 2, 520.0f };
 	initialChunk2->UpdatePosition();
 
 	this->chunkManager.generatedChunks.push_back(initialChunk);

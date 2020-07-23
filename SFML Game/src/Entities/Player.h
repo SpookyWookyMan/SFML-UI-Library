@@ -12,6 +12,8 @@ public:
 	bool canMoveRight = true; 
 	bool canMoveLeft = true; 
 
+	bool gameOver;
+
 	Player(void);
 	~Player(void);
 
@@ -19,5 +21,10 @@ public:
 	void Events(sf::Event& event);
 	void Update(float& deltaTime) override;
 	void Draw(sf::RenderTarget& target) override;
+	void Restart(void);
+
+private:
+
+	sf::Vector2f startingPosition;
 
 };

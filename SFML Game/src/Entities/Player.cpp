@@ -14,10 +14,13 @@ Player::~Player(void)
 void Player::Init(void) 
 {
 	this->SetVelocity({ 60.5f, 130.5f });
-	this->SetPosition({154.0f, 420.0f});
+	this->SetPosition({-40.0f, 500.0f});
 	this->sprite.setScale({0.1f, 0.3f});
 	this->BindCollisionRectToObject();
+
+	this->startingPosition = this->position;
 }
+
 void Player::Events(sf::Event& event)
 {
 	if (event.type == sf::Event::KeyPressed) 
@@ -58,4 +61,9 @@ void Player::Update(float& deltaTime)
 void Player::Draw(sf::RenderTarget& target)
 {
 	target.draw(this->sprite);
+}
+void Player::Restart(void) 
+{
+	this->SetPosition(this->startingPosition);
+	this->canMoveLeft = this->canMoveRight = true;
 }

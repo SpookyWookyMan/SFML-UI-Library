@@ -164,7 +164,7 @@ void TileChunk::UpdatePosition(void)
 void TileChunk::Update(const float& dt){
 	if (this->destTimer.getElapsedTime().asSeconds() > 1.5f && collided
 		&& this->position.y) {
-		//this->position.y += 50.5f * dt;
+		this->position.y += 50.5f * dt;
 		this->UpdatePosition();
 	}
 }
