@@ -66,4 +66,5 @@ void Player::Restart(void)
 {
 	this->SetPosition(this->startingPosition);
 	this->canMoveLeft = this->canMoveRight = true;
+	this->isGrounded = false;
 }

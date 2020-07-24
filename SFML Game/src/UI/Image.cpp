@@ -13,6 +13,8 @@ Image::Image(const sf::Texture& texture) {
 
 	this->sprite.setTexture(this->texture);
 }
+Image::Image(void) {
+}
 Image::~Image(void) {
 }
 void Image::SetPosition(const sf::Vector2f& pos) {

@@ -23,13 +23,25 @@ void Game::Init(void) {
 	sf::Image icon;
 	icon.loadFromFile("Res/Textures/default.png");
 	window.setIcon(32, 32, icon.getPixelsPtr());
-	//
-
-	//window.setFramerateLimit(60);
 
 	player.Init();
 	map.Init(&player);
 	ui.Init();
+
+	//ui stuff
+	ui.tb_menuInstruction.MouseEnterFunc = [&] {
+		ui.tb_menuInstruction.text.setOutlineThickness(1);
+	};
+	ui.tb_menuInstruction.MouseExitFunc = [&] {
+		ui.tb_menuInstruction.text.setOutlineThickness(0);
+	};
+	ui.tb_menuInstruction.ClickFunc = [&] {
+		this->state = States::NORMAL;
+	};
+
+	this->state = States::MENU;
+	ui.tb_gameTitle.Hide(false);
+	ui.tb_menuInstruction.Hide(false);
 }
 void Game::Events(void) {
 	while (window.pollEvent(_event)) {
@@ -43,7 +55,13 @@ void Game::Events(void) {
 			if (_event.key.code == sf::Keyboard::Space && player.gameOver) {
 				player.Restart();
 				camera.SetCameraPosition(player.position);
+
+				map.chunkManager.generatedChunks.clear();
+				map.Init(&player);
+				
+				ui.panel.hidden = true;
 				ui.tb_gameOver.Hide(true);
+
 				player.gameOver = false;
 			}
 		}
@@ -60,23 +78,27 @@ void Game::UpdateDeltaTime(void) {
 void Game::Update(void) {
 	this->UpdateDeltaTime();
 	
-	player.Update(this->deltaTime);
-	camera.MoveToTarget(player.position, 4.0f, this->deltaTime);
+	if (this->state != States::MENU) {
+		player.Update(this->deltaTime);
+		camera.MoveToTarget(player.position, 4.0f, this->deltaTime);
 
-	if (player.position.y > camera.position.y + camera.size.y / 2) {
-		player.canMoveLeft = player.canMoveRight = false;
-		ui.tb_gameOver.Hide(false);
-		map.chunkManager.generatedChunks.clear();
-		map.Init(&player);
-		player.gameOver = true;
+		if (player.position.y > camera.position.y + camera.size.y / 2) {
+			player.canMoveLeft = player.canMoveRight = false;
+			ui.panel.hidden = false;
+			ui.tb_gameOver.Hide(false);
+			player.gameOver = true;
+		}
+		map.Update(this->deltaTime);
+	} else {
+
 	}
-
-	map.Update(this->deltaTime);
 	ui.Update(window.getView());
 }
 void Game::Draw(void) {
-	player.Draw(window);
-	map.Draw(window);
+	if (this->state != States::MENU) {
+		player.Draw(window);
+		map.Draw(window);
+	}
 	ui.Draw();
 }
 void Game::Run(void) {

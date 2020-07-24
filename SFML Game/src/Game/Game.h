@@ -23,6 +23,13 @@ private:
 
 public:
 
+	enum class States
+	{
+		NORMAL,
+		PAUSED,
+		MENU
+	} state;
+
 	Game();
 	~Game();
 

@@ -258,6 +258,7 @@ namespace gui
 
 		Image(const char* path);
 		Image(const sf::Texture& texture);
+		Image(void);
 		~Image(void);
 
 		void SetPosition(const sf::Vector2f& pos) override;
@@ -452,6 +453,14 @@ namespace gui
 		void UpdateDisplay(void);
 
 	};
+
+	struct Panel
+	{
+		sf::RectangleShape rect;
+
+		bool hidden;
+	};
+
 	class UI
 	{
 	public:
@@ -459,6 +468,11 @@ namespace gui
 		UIManager uiManager;
 
 		TextBox tb_gameOver;
+
+		TextBox tb_gameTitle;
+		TextBox tb_menuInstruction;
+
+		Panel panel;
 
 		UI(sf::RenderWindow& target, sf::Event& event);
 		UI(void) = delete;
