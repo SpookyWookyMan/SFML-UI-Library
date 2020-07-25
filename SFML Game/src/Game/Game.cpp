@@ -39,9 +39,9 @@ void Game::Init(void) {
 		this->state = States::NORMAL;
 	};
 
-	this->state = States::MENU;
-	ui.tb_gameTitle.Hide(false);
-	ui.tb_menuInstruction.Hide(false);
+	//this->state = States::MENU;
+	//ui.tb_gameTitle.Hide(false);
+	//ui.tb_menuInstruction.Hide(false);
 }
 void Game::Events(void) {
 	while (window.pollEvent(_event)) {

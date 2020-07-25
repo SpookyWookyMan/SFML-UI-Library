@@ -14,7 +14,7 @@ Player::~Player(void)
 void Player::Init(void) 
 {
 	this->SetVelocity({ 60.5f, 130.5f });
-	this->SetPosition({-40.0f, 500.0f});
+	this->SetPosition({-40.0f, 480.0f});
 	this->sprite.setScale({0.1f, 0.3f});
 	this->BindCollisionRectToObject();
 

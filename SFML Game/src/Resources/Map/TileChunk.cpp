@@ -2,7 +2,7 @@
 
 TileChunk::TileChunk(void) 
 	:hasGenerated{false}, collided{false}, player{nullptr}, tileSize{0}, tileScale{0},
-	tileset{nullptr} {
+	tileset{ nullptr } {
 }
 TileChunk::TileChunk(const TileChunk& tchunk) {
 	this->tileSize = tchunk.tileSize;
@@ -13,6 +13,7 @@ TileChunk::TileChunk(const TileChunk& tchunk) {
 	this->tileset = tchunk.tileset;
 	this->position = tchunk.position;
 	this->hasGenerated = tchunk.hasGenerated;
+	this->destructionTime = tchunk.destructionTime;
 }
 TileChunk::~TileChunk(void) {
 	for (auto& i : this->tiles) i = nullptr;
@@ -28,11 +29,12 @@ TileChunk& TileChunk::operator=(const TileChunk& tchunk) {
 		this->tileset = tchunk.tileset;
 		this->position = tchunk.position;
 		this->hasGenerated = tchunk.hasGenerated;
+		this->destructionTime = tchunk.destructionTime;
 	}
 	return *this;
 }
 const sf::Vector2u& TileChunk::GetElementSize(void) const {
-	return { static_cast<unsigned>(this->layout.at(0).size()), 
+	return { static_cast<unsigned>(this->layout.at(this->index).size()), 
 			 static_cast<unsigned>(this->layout.size()) };
 }
 const sf::Vector2f& TileChunk::GetSize(void) const {
@@ -64,7 +66,16 @@ void TileChunk::GenerateTiles(const unsigned& tileSize, const unsigned& tileScal
 			}
 
 			using CT = Tile::TileCollType;
-			CT tileCollType = collType == 0x1 ? CT::COLLISION : collType == 0x2 ? CT::DECOR : CT::DEADLY;
+			CT tileCollType;
+
+			switch (collType) {
+				case 0x1: tileCollType = CT::COLLISION; break;
+				case 0x2: tileCollType = CT::DECOR; break;
+				case 0x3: tileCollType = CT::DEADLY; break;
+				case 0x4: tileCollType = CT::BOUNCE; break;
+				case 0x5: tileCollType = CT::SELFD; break;
+				default: tileCollType = CT::DECOR; break;
+			};
 
 			sf::IntRect intrect(x * this->tileSize, y * this->tileSize, this->tileSize, this->tileSize);
 			sf::Vector2f pos(this->position.x + (this->tileSize * j * tileScale), this->position.y + (this->tileSize * i * tileScale));
@@ -83,7 +94,8 @@ void TileChunk::CheckPlayerCollision() {
 		for (auto& tile : this->tiles) {
 			using CLD = CollisionRect::CollisionDirection;
 
-			if (tile->collisionType == Tile::TileCollType::COLLISION) {
+			if (tile->collisionType == Tile::TileCollType::COLLISION || tile->collisionType == Tile::TileCollType::BOUNCE
+				|| tile->collisionType == Tile::TileCollType::SELFD) {
 				if (tile->collisionRect.IsCollidingWith(player->collisionRect)) {
 					CLD colDir = player->collisionRect.GetCollisionDirection(tile->collisionRect);
 
@@ -101,7 +113,11 @@ void TileChunk::CheckPlayerCollision() {
 					tile->coldir = colDir;
 					tile->colliding = true;
 					switch (colDir) {
-					case CLD::TOP: if (tile->collDirs[0] && player->velocity.y > 0.0f) player->isGrounded = true; break;
+					case CLD::TOP: if (tile->collDirs[0] && player->velocity.y > 0.0f) {
+						if (tile->collisionType == Tile::TileCollType::BOUNCE) player->velocity.y = -120.0f;
+						else player->isGrounded = true;
+					}
+						break;
 					case CLD::BOTTOM: if (tile->collDirs[1]) player->velocity.y *= -1; break;
 					case CLD::LEFT: if (tile->collDirs[2]) player->canMoveRight = false; break;
 					case CLD::RIGHT: if (tile->collDirs[3]) player->canMoveLeft = false; break;
@@ -125,8 +141,7 @@ void TileChunk::CheckPlayerCollision() {
 					tile->colliding = false;
 				}
 			}
-			else if (tile->collisionType == Tile::TileCollType::DEADLY 
-				&& tile->collisionRect.IsCollidingWith(player->collisionRect)) {
+			else if (tile->collisionType == Tile::TileCollType::DEADLY && tile->collisionRect.IsCollidingWith(player->collisionRect)) {
 				printf("ded\n");
 			}
 			else continue;
@@ -162,9 +177,9 @@ void TileChunk::UpdatePosition(void)
 	vec.clear();
 }
 void TileChunk::Update(const float& dt){
-	if (this->destTimer.getElapsedTime().asSeconds() > 1.5f && collided
-		&& this->position.y) {
-		this->position.y += 50.5f * dt;
+	if (this->destTimer.getElapsedTime().asSeconds() > this->destructionTime && collided
+		/*&& this->position.y*/) {
+		//this->position.y += 50.5f * dt;
 		this->UpdatePosition();
 	}
 }

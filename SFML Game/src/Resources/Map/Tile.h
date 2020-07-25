@@ -2,9 +2,6 @@
 
 #include "../../Collision/CollisionRect.h"
 
-//TODO:
-//	-Make chunks fall 3 seconds after collision with player
-
 class Tile 
 {
 public:
@@ -13,7 +10,9 @@ public:
 	{
 		COLLISION,
 		DECOR,
-		DEADLY
+		DEADLY,
+		BOUNCE,
+		SELFD
 	} collisionType;
 
 	sf::Sprite sprite;

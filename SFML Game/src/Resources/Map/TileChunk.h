@@ -11,9 +11,12 @@ public:
 
 	unsigned tileSize;
 	unsigned tileScale;
+	unsigned index;
 
 	bool hasGenerated;
-	bool collided;
+	bool collided = false;
+
+	float destructionTime;
 
 	Player* player;
 
