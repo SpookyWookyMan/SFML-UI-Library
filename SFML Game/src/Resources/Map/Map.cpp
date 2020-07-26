@@ -4,14 +4,12 @@ Map::Map(const char* pathToTexture) {
 	if (!this->tileset.loadFromFile(pathToTexture)) printf("Failed to load tileset\n");
 	else printf("Tilset loaded\n");
 }
-void Map::Init(Player* player, sf::View& view) {
+void Map::Init(Player* player) {
 
 	this->chunkManager.tileset = this->tileset;
 	this->chunkManager.player = player;
 	this->chunkManager.tileSize = 8;
 	this->chunkManager.tileScale = 2;
-
-	this->parallax.BuildBackground(view);
 
 	this->chunkManager.layouts = 
 	{
@@ -140,13 +138,11 @@ void Map::Init(Player* player, sf::View& view) {
 	std::cout << sizeof(sf::Clock) << "\n";
 }
 void Map::Update(const float& dt) {
-	this->parallax.UpdateBackground();
 	for (auto& chunk : this->chunkManager.generatedChunks) { 
 		chunk->CheckPlayerCollision();
 		chunk->Update(dt);
 	}
 }
 void Map::Draw(sf::RenderTarget& target) {
-	this->parallax.DrawBackground(target);
 	this->chunkManager.DrawChunks(target);
 }

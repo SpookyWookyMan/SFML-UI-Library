@@ -16,6 +16,9 @@ Camera camera(window, { 15.0f, 500.0f }, {200.0f, 200.0f});
 Player player;
 Map map("Res/Tileset/caves.png");
 
+#include "../Resources/Parallax.h"
+Parallax p;
+
 void Game::Init(void) {
 	srand(time(NULL));
 
@@ -25,8 +28,10 @@ void Game::Init(void) {
 	window.setIcon(32, 32, icon.getPixelsPtr());
 
 	player.Init();
-	map.Init(&player, camera.view);
+	map.Init(&player);
 	ui.Init();
+
+	p.Init(player, camera.view);
 
 	camera.SetBounds(camera.position.y - (camera.size.y / 2 - 80.0f), camera.position.y + camera.size.y / 2);
 
@@ -59,7 +64,7 @@ void Game::Events(void) {
 				camera.SetCameraPosition(player.position);
 
 				map.chunkManager.generatedChunks.clear();
-				map.Init(&player, camera.view);
+				map.Init(&player);
 				
 				ui.panel.hidden = true;
 				ui.tb_gameOver.Hide(true);
@@ -94,10 +99,12 @@ void Game::Update(void) {
 	} else {
 
 	}
+	p.Update(this->deltaTime, camera.view);
 	ui.Update(window.getView());
 }
 void Game::Draw(void) {
 	if (this->state != States::MENU) {
+		p.Draw(window);
 		map.Draw(window);
 		player.Draw(window);
 	}
