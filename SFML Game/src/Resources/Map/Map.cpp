@@ -4,11 +4,14 @@ Map::Map(const char* pathToTexture) {
 	if (!this->tileset.loadFromFile(pathToTexture)) printf("Failed to load tileset\n");
 	else printf("Tilset loaded\n");
 }
-void Map::Init(Player* player) {
+void Map::Init(Player* player, sf::View& view) {
+
 	this->chunkManager.tileset = this->tileset;
 	this->chunkManager.player = player;
 	this->chunkManager.tileSize = 8;
 	this->chunkManager.tileScale = 2;
+
+	this->parallax.BuildBackground(view);
 
 	this->chunkManager.layouts = 
 	{
@@ -20,18 +23,26 @@ void Map::Init(Player* player) {
 			{145, 144, 144, 141, 149}
  		},
 		{
-			{144, 200, 141, 147, 147},
-			{141, 200, 143, 139, 200},
-			{142, 148, 145, 148, 148},
-			{167, 134, 143, 200, 148},
-			{145, 144, 144, 200, 149}
+			{144, 144, 144, 144, 144, 144, 144, 144, 144, 144, 144, 144},
+			{144, 144, 144, 144, 144, 144, 144, 144, 144, 144, 144, 144},
+			{144, 144, 144, 144, 144, 144, 144, 144, 144, 144, 144, 144},
+			{144, 144, 144, 144, 144, 144, 144, 144, 144, 144, 144, 144},
+			{200, 349, 144, 144, 144, 349, 349, 349, 349, 349, 349, 200},
+			{200, 200, 349, 144, 349, 200, 200, 200, 200, 200, 200, 200},
+			{144, 200, 200, 349, 200, 200, 144, 144, 144, 144, 144, 144},
+			{144, 144, 200, 200, 200, 144, 144, 144, 144, 144, 144, 144},
+			{144, 144, 144, 200, 144, 144, 144, 144, 144, 144, 144, 144},
+			{144, 144, 144, 144, 144, 144, 144, 144, 144, 144, 144, 144},
+			{144, 144, 144, 144, 144, 144, 144, 144, 144, 144, 144, 144},
 		},
 		{
-			{141, 200, 141, 200, 147},
-			{141, 200, 143, 200, 200},
-			{142, 200, 145, 200, 148},
-			{167, 200, 143, 145, 148},
-			{145, 144, 144, 145, 149}
+			{200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200},
+			{200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200},
+			{144, 349, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 349, 144},
+			{144, 349, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 349, 144},
+			{144, 349, 200, 444, 200, 200, 200, 200, 200, 444, 200, 200, 200, 349, 144},
+			{144, 349, 349, 349, 349, 349, 349, 349, 349, 349, 349, 349, 349, 349, 144},
+			{144, 144, 144, 144, 144, 144, 144, 144, 144, 144, 144, 144, 144, 144, 144}
 		},
 		{
 			{148, 200, 141, 147, 147},
@@ -97,7 +108,7 @@ void Map::Init(Player* player) {
 			{167, 134, 143, 148, 148, 148, 148, 148, 148, 148, 148},
 			{145, 144, 144, 149, 149, 149, 149, 149, 149, 149, 149},
 			{167, 134, 143, 148, 148, 148, 148, 148, 148, 148, 148}
-		}
+		} 
 	};
 
 	TileChunk* initialChunk = new TileChunk();
@@ -129,11 +140,13 @@ void Map::Init(Player* player) {
 	std::cout << sizeof(sf::Clock) << "\n";
 }
 void Map::Update(const float& dt) {
-	for (auto& chunk : chunkManager.generatedChunks) { 
+	this->parallax.UpdateBackground();
+	for (auto& chunk : this->chunkManager.generatedChunks) { 
 		chunk->CheckPlayerCollision();
 		chunk->Update(dt);
 	}
 }
 void Map::Draw(sf::RenderTarget& target) {
+	this->parallax.DrawBackground(target);
 	this->chunkManager.DrawChunks(target);
 }

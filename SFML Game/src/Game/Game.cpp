@@ -25,7 +25,7 @@ void Game::Init(void) {
 	window.setIcon(32, 32, icon.getPixelsPtr());
 
 	player.Init();
-	map.Init(&player);
+	map.Init(&player, camera.view);
 	ui.Init();
 
 	camera.SetBounds(camera.position.y - (camera.size.y / 2 - 80.0f), camera.position.y + camera.size.y / 2);
@@ -59,7 +59,7 @@ void Game::Events(void) {
 				camera.SetCameraPosition(player.position);
 
 				map.chunkManager.generatedChunks.clear();
-				map.Init(&player);
+				map.Init(&player, camera.view);
 				
 				ui.panel.hidden = true;
 				ui.tb_gameOver.Hide(true);
@@ -98,8 +98,8 @@ void Game::Update(void) {
 }
 void Game::Draw(void) {
 	if (this->state != States::MENU) {
-		player.Draw(window);
 		map.Draw(window);
+		player.Draw(window);
 	}
 	ui.Draw();
 }
@@ -108,7 +108,7 @@ void Game::Run(void) {
 	while (window.isOpen()) {
 		this->Events();
 		this->Update();
-		window.clear();
+		window.clear(sf::Color(64, 134, 247, 255));
 		this->Draw();
 		window.display();
 	}
