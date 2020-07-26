@@ -34,7 +34,7 @@ TileChunk& TileChunk::operator=(const TileChunk& tchunk) {
 	return *this;
 }
 const sf::Vector2u& TileChunk::GetElementSize(void) const {
-	return { static_cast<unsigned>(this->layout.at(this->index).size()), 
+	return { static_cast<unsigned>(this->layout.at(0).size()), 
 			 static_cast<unsigned>(this->layout.size()) };
 }
 const sf::Vector2f& TileChunk::GetSize(void) const {
@@ -114,7 +114,7 @@ void TileChunk::CheckPlayerCollision() {
 					tile->colliding = true;
 					switch (colDir) {
 					case CLD::TOP: if (tile->collDirs[0] && player->velocity.y > 0.0f) {
-						if (tile->collisionType == Tile::TileCollType::BOUNCE) player->velocity.y = -120.0f;
+						if (tile->collisionType == Tile::TileCollType::BOUNCE) player->velocity.y = -130.0f;
 						else player->isGrounded = true;
 					}
 						break;
@@ -177,9 +177,8 @@ void TileChunk::UpdatePosition(void)
 	vec.clear();
 }
 void TileChunk::Update(const float& dt){
-	if (this->destTimer.getElapsedTime().asSeconds() > this->destructionTime && collided
-		/*&& this->position.y*/) {
-		//this->position.y += 50.5f * dt;
+	if (this->destTimer.getElapsedTime().asSeconds() > this->destructionTime && collided) {
+		this->position.y += 50.5f * dt;
 		this->UpdatePosition();
 	}
 }

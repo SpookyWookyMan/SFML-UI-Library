@@ -33,11 +33,21 @@ void Camera::SetCameraSize(const sf::Vector2f& size){
 	this->size = size;
 	this->view.setSize(this->size);
 }
+void Camera::SetBounds(const float& upper, const float& lower)
+{
+	this->upperBounds = upper;
+	this->lowerBounds = lower;
+}
 void Camera::MoveToTarget(const sf::Vector2f& target, const float& speed, const float& dt){
 	
 	this->position = view.getCenter();
-	sf::Vector2f dist(target.x - this->position.x, 0.0f);
+	sf::Vector2f dist(target - this->position);
+	sf::Vector2f moveDir(dist.x * speed * dt, 0.0f);
 
-	this->view.move(dist.x * speed * dt, 0.0f);
+	//if (upperBounds > 0 && lowerBounds > 0)
+	//	if (this->position.y - this->size.y / 2 > upperBounds&&
+	//	this->position.y + this->size.y / 2 < lowerBounds) moveDir.y = dist.y * speed * dt;
+	
+	this->view.move(moveDir);
 	this->target->setView(this->view);
 }

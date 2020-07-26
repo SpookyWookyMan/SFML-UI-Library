@@ -28,6 +28,8 @@ void Game::Init(void) {
 	map.Init(&player);
 	ui.Init();
 
+	camera.SetBounds(camera.position.y - (camera.size.y / 2 - 80.0f), camera.position.y + camera.size.y / 2);
+
 	//ui stuff
 	ui.tb_menuInstruction.MouseEnterFunc = [&] {
 		ui.tb_menuInstruction.text.setOutlineThickness(1);

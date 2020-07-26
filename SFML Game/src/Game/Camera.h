@@ -24,6 +24,13 @@ public:
 	void SetRenderTarget(sf::RenderTarget& target);
 	void SetCameraPosition(const sf::Vector2f& position);
 	void SetCameraSize(const sf::Vector2f& size);
+	void SetBounds(const float& upper, const float& lower);
 
 	void MoveToTarget(const sf::Vector2f& target, const float& speed, const float& dt);
+
+private:
+
+	float upperBounds;
+	float lowerBounds;
+
 };

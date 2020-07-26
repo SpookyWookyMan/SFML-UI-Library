@@ -27,9 +27,10 @@ void TileChunkManager::DrawChunks(sf::RenderTarget& target) {
 }
 void TileChunkManager::GenerateNewChunk(const sf::View& view) {
 	unsigned index = rand() % (this->layouts.size() - 1) + 1;
+	std::cout << "There are: " << this->layouts.size() << " layouts. Or " << this->layouts.size() - 1 << ".\n";
+	std::cout << "Generated index is: " << index << ".\n";
 
 	TileChunk* tchunk = new TileChunk();
-	tchunk->index = index;
 	tchunk->tileset = &this->tileset;
 	tchunk->player = this->player;
 	tchunk->layout = this->layouts.at(index);
@@ -39,7 +40,7 @@ void TileChunkManager::GenerateNewChunk(const sf::View& view) {
 
 	tchunk->UpdatePosition();
 	tchunk->destructionTime = (this->tileSize * this->tileScale / this->player->velocity.x)
-		* tchunk->GetElementSize().x;
+		* tchunk->GetElementSize().x + 0.1f * tchunk->GetElementSize().y;
 
 	this->generatedChunks.push_back(new TileChunk(*tchunk));
 
