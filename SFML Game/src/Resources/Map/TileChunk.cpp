@@ -109,7 +109,6 @@ void TileChunk::CheckPlayerCollision() {
 					if (!this->collided) { this->destTimer.restart(); }
 					this->collided = true;
 
-					tile->sprite.setColor(sf::Color::Red);
 					tile->coldir = colDir;
 					tile->colliding = true;
 					switch (colDir) {
@@ -136,7 +135,6 @@ void TileChunk::CheckPlayerCollision() {
 							player->isGrounded = false; break;
 					default: break;
 					}
-					tile->sprite.setColor(sf::Color::White);
 					tile->coldir = CLD::NONE;
 					tile->colliding = false;
 				}

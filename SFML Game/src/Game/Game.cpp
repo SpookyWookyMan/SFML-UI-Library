@@ -31,7 +31,7 @@ void Game::Init(void) {
 	map.Init(&player);
 	ui.Init();
 
-	p.Init(player, camera.view);
+	p.Init(camera.view);
 
 	camera.SetBounds(camera.position.y - (camera.size.y / 2 - 80.0f), camera.position.y + camera.size.y / 2);
 
@@ -46,7 +46,7 @@ void Game::Init(void) {
 		this->state = States::NORMAL;
 	};
 
-	//this->state = States::MENU;
+	//this->state = St ates::MENU;
 	//ui.tb_gameTitle.Hide(false);
 	//ui.tb_menuInstruction.Hide(false);
 }
@@ -99,14 +99,14 @@ void Game::Update(void) {
 	} else {
 
 	}
-	p.Update(this->deltaTime, camera.view);
+	p.Update(this->deltaTime, camera.view, player);
 	ui.Update(window.getView());
 }
 void Game::Draw(void) {
 	if (this->state != States::MENU) {
 		p.Draw(window);
-		map.Draw(window);
 		player.Draw(window);
+		map.Draw(window);
 	}
 	ui.Draw();
 }

@@ -6,8 +6,7 @@
 
 struct Layer 
 {
-	Layer(const char* _path, sf::View& view) : deviation{ 0.0f }, mod{ 1 } {
-		txtr.loadFromFile(_path);
+	Layer(sf::Texture& txtr, sf::View& view) : deviation{ 0.0f }, mod{ 1 } {
 		spr.setTexture(txtr);
 		txtr.setRepeated(true);
 
@@ -27,9 +26,9 @@ struct Layer
 	sf::Vector2f scale;
 
 	sf::Sprite spr;
-	sf::Texture txtr;
 
 	float deviation;
+	float speed;
 
 	unsigned mod;
 };
@@ -38,24 +37,15 @@ class Parallax {
 public:
 
 	std::vector<Layer> layers;
+	std::vector<sf::Texture> textures;
 
-	sf::Sprite sprite;//test
-	sf::Texture t;
-	
-	Player player;
-
-	float deviation = 0.0f;
-	float speed = 0.5f;
-	unsigned mod = 1;
-
-	bool canMove;
-
-	void Init(Player& player, sf::View& view);
-	void Update(const float& dt, sf::View& view);
+	void Init(sf::View& view);
+	void Update(const float& dt, sf::View& view, Player& player);
 	void Draw(sf::RenderTarget& target);
 
 private:
 
-	//void AddLayer(const char*);
+	template<typename T>
+	T& GetLast(std::vector<T>& vec) const;
 
 };
