@@ -8,17 +8,24 @@ void Map::Init(Player* player) {
 
 	this->chunkManager.tileset = this->tileset;
 	this->chunkManager.player = player;
-	this->chunkManager.tileSize = 8;
+	this->chunkManager.tileSize = 32;
 	this->chunkManager.tileScale = 2;
 
 	this->chunkManager.layouts = 
 	{
 		{
-			{141, 441, 441, 447, 147},
-			{141, 141, 143, 139, 141},
-			{142, 148, 145, 148, 148},
-			{167, 134, 143, 200, 148},
-			{145, 144, 144, 141, 149}
+			{224, 234, 234, 234, 244},
+			{143, 255, 246, 245, 153},
+			{143, 246, 246, 246, 163},
+			{143, 246, 246, 246, 200},
+			{143, 246, 246, 246, 200},
+			{143, 246, 246, 246, 200},
+			{143, 120, 120, 120, 130},
+			{254, 251, 251, 251, 153},
+			{200, 243, 273, 182, 164},
+			{200, 243, 272, 153, 200},
+			{200, 243, 283, 153, 200},
+			{200, 243, 252, 153, 200}
  		},
 		{
 			{144, 144, 144, 144, 144, 144, 144, 144, 144, 144, 144, 144},
@@ -121,7 +128,7 @@ void Map::Init(Player* player) {
 	initialChunk->player = player;
 	initialChunk->layout = chunkManager.layouts.at(0);
 	initialChunk->GenerateTiles(chunkManager.tileSize, chunkManager.tileScale);
-	initialChunk->position = { -70.0f, 520.0f };
+	initialChunk->position = { -120.0f, 220.0f };
 	initialChunk->UpdatePosition();
 	initialChunk->hasGenerated = true;
 	initialChunk->destructionTime = (chunkManager.tileSize * chunkManager.tileScale / chunkManager.player->velocity.x)
@@ -131,9 +138,9 @@ void Map::Init(Player* player) {
 
 	initialChunk2->tileset = &this->tileset;
 	initialChunk2->player = player;
-	initialChunk2->layout = chunkManager.layouts.at(0);
+	initialChunk2->layout = chunkManager.layouts.at(1);
 	initialChunk2->GenerateTiles(chunkManager.tileSize, chunkManager.tileScale);
-	initialChunk2->position = { 15.0f + chunkManager.tileSize * 2, 520.0f };
+	initialChunk2->position = { 15.0f + chunkManager.tileSize * 8, 520.0f };
 	initialChunk2->UpdatePosition();
 	initialChunk2->destructionTime = (chunkManager.tileSize * chunkManager.tileScale / chunkManager.player->velocity.x)
 		* initialChunk2->GetElementSize().x;

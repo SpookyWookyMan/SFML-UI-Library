@@ -11,10 +11,10 @@ sf::Event _event;
 
 gui::UI ui(window, _event);
 
-Camera camera(window, { 15.0f, 500.0f }, {200.0f, 200.0f});
+Camera camera(window, { 15.0f, 500.0f }, {850.0f, 850.0f});
 
 Player player;
-Map map("Res/Tileset/caves.png");
+Map map("Res/Tileset/Tileset.png");
 
 #include "../Resources/Parallax.h"
 Parallax p;
@@ -105,8 +105,8 @@ void Game::Update(void) {
 void Game::Draw(void) {
 	if (this->state != States::MENU) {
 		p.Draw(window);
-		player.Draw(window);
 		map.Draw(window);
+		player.Draw(window);
 	}
 	ui.Draw();
 }

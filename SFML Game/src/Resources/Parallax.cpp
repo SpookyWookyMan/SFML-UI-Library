@@ -20,7 +20,6 @@ void Parallax::Init(sf::View& view) {
 	this->textures.push_back(sf::Texture());
 	GetLast<sf::Texture>(this->textures).loadFromFile("Res/Textures/Parallax/clouds_mg_1.png");
 
-	//Further-most layers added first
 	layers.push_back(Layer(this->textures.at(0), view));
 	layers.push_back(Layer(this->textures.at(1), view));
 	layers.push_back(Layer(this->textures.at(2), view)); 

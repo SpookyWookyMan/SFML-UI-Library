@@ -13,9 +13,9 @@ Player::~Player(void)
 
 void Player::Init(void) 
 {
-	this->SetVelocity({ 60.5f, 130.5f });
-	this->SetPosition({-40.0f, 480.0f});
-	this->sprite.setScale({0.1f, 0.3f});
+	this->SetVelocity({ 160.5f, 430.5f });
+	this->SetPosition({-40.0f, 460.0f});
+	this->sprite.setScale({0.5f, 1.0f});
 	this->BindCollisionRectToObject();
 
 	this->startingPosition = this->position;
@@ -41,17 +41,17 @@ void Player::Update(float& deltaTime)
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) 
 		|| sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 	{
-		this->position.x += (canMoveRight ? this->velocity.x : 0.0f) *deltaTime;
+		this->position.x += (canMoveRight ? this->velocity.x : 0.0f) * deltaTime;
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) 
 		|| sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 	{
-		this->position.x -= (canMoveLeft ? this->velocity.x : 0.0f) *deltaTime;
+		this->position.x -= (canMoveLeft ? this->velocity.x : 0.0f) * deltaTime;
 	}
 
 	if (!isGrounded)
 	{
-		this->velocity.y += (velocity.y > 130.5f ? 0.0f : 155.1f) *deltaTime;
+		this->velocity.y += (velocity.y > 430.5f ? 0.0f : 455.1f) * deltaTime;
 		this->position.y += this->velocity.y * deltaTime;
 	}
 

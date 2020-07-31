@@ -57,12 +57,16 @@ void TileChunk::GenerateTiles(const unsigned& tileSize, const unsigned& tileScal
 			bool collDirs[4] = {true, true, true, true};
 
 			if (i <= layout.size() - 1) {
-				if (i != 0 && this->layout.at(i - 1).at(j) != 0xC8) collDirs[0] = false; //top
-				if (i != layout.size() - 1 && this->layout.at(i + 1).at(j) != 0xC8) collDirs[1] = false; //bottom	
+				if (i != 0 && this->layout.at(i - 1).at(j) != 0xC8
+					&& this->layout.at(i - 1).at(j) / 0x64 != 0x2) collDirs[0] = false; //top
+				if (i != layout.size() - 1 && this->layout.at(i + 1).at(j) != 0xC8
+					&& this->layout.at(i + 1).at(j) / 0x64 != 0x2) collDirs[1] = false; //bottom	
 			}
 			if (j <= layout.at(0).size() - 1) {
-				if (j != 0 && this->layout.at(i).at(j - 1) != 0xC8) collDirs[2] = false; //left	
-				if (j != layout.at(0).size() - 1 && this->layout.at(i).at(j + 1) != 0xC8) collDirs[3] = false; //right
+				if (j != 0 && this->layout.at(i).at(j - 1) != 0xC8
+					&& this->layout.at(i).at(j - 1) / 0x64 != 0x2) collDirs[2] = false; //left	
+				if (j != layout.at(0).size() - 1 && this->layout.at(i).at(j + 1) != 0xC8
+					&& this->layout.at(i).at(j + 1) / 0x64 != 0x2) collDirs[3] = false; //right
 			}
 
 			using CT = Tile::TileCollType;
@@ -87,6 +91,12 @@ void TileChunk::GenerateTiles(const unsigned& tileSize, const unsigned& tileScal
 void TileChunk::DrawChunk(sf::RenderTarget& target) {
 	for (auto& i : this->tiles) {
 		target.draw(i->sprite);
+		sf::RectangleShape rs;
+		rs.setFillColor(i->collisionType == Tile::TileCollType::COLLISION ? sf::Color(255, 0, 0, 125) 
+			: sf::Color(13, 0, 255, 125));
+		rs.setPosition(i->collisionRect.position);
+		rs.setSize(i->collisionRect.size);
+		target.draw(rs);
 	}
 }
 void TileChunk::CheckPlayerCollision() {
@@ -140,7 +150,7 @@ void TileChunk::CheckPlayerCollision() {
 				}
 			}
 			else if (tile->collisionType == Tile::TileCollType::DEADLY && tile->collisionRect.IsCollidingWith(player->collisionRect)) {
-				printf("ded\n");
+				//printf("ded\n");
 			}
 			else continue;
 		}
@@ -176,7 +186,7 @@ void TileChunk::UpdatePosition(void)
 }
 void TileChunk::Update(const float& dt){
 	if (this->destTimer.getElapsedTime().asSeconds() > this->destructionTime && collided) {
-		this->position.y += 50.5f * dt;
+		//this->position.y += 50.5f * dt;
 		this->UpdatePosition();
 	}
 }

@@ -20,6 +20,8 @@ public:
 	bool colliding;
 	bool collDirs[4];
 
+	float tileScale;
+
 	CollisionRect::CollisionDirection coldir = CollisionRect::CollisionDirection::NONE;
 
 	CollisionRect collisionRect;
